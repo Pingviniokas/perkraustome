@@ -1,4 +1,6 @@
-import { useState } from 'react';
+"use client";
+
+import { useState, useEffect, useRef } from 'react';
 import { MapPin, ArrowRight } from 'lucide-react';
 import axios from 'axios';
 
@@ -6,6 +8,25 @@ const DistanceCalculator = () => {
   const [fromAddress, setFromAddress] = useState('');
   const [toAddress, setToAddress] = useState('');
   const [distance, setDistance] = useState('');
+  const fromInputRef = useRef<HTMLInputElement>(null);
+  const toInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.google) {
+      const autocompleteFrom = new window.google.maps.places.Autocomplete(fromInputRef.current as HTMLInputElement);
+      const autocompleteTo = new window.google.maps.places.Autocomplete(toInputRef.current as HTMLInputElement);
+      
+      autocompleteFrom.addListener('place_changed', () => {
+        const place = autocompleteFrom.getPlace();
+        setFromAddress(place.formatted_address || '');
+      });
+
+      autocompleteTo.addListener('place_changed', () => {
+        const place = autocompleteTo.getPlace();
+        setToAddress(place.formatted_address || '');
+      });
+    }
+  }, []);
 
   const calculateDistance = async () => {
     try {
@@ -26,6 +47,7 @@ const DistanceCalculator = () => {
       <div className="relative group">
         <MapPin className="absolute left-4 top-3.5 text-red-600 w-5 h-5 transition-transform group-hover:scale-110" />
         <input
+          ref={fromInputRef}
           type="text"
           placeholder="Moving From"
           value={fromAddress}
@@ -37,6 +59,7 @@ const DistanceCalculator = () => {
       <div className="relative group">
         <MapPin className="absolute left-4 top-3.5 text-red-600 w-5 h-5 transition-transform group-hover:scale-110" />
         <input
+          ref={toInputRef}
           type="text"
           placeholder="Moving To"
           value={toAddress}
