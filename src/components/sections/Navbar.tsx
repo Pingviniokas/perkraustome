@@ -108,7 +108,7 @@ export default function Navbar() {
                   <EnvelopeIcon className="h-5 w-5 mr-2" />
                   <span className="text-sm font-medium">info@mesjaucia.lt</span>
                 </div>
-                <Image src="/logoMJC.webp" alt="MJC Logo" width={230} height={60} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
+                <Image src="/logoMJC.webp" alt="MJC Logo" width={230} height={40} className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2" />
                 <div className="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
                   <PhoneIcon className="h-5 w-5 mr-2" />
                   <span className="text-sm font-medium">+370 63510000</span>

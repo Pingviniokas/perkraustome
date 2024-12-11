@@ -1,11 +1,7 @@
 "use client";
 
-
 import { Shield, Users, Truck, Clock } from 'lucide-react';
-import dynamic from 'next/dynamic';
 import DistanceCalculator from './DistanceCalculator';
-
-const VideoBackground = dynamic(() => import('./VideoBackground'), { ssr: false });
 
 const Hero = () => {
   return (
@@ -13,7 +9,16 @@ const Hero = () => {
       {/* Video Background */}
       <div className="absolute inset-0 w-full h-full overflow-hidden">
         <div className="absolute inset-0 bg-black/40 z-10" />
-        <VideoBackground />
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="absolute w-full h-full object-cover"
+        >
+          <source src="/videos/mb.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
       </div>
 
       {/* Main Content */}
