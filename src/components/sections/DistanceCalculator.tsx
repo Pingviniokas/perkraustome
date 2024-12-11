@@ -58,7 +58,7 @@ const DistanceCalculator = () => {
     }
   };
 
-  const calculatePrice = (distance, isInVilnius, vehicleType) => {
+  const calculatePrice = (distance: number, isInVilnius: boolean, vehicleType: string) => {
     if (vehicleType !== 'Lengvasis Automobilis') {
       return 'Price calculation not implemented for this vehicle type';
     }
