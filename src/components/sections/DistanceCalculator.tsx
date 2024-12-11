@@ -5,14 +5,14 @@ import { MapPin, ArrowRight, Car, Truck } from 'lucide-react';
 import axios from 'axios';
 
 const vehicleTypes = [
-  { name: 'Lengvasis Automobilis', icon: <Car />, hourlyRate: 20, kmRate: 0.8 },
-  { name: 'Mikroautobusas iki 3.5t', icon: <Truck />, allowLoaders: true },
-  { name: 'Mikroautobusas su liftu', icon: <Truck />, allowLoaders: true },
-  { name: 'Fiskaras - manipuliatorius', icon: <Truck /> },
-  { name: 'Sunkvezimis', icon: <Truck />, allowLoaders: true },
+  { name: 'Lengvasis Automobilis', icon: <Car />, hourlyRate: 20, kmRate: 0.8, minOrder: 35, allowLoaders: false },
+  { name: 'Mikroautobusas iki 3.5t', icon: <Truck />, hourlyRate: 20, kmRate: 1, minOrder: 70, allowLoaders: true },
+  { name: 'Mikroautobusas su liftu', icon: <Truck />, hourlyRate: 22, kmRate: 1, minOrder: 70, allowLoaders: true },
+  { name: 'Fiskaras - manipuliatorius', icon: <Truck />, hourlyRate: 50, kmRate: 1.25, minOrder: 140, allowLoaders: false },
+  { name: 'Sunkvezimis', icon: <Truck />, hourlyRate: 30, kmRate: 1.7, minOrder: 60, allowLoaders: true },
 ];
 
-const MINIMUM_ORDER_PRICE = 35;
+const LOADER_RATE = 18;
 
 const DistanceCalculator = () => {
   const [selectedVehicle, setSelectedVehicle] = useState('');
@@ -59,17 +59,28 @@ const DistanceCalculator = () => {
   };
 
   const calculatePrice = (distance: number, isInVilnius: boolean, vehicleType: string) => {
-    if (vehicleType !== 'Lengvasis Automobilis') {
-      return 'Price calculation not implemented for this vehicle type';
-    }
+    const vehicle = vehicleTypes.find(v => v.name === vehicleType);
+    if (!vehicle) return 'Invalid vehicle type';
+
+    const hourlyRate = vehicle.hourlyRate;
+    const kmRate = vehicle.kmRate;
+    const minOrder = vehicle.minOrder;
+    const hoursNum = parseInt(hours) || 0;
+    const loadersNum = parseInt(loaders.split(' ')[0]) || 0;
+    const loadersCost = loadersNum * LOADER_RATE * hoursNum;
 
     let price;
     if (isInVilnius) {
-      price = Math.max(20 * parseInt(hours), MINIMUM_ORDER_PRICE);
-      return `${price} EUR (hourly rate)`;
+      price = Math.max(hourlyRate * hoursNum + loadersCost, minOrder);
+      return `${price} EUR (hourly rate: ${hourlyRate} EUR/h, ${hoursNum} hours, ${loadersNum} loaders)`;
     } else {
-      price = Math.max(distance * 0.8, MINIMUM_ORDER_PRICE);
-      return `${price.toFixed(2)} EUR (${distance} km at 0.8 EUR/km)`;
+      if (vehicleType === 'Mikroautobusas iki 3.5t' || vehicleType === 'Mikroautobusas su liftu') {
+        price = Math.max(distance * kmRate + hourlyRate * hoursNum + loadersCost, minOrder);
+        return `${price.toFixed(2)} EUR (${distance} km at ${kmRate} EUR/km + ${hoursNum} hours at ${hourlyRate} EUR/h, ${loadersNum} loaders)`;
+      } else {
+        price = Math.max(distance * kmRate, minOrder);
+        return `${price.toFixed(2)} EUR (${distance} km at ${kmRate} EUR/km)`;
+      }
     }
   };
 
@@ -162,9 +173,11 @@ const DistanceCalculator = () => {
             value={hours}
             onChange={(e) => setHours(e.target.value)}
             className={`w-full p-3 rounded-xl border border-gray-200 ${
-              !isInVilnius ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : ''
+              !isInVilnius && selectedVehicle !== 'Mikroautobusas iki 3.5t' && selectedVehicle !== 'Mikroautobusas su liftu'
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : ''
             }`}
-            disabled={!isInVilnius}
+            disabled={!isInVilnius && selectedVehicle !== 'Mikroautobusas iki 3.5t' && selectedVehicle !== 'Mikroautobusas su liftu'}
           />
         </div>
       </div>
