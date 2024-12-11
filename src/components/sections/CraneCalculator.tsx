@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { MapPin, ArrowRight } from 'lucide-react';
-import axios from 'axios';
+
 
 const HOURLY_RATE = 50;
 const MIN_ORDER = 140;

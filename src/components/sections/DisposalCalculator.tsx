@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { MapPin, ArrowRight, Truck } from 'lucide-react';
-import axios from 'axios';
+
 
 const disposalVehicles = [
   { name: 'Mikroautobusas iki 3.5t', icon: <Truck />, hourlyRate: 25, minOrder: 70 },
