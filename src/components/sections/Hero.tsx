@@ -23,11 +23,11 @@ const Hero = () => {
             {/* Left Content */}
             <div className="space-y-8">
               <h1 className="text-7xl font-bold leading-tight tracking-tight text-white">
-                Professional
+                Profesionalios
                 <br />
-                <span className="text-red-500">Moving</span>
+                <span className="text-red-500">Pervežimo</span>
                 <br />
-                Services
+                Paslaugos
               </h1>
 
               <p className="text-xl text-gray-200 max-w-lg leading-relaxed">

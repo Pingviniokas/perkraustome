@@ -1,22 +1,27 @@
 "use client";
 
 import { useState, useEffect, useRef } from 'react';
-import { MapPin, ArrowRight, Car, Truck, } from 'lucide-react';
+import { MapPin, ArrowRight, Car, Truck } from 'lucide-react';
 import axios from 'axios';
 
 const vehicleTypes = [
-  { name: 'Lengvasis Automobilis', icon: <Car /> },
-  { name: 'Mikroautobusas iki 3.5t', icon: <Truck /> },
-  { name: 'Mikroautobusas su liftu', icon: <Truck /> },
+  { name: 'Lengvasis Automobilis', icon: <Car />, hourlyRate: 20, kmRate: 0.8 },
+  { name: 'Mikroautobusas iki 3.5t', icon: <Truck />, allowLoaders: true },
+  { name: 'Mikroautobusas su liftu', icon: <Truck />, allowLoaders: true },
   { name: 'Fiskaras - manipuliatorius', icon: <Truck /> },
-  { name: 'Sunkvezimis', icon: <Truck /> },
+  { name: 'Sunkvezimis', icon: <Truck />, allowLoaders: true },
 ];
+
+const MINIMUM_ORDER_PRICE = 35;
 
 const DistanceCalculator = () => {
   const [selectedVehicle, setSelectedVehicle] = useState('');
   const [fromAddress, setFromAddress] = useState('');
   const [toAddress, setToAddress] = useState('');
   const [result, setResult] = useState('');
+  const [isInVilnius, setIsInVilnius] = useState(true);
+  const [loaders, setLoaders] = useState('Nereikia');
+  const [hours, setHours] = useState('');
   const fromInputRef = useRef(null);
   const toInputRef = useRef(null);
 
@@ -28,16 +33,52 @@ const DistanceCalculator = () => {
       autocompleteFrom.addListener('place_changed', () => {
         const place = autocompleteFrom.getPlace();
         setFromAddress(place.formatted_address || '');
+        checkDistance();
       });
 
       autocompleteTo.addListener('place_changed', () => {
         const place = autocompleteTo.getPlace();
         setToAddress(place.formatted_address || '');
+        checkDistance();
       });
     }
   }, []);
 
+  const checkDistance = async () => {
+    if (fromAddress && toAddress) {
+      try {
+        const response = await axios.post('/api/distance', {
+          fromAddress,
+          toAddress,
+        });
+        setIsInVilnius(response.data.isInVilnius);
+      } catch (error) {
+        console.error('Error checking distance:', error);
+      }
+    }
+  };
+
+  const calculatePrice = (distance, isInVilnius, vehicleType) => {
+    if (vehicleType !== 'Lengvasis Automobilis') {
+      return 'Price calculation not implemented for this vehicle type';
+    }
+
+    let price;
+    if (isInVilnius) {
+      price = Math.max(20 * parseInt(hours), MINIMUM_ORDER_PRICE);
+      return `${price} EUR (hourly rate)`;
+    } else {
+      price = Math.max(distance * 0.8, MINIMUM_ORDER_PRICE);
+      return `${price.toFixed(2)} EUR (${distance} km at 0.8 EUR/km)`;
+    }
+  };
+
   const calculateDistance = async () => {
+    if (!selectedVehicle) {
+      setResult('Please select a vehicle type first');
+      return;
+    }
+
     try {
       const response = await axios.post('/api/distance', {
         fromAddress,
@@ -45,8 +86,9 @@ const DistanceCalculator = () => {
       });
 
       const { distance, isInVilnius } = response.data;
-      const locationStatus = isInVilnius ? "Inside Vilnius - Price calculated hourly" : "Outside Vilnius - Price calculated by the distance";
-      setResult(`Distance: ${distance} (${locationStatus})`);
+      const price = calculatePrice(parseFloat(distance), isInVilnius, selectedVehicle);
+      const locationStatus = isInVilnius ? "Inside Vilnius" : "Outside Vilnius";
+      setResult(`Distance: ${distance} km (${locationStatus})\nEstimated Price: ${price}`);
     } catch (error) {
       console.error('Error calculating distance:', error);
       setResult('Error calculating distance');
@@ -94,6 +136,39 @@ const DistanceCalculator = () => {
         />
       </div>
 
+      <div className="flex space-x-4">
+        <div className="w-1/2">
+          <select
+            value={loaders}
+            onChange={(e) => setLoaders(e.target.value)}
+            className={`w-full p-3 rounded-xl border border-gray-200 ${
+              !selectedVehicle || !vehicleTypes.find(v => v.name === selectedVehicle)?.allowLoaders
+                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                : ''
+            }`}
+            disabled={!selectedVehicle || !vehicleTypes.find(v => v.name === selectedVehicle)?.allowLoaders}
+          >
+            <option value="Nereikia">Krovikai: Nereikia</option>
+            <option value="1 krovikas">1 krovikas</option>
+            <option value="2 krovikai">2 krovikai</option>
+            <option value="3 krovikai">3 krovikai</option>
+            <option value="4 krovikai">4 krovikai</option>
+          </select>
+        </div>
+        <div className="w-1/2">
+          <input
+            type="number"
+            placeholder="Laikas valandomis"
+            value={hours}
+            onChange={(e) => setHours(e.target.value)}
+            className={`w-full p-3 rounded-xl border border-gray-200 ${
+              !isInVilnius ? 'bg-gray-100 text-gray-400 cursor-not-allowed' : ''
+            }`}
+            disabled={!isInVilnius}
+          />
+        </div>
+      </div>
+
       <button
         onClick={calculateDistance}
         className="w-full bg-gradient-to-r from-red-600 to-red-500 text-white p-4 rounded-xl hover:from-red-700 hover:to-red-600 transition-all transform group flex items-center justify-center gap-2"
@@ -103,7 +178,7 @@ const DistanceCalculator = () => {
       </button>
 
       {result && (
-        <p className="text-center text-lg font-semibold">
+        <p className="text-center text-lg font-semibold whitespace-pre-line">
           {result}
         </p>
       )}
