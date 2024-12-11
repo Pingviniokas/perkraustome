@@ -59,7 +59,7 @@ const Hero = () => {
 
             {/* Right Column - Calculator Card */}
             <div className="relative bg-white/95 backdrop-blur-sm rounded-3xl shadow-xl p-8">
-              <h2 className="text-2xl font-bold mb-6">Get Your Moving Quote</h2>
+              <h2 className="text-2xl font-bold mb-6">Pervežimo kainos skaičiuotuvas </h2>
               <DistanceCalculator />
             </div>
           </div>
