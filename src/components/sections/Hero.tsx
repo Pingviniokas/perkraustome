@@ -1,7 +1,7 @@
 "use client";
 
 import { Shield, Users, Truck, Clock } from 'lucide-react';
-import DistanceCalculator from './DistanceCalculator';
+import TabsContainer from './TabsContainer';  // Updated import path
 
 const Hero = () => {
   return (
@@ -65,7 +65,7 @@ const Hero = () => {
             {/* Right Column - Calculator Card */}
             <div className="relative bg-white/95 backdrop-blur-sm rounded-3xl shadow-xl p-8">
               <h2 className="text-2xl font-bold mb-6">Pervežimo kainos skaičiuotuvas </h2>
-              <DistanceCalculator />
+              <TabsContainer />
             </div>
           </div>
         </div>
