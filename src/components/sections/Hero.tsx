@@ -14,16 +14,16 @@ const Hero = () => {
         {/* Dark Overlay with dynamic opacity */}
         <div 
           className={`absolute inset-0 bg-black z-10 transition-opacity duration-1000 ease-in-out ${
-            activeTab === 'moving' ? 'opacity-40' : 'opacity-60'
+            activeTab === 'moving' ? 'opacity-30' : 'opacity-40'
           }`} 
         />
         
-        {/* Video Background */}
+        {/* Moving Video Background */}
         <div 
           className={`absolute inset-0 transition-all duration-1000 ease-in-out transform ${
             activeTab === 'moving' 
-              ? 'scale-100 opacity-100 blur-0' 
-              : 'scale-105 opacity-0 blur-sm'
+              ? 'scale-100 opacity-100' 
+              : 'scale-105 opacity-0'
           }`}
         >
           <video
@@ -38,32 +38,53 @@ const Hero = () => {
           </video>
         </div>
 
-        {/* Crane Image Background */}
+        {/* Disposal Video Background */}
+        <div 
+          className={`absolute inset-0 transition-all duration-1000 ease-in-out transform ${
+            activeTab === 'disposal' 
+              ? 'scale-100 opacity-100' 
+              : 'scale-105 opacity-0'
+          }`}
+        >
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute w-full h-full object-cover transition-transform duration-1000 ease-out"
+          >
+            <source src="/videos/disposal.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          {/* Subtle gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/20 transition-opacity duration-1000" />
+        </div>
+
+        {/* Crane Video Background */}
         <div 
           className={`absolute inset-0 transition-all duration-1000 ease-in-out transform ${
             activeTab === 'crane' 
-              ? 'scale-100 opacity-100 blur-0' 
-              : 'scale-110 opacity-0 blur-sm'
+              ? 'scale-100 opacity-100' 
+              : 'scale-105 opacity-0'
           }`}
         >
-          <div className="relative w-full h-full">
-            <img 
-              src="/images/crane-truck.jpeg" 
-              alt="Crane Truck"
-              className="absolute w-full h-full object-cover transition-transform duration-1000 ease-out"
-            />
-            {/* Optional subtle gradient overlay */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/1 to-black/20 transition-opacity duration-1000" />
-          </div>
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute w-full h-full object-cover transition-transform duration-1000 ease-out"
+          >
+            <source src="/videos/crane.mp4" type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+          {/* Subtle gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/20 transition-opacity duration-1000" />
         </div>
       </div>
 
-      {/* Content Wrapper with Dynamic Backdrop Blur */}
-      <div 
-        className={`relative z-20 min-h-screen transition-all duration-1000 ease-in-out ${
-          activeTab === 'moving' ? 'backdrop-blur-none' : 'backdrop-blur-s'
-        }`}
-      >
+      {/* Content Wrapper */}
+      <div className="relative z-20 min-h-screen transition-all duration-1000 ease-in-out">
         {/* Main Content */}
         <div className="pt-48 pb-20">
           <div className="max-w-7xl mx-auto px-8">
@@ -98,7 +119,7 @@ const Hero = () => {
                   ].map((feature, index) => (
                     <div 
                       key={index} 
-                      className="group p-4 bg-white/95 backdrop-blur-sm rounded-xl border border-white/20 hover:border-red-600 transition-all duration-300 cursor-pointer"
+                      className="group p-4 bg-white/90 rounded-xl border border-white/20 hover:border-red-600 transition-all duration-300 cursor-pointer"
                       style={{
                         transitionDelay: `${index * 50}ms`
                       }}
@@ -117,8 +138,8 @@ const Hero = () => {
                 </div>
               </div>
 
-              {/* Right Column - Calculator Card with Enhanced Shadow */}
-              <div className="relative bg-white/95 backdrop-blur-sm rounded-3xl shadow-xl p-8 transition-all duration-500 ease-in-out hover:shadow-2xl">
+              {/* Right Column - Calculator Card */}
+              <div className="relative bg-white/90 rounded-3xl shadow-xl p-8 transition-all duration-500 ease-in-out hover:shadow-2xl">
                 <h2 className="text-2xl font-bold mb-6">Pervežimo kainos skaičiuotuvas </h2>
                 <TabsContainer onTabChange={setActiveTab} />
               </div>
