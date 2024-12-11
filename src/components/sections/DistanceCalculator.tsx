@@ -7,7 +7,7 @@ import axios from 'axios';
 const DistanceCalculator = () => {
   const [fromAddress, setFromAddress] = useState('');
   const [toAddress, setToAddress] = useState('');
-  const [distance, setDistance] = useState('');
+  const [result, setResult] = useState('');
   const fromInputRef = useRef<HTMLInputElement>(null);
   const toInputRef = useRef<HTMLInputElement>(null);
 
@@ -35,10 +35,12 @@ const DistanceCalculator = () => {
         toAddress,
       });
 
-      setDistance(response.data.distance);
+      const { distance, isInVilnius } = response.data;
+      const locationStatus = isInVilnius ? "Inside Vilnius - Price calculated hourly" : "Outside Vilnius - Price calculated by the distance";
+      setResult(`Distance: ${distance} (${locationStatus})`);
     } catch (error) {
       console.error('Error calculating distance:', error);
-      setDistance('Error calculating distance');
+      setResult('Error calculating distance');
     }
   };
 
@@ -76,9 +78,9 @@ const DistanceCalculator = () => {
         <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
       </button>
 
-      {distance && (
+      {result && (
         <p className="text-center text-lg font-semibold">
-          Distance: {distance}
+          {result}
         </p>
       )}
     </div>

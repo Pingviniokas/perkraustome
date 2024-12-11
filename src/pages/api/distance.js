@@ -23,7 +23,13 @@ export default async function handler(req, res) {
     const distanceResponse = await axios.get(distanceUrl);
     const distanceText = distanceResponse.data.rows[0].elements[0].distance.text;
 
-    res.status(200).json({ distance: distanceText });
+    // Check if the destination is in Vilnius
+    const isInVilnius = toResponse.data.results[0].address_components.some(component => 
+      component.long_name.toLowerCase() === 'vilnius' && 
+      (component.types.includes('locality') || component.types.includes('administrative_area_level_2'))
+    );
+
+    res.status(200).json({ distance: distanceText, isInVilnius });
   } catch (error) {
     console.error('Error fetching distance:', error);
     res.status(500).json({ error: 'Error calculating distance' });
