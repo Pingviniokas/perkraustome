@@ -1,14 +1,13 @@
 "use client";
 
 import { useState } from 'react';
-import { MapPin, Calendar, Shield, ArrowRight, Package, Users, Truck, Clock } from 'lucide-react';
+import { Shield, Users, Truck, Clock } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import DistanceCalculator from './DistanceCalculator';
 
 const VideoBackground = dynamic(() => import('./VideoBackground'), { ssr: false });
 
 const Hero = () => {
-  const [moveSize, setMoveSize] = useState('');
-
   return (
     <section className="min-h-screen relative overflow-hidden">
       {/* Video Background */}
@@ -61,55 +60,7 @@ const Hero = () => {
             {/* Right Column - Calculator Card */}
             <div className="relative bg-white/95 backdrop-blur-sm rounded-3xl shadow-xl p-8">
               <h2 className="text-2xl font-bold mb-6">Get Your Moving Quote</h2>
-              <div className="space-y-6">
-                <div className="relative group">
-                  <MapPin className="absolute left-4 top-3.5 text-red-600 w-5 h-5 transition-transform group-hover:scale-110" />
-                  <input
-                    type="text"
-                    placeholder="Moving From"
-                    className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-red-600 focus:border-transparent transition-all hover:border-red-600"
-                  />
-                </div>
-
-                <div className="relative group">
-                  <MapPin className="absolute left-4 top-3.5 text-red-600 w-5 h-5 transition-transform group-hover:scale-110" />
-                  <input
-                    type="text"
-                    placeholder="Moving To"
-                    className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-red-600 focus:border-transparent transition-all hover:border-red-600"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="relative group">
-                    <Package className="absolute left-4 top-3.5 text-red-600 w-5 h-5" />
-                    <select 
-                      value={moveSize}
-                      onChange={(e) => setMoveSize(e.target.value)}
-                      className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-red-600 focus:border-transparent transition-all hover:border-red-600 appearance-none bg-white"
-                    >
-                      <option value="">Select Size</option>
-                      <option value="studio">Studio</option>
-                      <option value="1bed">1 Bedroom</option>
-                      <option value="2bed">2-3 Bedrooms</option>
-                      <option value="4bed">4+ Bedrooms</option>
-                    </select>
-                  </div>
-
-                  <div className="relative group">
-                    <Calendar className="absolute left-4 top-3.5 text-red-600 w-5 h-5" />
-                    <input
-                      type="date"
-                      className="w-full pl-12 pr-4 py-3 rounded-xl border border-gray-200 focus:ring-2 focus:ring-red-600 focus:border-transparent transition-all hover:border-red-600"
-                    />
-                  </div>
-                </div>
-
-                <button className="w-full bg-gradient-to-r from-red-600 to-red-500 text-white p-4 rounded-xl hover:from-red-700 hover:to-red-600 transition-all transform group flex items-center justify-center gap-2">
-                  Calculate Cost
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </button>
-              </div>
+              <DistanceCalculator />
             </div>
           </div>
         </div>
