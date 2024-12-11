@@ -5,9 +5,18 @@ import DistanceCalculator from './DistanceCalculator';
 import DisposalCalculator from './DisposalCalculator';
 import CraneCalculator from './CraneCalculator';
 
-const TabsContainer = () => {
+type TabsContainerProps = {
+  onTabChange: (tab: string) => void;
+};
+
+const TabsContainer = ({ onTabChange }: TabsContainerProps) => {
   const [activeTab, setActiveTab] = useState('moving');
   
+  const handleTabChange = (tabId: string) => {
+    setActiveTab(tabId);
+    onTabChange(tabId);
+  };
+
   const tabs = [
     { id: 'moving', label: 'Pervežimas' },
     { id: 'disposal', label: 'Utilizavimas' },
@@ -16,12 +25,11 @@ const TabsContainer = () => {
 
   return (
     <div className="w-full">
-      {/* Chrome-style tabs */}
       <div className="flex space-x-1 mb-4">
         {tabs.map((tab) => (
           <button
             key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
+            onClick={() => handleTabChange(tab.id)}
             className={`
               relative px-6 py-2 text-sm font-medium rounded-t-lg 
               transition-all duration-200 ease-in-out
@@ -38,7 +46,6 @@ const TabsContainer = () => {
         ))}
       </div>
 
-      {/* Content area */}
       <div className="bg-white rounded-lg p-4">
         {activeTab === 'moving' && <DistanceCalculator />}
         {activeTab === 'disposal' && <DisposalCalculator />}
