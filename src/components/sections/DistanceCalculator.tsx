@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { MapPin, ArrowRight } from 'lucide-react';
 import axios from 'axios';
 
-const API_KEY = 'AIzaSyChkFTgIcFPXXIXNJyRVkKsgQz6uqbYZEk';
-
 const DistanceCalculator = () => {
   const [fromAddress, setFromAddress] = useState('');
   const [toAddress, setToAddress] = useState('');
@@ -11,16 +9,12 @@ const DistanceCalculator = () => {
 
   const calculateDistance = async () => {
     try {
-      const fromResponse = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(fromAddress)}&key=${API_KEY}`);
-      const toResponse = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(toAddress)}&key=${API_KEY}`);
+      const response = await axios.post('/api/distance', {
+        fromAddress,
+        toAddress,
+      });
 
-      const fromLocation = fromResponse.data.results[0].geometry.location;
-      const toLocation = toResponse.data.results[0].geometry.location;
-
-      const distanceResponse = await axios.get(`https://maps.googleapis.com/maps/api/distancematrix/json?origins=${fromLocation.lat},${fromLocation.lng}&destinations=${toLocation.lat},${toLocation.lng}&key=${API_KEY}`);
-
-      const distanceText = distanceResponse.data.rows[0].elements[0].distance.text;
-      setDistance(distanceText);
+      setDistance(response.data.distance);
     } catch (error) {
       console.error('Error calculating distance:', error);
       setDistance('Error calculating distance');
