@@ -89,7 +89,7 @@ const Hero = () => {
                 <h1 className="text-6xl font-bold leading-tight tracking-tight text-white transition-colors duration-500">
                   Profesionalios
                   <br />
-                  <span className="text-red-500">Transporto</span>
+                  <span className="bg-gradient-to-r from-[#8B0000] to-[#FF0000] text-transparent bg-clip-text inline-block"> Transporto </span>
                   <br />
                   Paslaugos
                 </h1>

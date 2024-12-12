@@ -1,6 +1,7 @@
 import Navbar from '@/components/sections/Navbar';
 import Hero from '@/components/sections/Hero';
 import ServicesSection from '@/components/sections/ServicesSection';
+import MovingChatbot from '../components/MovingChatbot';
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <ServicesSection />
+      <MovingChatbot />
     </main>
   );
 }
