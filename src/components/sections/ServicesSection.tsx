@@ -5,8 +5,7 @@ import { motion } from 'framer-motion';
 import { 
   Truck, 
   Building2, 
-  Globe, 
-  Package, 
+  Globe,  
   Users, 
   Wrench, 
   Box, 
