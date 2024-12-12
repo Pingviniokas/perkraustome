@@ -74,7 +74,7 @@ export default function Navbar() {
     <nav className="fixed w-full z-50">
       {/* Top Header */}
       <div className="bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-12">
           {/* Mobile Header */}
           <div className="lg:hidden h-20 flex items-center justify-between">
             <Image src="/logoMJC.webp" alt="MJC Logo" width={120} height={40} />
@@ -102,7 +102,7 @@ export default function Navbar() {
           </div>
           {/* Desktop Header */}
           <div className="hidden lg:block">
-            <div className="h-24 relative">
+            <div className="h-20 relative">
               <div className="absolute inset-0 flex items-center justify-between">
                 <div className="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
                   <EnvelopeIcon className="h-5 w-5 mr-2" />

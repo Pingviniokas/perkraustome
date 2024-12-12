@@ -8,7 +8,7 @@ const Hero = () => {
   const [activeTab, setActiveTab] = useState('moving');
 
   return (
-    <section className="min-h-screen relative overflow-hidden">
+    <section className="relative overflow-hidden" style={{ paddingTop: "140cpx" }}> {/* Fixed height for navbar */}
       {/* Background Container */}
       <div className="absolute inset-0 w-full h-full">
         {/* Dark Overlay with dynamic opacity */}
@@ -56,8 +56,6 @@ const Hero = () => {
             <source src="/videos/disposal.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          {/* Subtle gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/20 transition-opacity duration-1000" />
         </div>
 
         {/* Crane Video Background */}
@@ -78,26 +76,17 @@ const Hero = () => {
             <source src="/videos/crane.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
-          {/* Subtle gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/5 to-black/20 transition-opacity duration-1000" />
         </div>
       </div>
 
       {/* Content Wrapper */}
-      <div className="relative z-20 min-h-screen transition-all duration-1000 ease-in-out">
-        {/* Main Content */}
-        <div className="pt-48 pb-20">
+      <div className="relative z-20 transition-all duration-1000 ease-in-out">
+        <div className="py-16"> {/* Adjusted padding */}
           <div className="max-w-7xl mx-auto px-8">
-            <div className="grid lg:grid-cols-2 gap-16 items-center">
-              {/* Left Content with Transition */}
-              <div 
-                className="space-y-8 transition-transform duration-500 ease-out"
-                style={{
-                  transform: activeTab === 'moving' ? 'translateX(0)' : 'translateX(-20px)',
-                  opacity: activeTab === 'moving' ? '1' : '0.95'
-                }}
-              >
-                <h1 className="text-7xl font-bold leading-tight tracking-tight text-white transition-colors duration-500">
+            <div className="grid lg:grid-cols-2 gap-16 items-start"> {/* Changed to items-start */}
+              {/* Left Content */}
+              <div className="space-y-6 transition-opacity duration-500 ease-out">
+                <h1 className="text-6xl font-bold leading-tight tracking-tight text-white transition-colors duration-500">
                   Profesionalios
                   <br />
                   <span className="text-red-500">Pervežimo</span>
@@ -110,7 +99,7 @@ const Hero = () => {
                 </p>
 
                 {/* Feature Grid */}
-                <div className="grid grid-cols-2 gap-4 pt-8">
+                <div className="grid grid-cols-2 gap-4 pt-6">
                   {[
                     { icon: <Truck />, title: 'Local Moving', desc: 'Same-day available' },
                     { icon: <Shield />, title: 'Fully Insured', desc: 'Protected moves' },
@@ -139,9 +128,14 @@ const Hero = () => {
               </div>
 
               {/* Right Column - Calculator Card */}
-              <div className="relative bg-white/90 rounded-3xl shadow-xl p-8 transition-all duration-500 ease-in-out hover:shadow-2xl">
-                <h2 className="text-2xl font-bold mb-6">Pervežimo kainos skaičiuotuvas </h2>
-                <TabsContainer onTabChange={setActiveTab} />
+              <div className="relative rounded-2xl shadow-2xl transition-all duration-500 ease-in-out bg-gradient-to-b from-white/90 to-white/95 backdrop-filter">
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-xl font-bold text-gray-900">Kainos skaičiuotuvas</h2>
+                  </div>
+                  <TabsContainer onTabChange={setActiveTab} />
+                </div>
+                <div className="absolute -top-1 -bottom-1 -left-1 -right-1 bg-gradient-to-b from-red-500/10 to-transparent rounded-3xl -z-10"></div>
               </div>
             </div>
           </div>
