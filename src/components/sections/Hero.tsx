@@ -89,22 +89,22 @@ const Hero = () => {
                 <h1 className="text-6xl font-bold leading-tight tracking-tight text-white transition-colors duration-500">
                   Profesionalios
                   <br />
-                  <span className="text-red-500">Pervežimo</span>
+                  <span className="text-red-500">Transporto</span>
                   <br />
                   Paslaugos
                 </h1>
 
                 <p className="text-xl text-gray-200 max-w-lg leading-relaxed transition-opacity duration-500">
-                  Experience seamless relocation with real-time tracking and premium moving services tailored to your needs.
+                  Mūsų patyrusi komanda pasirūpins visais Jūsų kraustymo, bei pervežimo rūpesčiais.
                 </p>
 
                 {/* Feature Grid */}
                 <div className="grid grid-cols-2 gap-4 pt-6">
                   {[
-                    { icon: <Truck />, title: 'Local Moving', desc: 'Same-day available' },
-                    { icon: <Shield />, title: 'Fully Insured', desc: 'Protected moves' },
-                    { icon: <Users />, title: 'Expert Team', desc: 'Professional movers' },
-                    { icon: <Clock />, title: '24/7 Support', desc: 'Always available' }
+                    { icon: <Truck />, title: 'Kraustymo paslaugos', desc: 'Kiti nestandartiniai užsakymai' },
+                    { icon: <Shield />, title: 'Draudimas', desc: 'Mes atsakome už Jūsų turtą' },
+                    { icon: <Users />, title: 'Patyrusi komanda', desc: 'Taupome Jūsų laiką' },
+                    { icon: <Clock />, title: 'Dirbame 24/7 ', desc: 'Atvykstame laiku' }
                   ].map((feature, index) => (
                     <div 
                       key={index} 
@@ -130,8 +130,8 @@ const Hero = () => {
               {/* Right Column - Calculator Card */}
               <div className="relative rounded-2xl shadow-2xl transition-all duration-500 ease-in-out bg-gradient-to-b from-white/90 to-white/95 backdrop-filter">
                 <div className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <h2 className="text-xl font-bold text-gray-900">Kainos skaičiuotuvas</h2>
+                <div className="flex items-center justify-center mb-4">
+                    <h2 className="text-xl font-bold text-gray-900">Kainos skaičiuoklė</h2>
                   </div>
                   <TabsContainer onTabChange={setActiveTab} />
                 </div>
