@@ -1,24 +1,26 @@
 import OpenAI from 'openai';
+import { movingCompanyInfo } from '../../config/chatbotConfig';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
 });
 
 export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ message: 'Method not allowed' });
-  }
-
   try {
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
-      messages: [{
-        role: "system",
-        content: "You are a helpful moving company assistant. Help customers with moving quotes, services, and scheduling."
-      }, {
-        role: "user",
-        content: req.body.message
-      }],
+      messages: [
+        {
+          role: "system",
+          content: movingCompanyInfo.systemMessage
+        },
+        {
+          role: "user",
+          content: req.body.message
+        }
+      ],
+      temperature: 0.7,
+      max_tokens: 500
     });
 
     return res.status(200).json({ 
