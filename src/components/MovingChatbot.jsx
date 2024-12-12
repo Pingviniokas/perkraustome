@@ -62,7 +62,7 @@ const MovingChatbot = () => {
         className={styles.toggleButton}
         onClick={() => setIsOpen(!isOpen)}
       >
-        {isOpen ? '✕' : '💬 Reikia pagalbos perkraustant?'}
+        {isOpen ? '✕' : '💬 Reikia pagalbos?'}
       </button>
       
       {isOpen && (
