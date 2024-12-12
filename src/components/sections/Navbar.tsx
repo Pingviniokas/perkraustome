@@ -71,7 +71,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <nav className="fixed w-full z-50">
+    <nav className="fixed w-full z-[100] bg-white/95 backdrop-blur-sm">
       {/* Top Header */}
       <div className="bg-gray-50">
         <div className="max-w-7xl mx-auto px-12">

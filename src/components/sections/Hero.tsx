@@ -8,9 +8,9 @@ const Hero = () => {
   const [activeTab, setActiveTab] = useState('moving');
 
   return (
-    <section className="relative overflow-hidden" style={{ paddingTop: "140cpx" }}> {/* Fixed height for navbar */}
+    <section className="relative overflow-hidden">  {/* Fixed height for navbar */}
       {/* Background Container */}
-      <div className="absolute inset-0 w-full h-full">
+      <div className="absolute inset-0 w-full h-full z-0">
         {/* Dark Overlay with dynamic opacity */}
         <div 
           className={`absolute inset-0 bg-black z-10 transition-opacity duration-1000 ease-in-out ${
@@ -80,8 +80,8 @@ const Hero = () => {
       </div>
 
       {/* Content Wrapper */}
-      <div className="relative z-20 transition-all duration-1000 ease-in-out">
-        <div className="py-16"> {/* Adjusted padding */}
+      <div className="relative z-20 pt-[200px]">
+        <div className="py-16"> {/* Changed py-16 to pt-10 pb-16 */}
           <div className="max-w-7xl mx-auto px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-start"> {/* Changed to items-start */}
               {/* Left Content */}
@@ -135,7 +135,7 @@ const Hero = () => {
                   </div>
                   <TabsContainer onTabChange={setActiveTab} />
                 </div>
-                <div className="absolute -top-1 -bottom-1 -left-1 -right-1 bg-gradient-to-b from-red-500/10 to-transparent rounded-3xl -z-10"></div>
+                <div className="absolute -top-1 -bottom-1 -left-1 -right-1 bg-gradient-to-b from-red-50/100 to-transparent rounded-2xl -z-10"></div>
               </div>
             </div>
           </div>
