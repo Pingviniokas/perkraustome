@@ -1,5 +1,4 @@
 import OpenAI from 'openai';
-import { movingCompanyInfo } from '../../config/chatbotConfig';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY
@@ -23,25 +22,9 @@ PAGRINDINĖS PASLAUGOS:
 - Fiskaro paslaugos
 - Krovikų paslaugos
 
-SPECIALIOS PASLAUGOS:
-- Nereikalingų daiktų išvežimas
-- Statybinių atliekų išvežimas
-- Renginių aptarnavimas
-- Parodų aptarnavimas
-- Asmenų pervežimas iš/į oro uostų
-
-PRIVALUMAI:
-- 20+ metų patirtis
-- Profesionalūs krovikai
-- Aukštos kokybės pakavimo medžiagos
-- Lankstus darbo grafikas
-- Darbai atliekami visoje Lietuvoje
-
 KONTAKTAI:
 Tel: +37063510000
-El. paštas: info@mesjaucia.lt
-
-Visada pasiūlykite nemokamą konsultaciją ir įvertinimą. Atsakykite mandagiai ir profesionaliai, pabrėždami mūsų patirtį ir kokybiškas paslaugas.`
+El. paštas: info@mesjaucia.lt`
         },
         {
           role: "user",

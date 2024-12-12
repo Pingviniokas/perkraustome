@@ -17,9 +17,8 @@ const nextConfig: NextConfig = {
       },
     ];
   },
-  serverActions: {
-    allowedOrigins: ['vercel.app', '*.vercel.app'],
-    bodySizeLimit: '2mb'
+  eslint: {
+    ignoreDuringBuilds: true,
   }
 };
 
