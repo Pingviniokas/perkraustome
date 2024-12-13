@@ -1,0 +1,51 @@
+/* ReviewSection.module.css */
+.reviewSection {
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  
+  .reviewGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+  
+  .reviewCard {
+    background: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+  
+  .reviewHeader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .authorImage {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  .authorInfo h3 {
+    margin: 0;
+    font-size: 1rem;
+  }
+  
+  .rating {
+    color: #ffd700;
+    margin-bottom: 0.5rem;
+  }
+  
+  .reviewText {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+  }
+  

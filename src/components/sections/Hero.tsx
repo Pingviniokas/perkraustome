@@ -12,19 +12,17 @@ const Hero = () => {
       {/* Background Container */}
       <div className="absolute inset-0 w-full h-full z-0">
         {/* Dark Overlay with dynamic opacity */}
-        <div 
-          className={`absolute inset-0 bg-black z-10 transition-opacity duration-1000 ease-in-out ${
-            activeTab === 'moving' ? 'opacity-30' : 'opacity-40'
-          }`} 
+        <div
+          className={`absolute inset-0 bg-black z-10 transition-opacity duration-1000 ease-in-out ${activeTab === 'moving' ? 'opacity-30' : 'opacity-40'
+            }`}
         />
-        
+
         {/* Moving Video Background */}
-        <div 
-          className={`absolute inset-0 transition-all duration-1000 ease-in-out transform ${
-            activeTab === 'moving' 
-              ? 'scale-100 opacity-100' 
+        <div
+          className={`absolute inset-0 transition-all duration-1000 ease-in-out transform ${activeTab === 'moving'
+              ? 'scale-100 opacity-100'
               : 'scale-105 opacity-0'
-          }`}
+            }`}
         >
           <video
             autoPlay
@@ -39,12 +37,11 @@ const Hero = () => {
         </div>
 
         {/* Disposal Video Background */}
-        <div 
-          className={`absolute inset-0 transition-all duration-1000 ease-in-out transform ${
-            activeTab === 'disposal' 
-              ? 'scale-100 opacity-100' 
+        <div
+          className={`absolute inset-0 transition-all duration-1000 ease-in-out transform ${activeTab === 'disposal'
+              ? 'scale-100 opacity-100'
               : 'scale-105 opacity-0'
-          }`}
+            }`}
         >
           <video
             autoPlay
@@ -59,12 +56,11 @@ const Hero = () => {
         </div>
 
         {/* Crane Video Background */}
-        <div 
-          className={`absolute inset-0 transition-all duration-1000 ease-in-out transform ${
-            activeTab === 'crane' 
-              ? 'scale-100 opacity-100' 
+        <div
+          className={`absolute inset-0 transition-all duration-1000 ease-in-out transform ${activeTab === 'crane'
+              ? 'scale-100 opacity-100'
               : 'scale-105 opacity-0'
-          }`}
+            }`}
         >
           <video
             autoPlay
@@ -84,6 +80,7 @@ const Hero = () => {
         <div className="py-24"> {/* Changed py-16 to pt-10 pb-16 */}
           <div className="max-w-7xl mx-auto px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-start"> {/* Changed to items-start */}
+              {/* Left Content */}
               {/* Left Content */}
               <div className="space-y-6 transition-opacity duration-500 ease-out">
                 <h1 className="text-6xl font-bold leading-tight tracking-tight text-white transition-colors duration-500">
@@ -106,8 +103,8 @@ const Hero = () => {
                     { icon: <Users />, title: 'Patyrusi komanda', desc: 'Taupome Jūsų laiką' },
                     { icon: <Clock />, title: 'Dirbame 24/7 ', desc: 'Atvykstame laiku' }
                   ].map((feature, index) => (
-                    <div 
-                      key={index} 
+                    <div
+                      key={index}
                       className="group p-4 bg-white/90 rounded-xl border border-white/20 hover:border-red-600 transition-all duration-300 cursor-pointer"
                       style={{
                         transitionDelay: `${index * 50}ms`
@@ -118,7 +115,7 @@ const Hero = () => {
                           {feature.icon}
                         </div>
                         <div>
-                          <h3 className="font-semibold text-gray-900">{feature.title}</h3>
+                          <h2 className="font-semibold text-gray-900">{feature.title}</h2>
                           <p className="text-sm text-gray-600">{feature.desc}</p>
                         </div>
                       </div>
@@ -127,10 +124,11 @@ const Hero = () => {
                 </div>
               </div>
 
+
               {/* Right Column - Calculator Card */}
               <div className="relative rounded-2xl shadow-2xl transition-all duration-500 ease-in-out bg-gradient-to-b from-white/90 to-white/95 backdrop-filter">
                 <div className="p-6">
-                <div className="flex items-center justify-center mb-4">
+                  <div className="flex items-center justify-center mb-4">
                     <h2 className="text-xl font-bold text-gray-900">Kainos skaičiuoklė</h2>
                   </div>
                   <TabsContainer onTabChange={setActiveTab} />
