@@ -1,12 +1,30 @@
-// Footer.tsx
 "use client";
 
 import { EnvelopeIcon, PhoneIcon } from '@heroicons/react/24/outline';
+import { FaFacebook, FaInstagram, FaLinkedin } from 'react-icons/fa';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
+  const menuItems = [
+    {
+      title: "Perkraustymo Paslaugos",
+      items: [
+        { title: "Vietiniai perkraustymai", href: "/vietiniai-perkraustymai" },
+        { title: "Tarpmiestinis perkraustymas", href: "/tarpmiestinis-perkraustymas" },
+        { title: "Tarptautiniai perkraustymai", href: "/tarptautiniai-perkraustymai" },
+        { title: "Įmonių perkraustymas", href: "/imoniu-perkraustymas" }
+      ]
+    },
+    {
+      title: "Fiskaro paslaugos",
+      items: [
+        { title: "Fiskaro nuoma", href: "/fiskaro-nuoma" },
+        { title: "Garažų pervežimas", href: "/garazu-pervezimas" },
+        { title: "Negabaritinių krovinių pervežimas", href: "/negabaritiniu-kroviniu-pervezimas" }
+      ]
+    }
+  ];
 
   return (
     <footer className="bg-white">
@@ -15,73 +33,66 @@ const Footer = () => {
           {/* Brand Section */}
           <div className="space-y-6">
             <Image src="/logoMJC.webp" alt="MJC Logo" width={180} height={60} />
-            <p className="text-gray-600 max-w-xs">
+            <p className="text-gray-600">
               Profesionalios pervežimo paslaugos visoje Lietuvoje ir užsienyje
             </p>
             <div className="flex gap-4">
-              {["facebook", "instagram", "linkedin"].map((social) => (
+              {[
+                { icon: FaFacebook, href: "#", label: "Facebook" },
+                { icon: FaInstagram, href: "#", label: "Instagram" },
+                { icon: FaLinkedin, href: "#", label: "LinkedIn" }
+              ].map(({ icon: Icon, href, label }) => (
                 <motion.a
-                  key={social}
+                  key={label}
+                  href={href}
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center hover:bg-gray-100 transition-colors"
-                  href={`#${social}`}
+                  aria-label={label}
                 >
-                  <span className="sr-only">{social}</span>
+                  <Icon className="w-5 h-5 text-gray-600 hover:text-red-600 transition-colors" />
                 </motion.a>
               ))}
             </div>
           </div>
 
-          {/* Quick Links */}
-          <div className="space-y-6">
-            <h4 className="text-gray-900 font-medium">Paslaugos</h4>
-            <ul className="space-y-3">
-              {[
-                "Perkraustymo Paslaugos",
-                "Fiskaro Paslaugos",
-                "Baldų Pervežimas",
-                "Express Pervežimas"
-              ].map((service) => (
-                <li key={service}>
-                  <a href="#" className="text-gray-600 hover:text-red-600 transition-colors">
-                    {service}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Services Links */}
+          {menuItems.map((section, idx) => (
+            <div key={idx} className="space-y-6">
+              <h4 className="text-gray-900 font-medium">{section.title}</h4>
+              <ul className="space-y-3">
+                {section.items.map((item, index) => (
+                  <li key={index}>
+                    <a
+                      href={item.href}
+                      className="text-gray-600 hover:text-red-600 transition-colors text-sm"
+                    >
+                      {item.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
 
           {/* Contact Info */}
           <div className="space-y-6">
             <h4 className="text-gray-900 font-medium">Kontaktai</h4>
-            <ul className="space-y-4">
-              <li className="flex items-center gap-3 text-gray-600">
+            <div className="space-y-4">
+              <a href="tel:+37063510000" className="flex items-center gap-3 text-gray-600 hover:text-red-600 transition-colors">
                 <PhoneIcon className="h-5 w-5" />
                 <span>+370 63510000</span>
-              </li>
-              <li className="flex items-center gap-3 text-gray-600">
+              </a>
+              <a href="mailto:info@mesjaucia.lt" className="flex items-center gap-3 text-gray-600 hover:text-red-600 transition-colors">
                 <EnvelopeIcon className="h-5 w-5" />
                 <span>info@mesjaucia.lt</span>
-              </li>
-            </ul>
-          </div>
-
-          {/* Newsletter */}
-          <div className="space-y-6">
-            <h4 className="text-gray-900 font-medium">Naujienlaiškis</h4>
-            <div className="space-y-3">
-              <input
-                type="email"
-                placeholder="Jūsų el. paštas"
-                className="w-full px-4 py-2.5 bg-gray-50 rounded-md border border-gray-200 focus:outline-none focus:ring-2 focus:ring-red-600/20 transition-all"
-              />
+              </a>
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="w-full px-4 py-2.5 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                className="w-full px-4 py-2.5 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors text-sm font-medium"
               >
-                Prenumeruoti
+                Kainininkas
               </motion.button>
             </div>
           </div>
@@ -91,7 +102,7 @@ const Footer = () => {
         <div className="mt-16 pt-8 border-t border-gray-200">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-600 text-sm">
-              © {currentYear} Mes Jau Čia. Visos teisės saugomos.
+              © {new Date().getFullYear()} Mes Jau Čia. Visos teisės saugomos.
             </p>
             <div className="flex gap-8">
               <a href="#" className="text-gray-600 hover:text-red-600 text-sm transition-colors">
