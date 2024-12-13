@@ -160,7 +160,7 @@ const ServicesSection = () => {
                 onClick={() => setActiveCategory(category.id)}
                 className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300
                   ${activeCategory === category.id 
-                    ? 'bg-red-500 text-white' 
+                    ? 'bg-red-700 text-white' 
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }`}
               >
