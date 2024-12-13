@@ -30,7 +30,7 @@ const DistanceCalculator = () => {
     if (typeof window !== 'undefined' && window.google) {
       const autocompleteFrom = new window.google.maps.places.Autocomplete(fromInputRef.current);
       const autocompleteTo = new window.google.maps.places.Autocomplete(toInputRef.current);
-      
+
       autocompleteFrom.addListener('place_changed', () => {
         const place = autocompleteFrom.getPlace();
         setFromAddress(place.formatted_address || '');
@@ -130,15 +130,13 @@ const DistanceCalculator = () => {
                 <button
                   key={index}
                   onClick={() => setSelectedVehicle(vehicle.name)}
-                  className={`group relative flex flex-col items-center p-2 rounded-lg transition-all duration-300 ${
-                    selectedVehicle === vehicle.name 
-                      ? 'bg-red-50 ring-1 ring-red-500 shadow-sm' 
+                  className={`group relative flex flex-col items-center p-2 rounded-lg transition-all duration-300 ${selectedVehicle === vehicle.name
+                      ? 'bg-red-50 ring-1 ring-red-500 shadow-sm'
                       : 'bg-gray-50 hover:bg-gray-100'
-                  }`}
+                    }`}
                 >
-                  <div className={`text-xl mb-1 transition-colors ${
-                    selectedVehicle === vehicle.name ? 'text-red-600' : 'text-gray-600 group-hover:text-red-500'
-                  }`}>
+                  <div className={`text-xl mb-1 transition-colors ${selectedVehicle === vehicle.name ? 'text-red-600' : 'text-gray-600 group-hover:text-red-500'
+                    }`}>
                     {vehicle.icon}
                   </div>
                   <div className="text-[10px] text-center font-medium leading-tight">
@@ -177,34 +175,41 @@ const DistanceCalculator = () => {
 
             {/* Options Section */}
             <div className="grid grid-cols-2 gap-3">
-              <select
-                value={loaders}
-                onChange={(e) => setLoaders(e.target.value)}
-                className={`w-full px-3 py-2 text-sm rounded-lg border border-gray-200 bg-white/50 transition-all ${
-                  !selectedVehicle || !vehicleTypes.find(v => v.name === selectedVehicle)?.allowLoaders
-                    ? 'opacity-50 cursor-not-allowed'
-                    : 'focus:ring-2 focus:ring-red-500 focus:border-transparent'
-                }`}
-                disabled={!selectedVehicle || !vehicleTypes.find(v => v.name === selectedVehicle)?.allowLoaders}
-              >
-                <option value="Nereikia">Krovikai: Nereikia</option>
-                <option value="1 krovikas">1 krovikas</option>
-                <option value="2 krovikai">2 krovikai</option>
-                <option value="3 krovikai">3 krovikai</option>
-                <option value="4 krovikai">4 krovikai</option>
-              </select>
-              <input
-                type="number"
-                placeholder="Laikas valandomis"
-                value={hours}
-                onChange={(e) => setHours(e.target.value)}
-                className={`w-full px-3 py-2 text-sm rounded-lg border border-gray-200 bg-white/50 transition-all ${
-                  !isInVilnius && selectedVehicle !== 'Mikroautobusas iki 3.5t' && selectedVehicle !== 'Mikroautobusas su liftu'
-                    ? 'opacity-50 cursor-not-allowed'
-                    : 'focus:ring-2 focus:ring-red-500 focus:border-transparent'
-                }`}
-                disabled={!isInVilnius && selectedVehicle !== 'Mikroautobusas iki 3.5t' && selectedVehicle !== 'Mikroautobusas su liftu'}
-              />
+              <div>
+                <label htmlFor="loaders" className="sr-only">Krovikai</label>
+                <select
+                  id="loaders"
+                  value={loaders}
+                  onChange={(e) => setLoaders(e.target.value)}
+                  className={`w-full px-3 py-2 text-sm rounded-lg border border-gray-200 bg-white/50 transition-all ${!selectedVehicle || !vehicleTypes.find(v => v.name === selectedVehicle)?.allowLoaders
+                      ? 'opacity-50 cursor-not-allowed'
+                      : 'focus:ring-2 focus:ring-red-500 focus:border-transparent'
+                    }`}
+                  disabled={!selectedVehicle || !vehicleTypes.find(v => v.name === selectedVehicle)?.allowLoaders}
+                >
+                  <option value="Nereikia">Krovikai: Nereikia</option>
+                  <option value="1 krovikas">1 krovikas</option>
+                  <option value="2 krovikai">2 krovikai</option>
+                  <option value="3 krovikai">3 krovikai</option>
+                  <option value="4 krovikai">4 krovikai</option>
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="hours" className="sr-only">Laikas valandomis</label>
+                <input
+                  id="hours"
+                  type="number"
+                  placeholder="Laikas valandomis"
+                  value={hours}
+                  onChange={(e) => setHours(e.target.value)}
+                  className={`w-full px-3 py-2 text-sm rounded-lg border border-gray-200 bg-white/50 transition-all ${!isInVilnius && selectedVehicle !== 'Mikroautobusas iki 3.5t' && selectedVehicle !== 'Mikroautobusas su liftu'
+                      ? 'opacity-50 cursor-not-allowed'
+                      : 'focus:ring-2 focus:ring-red-500 focus:border-transparent'
+                    }`}
+                  disabled={!isInVilnius && selectedVehicle !== 'Mikroautobusas iki 3.5t' && selectedVehicle !== 'Mikroautobusas su liftu'}
+                />
+              </div>
             </div>
 
             {/* Calculate Button */}
@@ -222,7 +227,7 @@ const DistanceCalculator = () => {
         <div className="flip-card-back absolute w-full h-full bg-white rounded-xl p-4">
           <div className="space-y-3 h-full flex flex-col">
             <h3 className="text-lg font-bold text-gray-900">Jūsų užklausa</h3>
-            
+
             {/* Selected Vehicle Info */}
             <div className="p-2 bg-gray-50 rounded-lg">
               <div className="flex items-center gap-2">
