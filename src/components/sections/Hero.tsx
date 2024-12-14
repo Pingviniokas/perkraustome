@@ -81,7 +81,6 @@ const Hero = () => {
           <div className="max-w-7xl mx-auto px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-start"> {/* Changed to items-start */}
               {/* Left Content */}
-              {/* Left Content */}
               <div className="space-y-6 transition-opacity duration-500 ease-out">
                 <h1 className="text-6xl font-bold leading-tight tracking-tight text-white transition-colors duration-500">
                   Profesionalios
@@ -124,7 +123,6 @@ const Hero = () => {
                 </div>
               </div>
 
-
               {/* Right Column - Calculator Card */}
               <div className="relative rounded-2xl shadow-2xl transition-all duration-500 ease-in-out bg-gradient-to-b from-white/90 to-white/95 backdrop-filter">
                 <div className="p-6">
@@ -138,6 +136,15 @@ const Hero = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Service Professional Image */}
+      <div className="absolute bottom-0 right-5 z-30 hidden lg:block">
+        <img 
+          src="/images/pers.png" 
+          alt="Service Professional"
+          className="h-[350px] object-contain"
+        />
       </div>
     </section>
   );
