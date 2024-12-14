@@ -9,7 +9,7 @@ export async function getGoogleReviews() {
   const API_KEY = process.env.NEXT_PUBLIC_GOOGLE_API_KEY; // Use the API key from .env.local
 
   // Google Places API URL
-  const API_URL = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${PLACE_ID}&fields=reviews&key=${API_KEY}`;
+  const API_URL = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${PLACE_ID}&fields=reviews&reviews_no_translations=true&language=lt&key=${API_KEY}`;
 
   try {
     // Fetch data from the API
