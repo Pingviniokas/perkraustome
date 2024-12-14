@@ -21,7 +21,7 @@ const reviews = [
 ] as const;
 
 const stats = [
-  { number: "2000+", text: "Aptarnautų klientų" },
+  { number: "9000+ ;) ", text: "Aptarnautų klientų" },
   { number: "10+", text: "metų patirtis" },
   { number: "4.7/5", text: "Įvertinimas" }
 ] as const;
