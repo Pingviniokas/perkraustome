@@ -1,4 +1,5 @@
 import Hero from '@/components/sections/Hero';
+import ReviewStats from '@/components/sections/ReviewStats';
 import ServicesSection from '@/components/sections/ServicesSection';
 import MovingChatbot from '../components/MovingChatbot';
 import { getGoogleReviews } from '../lib/googleReviews';
@@ -9,6 +10,7 @@ export default async function Home() {
   return (
     <main className="min-h-screen bg-[#FAFAFA]">
       <Hero />
+      <ReviewStats />
       <ServicesSection />
       <MovingChatbot />
 

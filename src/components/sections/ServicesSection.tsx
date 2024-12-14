@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { ChevronDown } from 'lucide-react';
 
 interface SubService {
   id: string;
@@ -30,26 +29,32 @@ const serviceCategories: ServiceCategory[] = [
       {
         id: 'business',
         title: 'Įmonių perkraustymas',
-        description: 'Kompleksinis biurų ir įmonių perkraustymas',
+        description: 'Kompleksinis biurų perkraustymas',
         image: '/images/im.jpeg',
       },
       {
-        id: 'intercity',
-        title: 'Tarpmiestiniai perkraustymai',
-        description: 'Profesionalus perkraustymas tarp miestų',
-        image: '/images/fi.jpeg',
+        id: 'home',
+        title: 'Namų perkraustymas',
+        description: 'Privačių namų perkraustymas',
+        image: '/images/per.jpeg',
       },
       {
         id: 'international',
-        title: 'Tarptautiniai perkraustymai',
-        description: 'Perkraustymas į užsienio šalis',
-        image: '/images/pe.jpeg',
+        title: 'Tarptautinis perkraustymas',
+        description: 'Perkraustymas į užsienį',
+        image: '/images/fi.jpeg',
       },
       {
         id: 'packing',
         title: 'Pakavimo paslaugos',
         description: 'Profesionalus daiktų pakavimas',
-        image: '/images/im.jpeg',
+        image: '/images/pe.jpeg',
+      },
+      {
+        id: 'storage',
+        title: 'Sandėliavimas',
+        description: 'Laikinas daiktų saugojimas',
+        image: '/images/ate.jpeg',
       }
     ]
   },
@@ -72,33 +77,39 @@ const serviceCategories: ServiceCategory[] = [
         image: '/images/ate.jpeg',
       },
       {
+        id: 'furniture',
+        title: 'Baldų išvežimas',
+        description: 'Senų baldų išvežimas',
+        image: '/images/pe.jpeg',
+      },
+      {
         id: 'electronic',
-        title: 'Elektronikos atliekų utilizavimas',
-        description: 'Saugus elektronikos atliekų tvarkymas',
+        title: 'Elektronikos utilizavimas',
+        description: 'Elektronikos atliekų tvarkymas',
         image: '/images/fi.jpeg',
       },
       {
-        id: 'furniture',
-        title: 'Baldų išvežimas',
-        description: 'Senų baldų išvežimas ir utilizavimas',
-        image: '/images/pe.jpeg',
+        id: 'garden',
+        title: 'Sodo atliekų išvežimas',
+        description: 'Žaliųjų atliekų tvarkymas',
+        image: '/images/per.jpeg',
       }
     ]
   },
   {
-    id: 'special',
+    id: 'crane',
     title: 'Fiskaro Paslaugos',
     description: 'Krovinių kėlimo ir pervežimo paslaugos',
     image: '/images/fi.jpeg',
     subServices: [
       {
-        id: 'crane',
+        id: 'lifting',
         title: 'Kėlimo darbai',
         description: 'Sunkių krovinių kėlimas',
         image: '/images/per.jpeg',
       },
       {
-        id: 'oversized',
+        id: 'transport',
         title: 'Negabaritinių krovinių pervežimas',
         description: 'Didelių gabaritų pervežimai',
         image: '/images/fi.jpeg',
@@ -106,151 +117,178 @@ const serviceCategories: ServiceCategory[] = [
       {
         id: 'construction',
         title: 'Statybos darbai',
-        description: 'Fiskaro paslaugos statybvietėse',
+        description: 'Statybvietės aptarnavimas',
         image: '/images/ate.jpeg',
       },
       {
         id: 'equipment',
         title: 'Įrangos montavimas',
-        description: 'Sunkios įrangos montavimo darbai',
+        description: 'Pramoninės įrangos montavimas',
         image: '/images/im.jpeg',
       },
       {
         id: 'tree',
         title: 'Medžių šalinimas',
-        description: 'Pavojingų medžių šalinimas',
+        description: 'Aukštuminiai medžių darbai',
         image: '/images/pe.jpeg',
       }
     ]
   }
 ];
 
-const BackgroundGrid = ({ isExpanded }: { isExpanded: boolean }) => (
-  <motion.div 
-    className="absolute inset-0 pointer-events-none overflow-hidden"
-    initial={{ opacity: 0.15 }}
-    animate={{ 
-      opacity: isExpanded ? 0.08 : 0.15,
-      rotate: isExpanded ? 30 : 0,
-      scale: isExpanded ? 1.2 : 1,
-    }}
-    transition={{ duration: 0.6, ease: [0.25, 0.1, 0.25, 1] }}
-  >
-    <div className="absolute -left-1/4 -top-1/4 w-3/4 h-3/4">
-      <svg className="w-full h-full" viewBox="0 0 100 100">
-        <pattern id="grid" width="15" height="15" patternUnits="userSpaceOnUse">
-          <path d="M 15 0 L 0 0 0 15" fill="none" stroke="currentColor" strokeWidth="0.5" />
-        </pattern>
-        <rect width="100" height="100" fill="url(#grid)" />
-      </svg>
+const BackgroundPattern = () => (
+  <div className="absolute inset-0 z-0">
+    <div className="absolute inset-0 bg-gradient-to-br from-white via-gray-50 to-gray-100">
+      {/* Main Grid */}
+      <div
+        className="absolute inset-0 opacity-[0.07]"
+        style={{
+          backgroundImage: `
+            linear-gradient(90deg, transparent 96%, #000 96%),
+            linear-gradient(0deg, transparent 96%, #000 96%)
+          `,
+          backgroundSize: '25px 25px',
+          transform: 'rotate(-5deg) scale(2)',
+        }}
+      />
+      {/* Diagonal Lines Overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{
+          backgroundImage: `
+            linear-gradient(45deg, #000 1px, transparent 1px)
+          `,
+          backgroundSize: '35px 35px',
+          transform: 'rotate(-5deg) scale(2)',
+        }}
+      />
+      {/* Dot Pattern */}
+      <div
+        className="absolute inset-0 opacity-[0.02]"
+        style={{
+          backgroundImage: `radial-gradient(#000 1px, transparent 1px)`,
+          backgroundSize: '40px 40px',
+          transform: 'scale(2)',
+        }}
+      />
+      <div className="absolute inset-0">
+        <div
+          className="h-full w-full"
+          style={{
+            background: `radial-gradient(circle at 50% 50%, 
+                        rgba(255,255,255,0) 0%, 
+                        rgba(255,255,255,0.5) 25%, 
+                        rgba(255,255,255,0.8) 50%, 
+                        rgba(255,255,255,1) 100%)`
+          }}
+        />
+      </div>
     </div>
-    <div className="absolute -right-1/4 -bottom-1/4 w-3/4 h-3/4">
-      <svg className="w-full h-full" viewBox="0 0 100 100">
-        <rect width="100" height="100" fill="url(#grid)" />
-      </svg>
+  </div>
+);
+
+
+
+
+const TabButton: React.FC<{
+  isActive: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}> = ({ isActive, onClick, children }) => (
+  <motion.button
+    onClick={onClick}
+    className={`
+      relative px-8 py-4 text-sm font-medium transition-all
+      ${isActive
+        ? 'text-red-600 border-b-2 border-red-600'
+        : 'text-gray-600 hover:text-gray-900 border-b-2 border-transparent'
+      }
+    `}
+    whileHover={{ y: -1 }}
+    whileTap={{ y: 0 }}
+  >
+    {children}
+  </motion.button>
+);
+
+const SubServiceCard: React.FC<{
+  service: SubService;
+}> = ({ service }) => (
+  <motion.div
+    className="bg-white/80 backdrop-blur-sm rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
+    whileHover={{ y: -4, transition: { duration: 0.2 } }}
+  >
+    <div className="relative h-48 overflow-hidden">
+      <Image
+        src={service.image}
+        alt={service.title}
+        fill
+        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+        priority={false}
+        className="object-cover transition-all duration-500 filter grayscale hover:grayscale-0 hover:scale-105"
+      />
+    </div>
+    <div className="p-4">
+      <h4 className="font-semibold mb-2">{service.title}</h4>
+      <p className="text-gray-600 text-sm mb-4">{service.description}</p>
+      <motion.button
+        className="text-red-600 text-sm font-semibold hover:text-red-700 transition-colors inline-flex items-center group"
+        whileHover={{ x: 4 }}
+      >
+        Sužinoti daugiau
+        <span className="ml-2 transition-transform group-hover:translate-x-1">→</span>
+      </motion.button>
     </div>
   </motion.div>
 );
 
-const ServiceCard: React.FC<{
-  category: ServiceCategory;
-  isExpanded: boolean;
-  onToggle: () => void;
-}> = ({ category, isExpanded, onToggle }) => {
-  return (
-    <motion.div 
-      layout
-      className={`w-full bg-white rounded-xl overflow-hidden shadow-lg ${isExpanded ? 'col-span-full' : ''}`}
-    >
-      <motion.div 
-        className="relative cursor-pointer group"
-        onClick={onToggle}
-        animate={{ height: isExpanded ? 125 : 250 }}
-        transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
-      >
-        <Image
-          src={category.image}
-          alt={category.title}
-          layout="fill"
-          objectFit="cover"
-          className="transition-transform duration-500 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
-        <div className="absolute bottom-0 p-6 w-full">
-          <h3 className="text-2xl font-bold text-white mb-2">{category.title}</h3>
-          <p className="text-white/80 text-sm">{category.description}</p>
-        </div>
-        <motion.div 
-          className="absolute top-4 right-4 p-2 bg-white/10 rounded-full"
-          animate={{ rotate: isExpanded ? 180 : 0 }}
-        >
-          <ChevronDown className="w-6 h-6 text-white" />
-        </motion.div>
-      </motion.div>
-
-      <AnimatePresence initial={false} mode="wait">
-        {isExpanded && (
-          <motion.div
-            key={`expanded-${category.id}`}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="bg-white"
-          >
-            <div className="grid grid-cols-2 gap-6 p-8">
-              {category.subServices.map((service) => (
-                <div 
-                  key={service.id}
-                  className="bg-white rounded-lg overflow-hidden shadow-md"
-                >
-                  <div className="relative h-48">
-                    <Image
-                      src={service.image}
-                      alt={service.title}
-                      layout="fill"
-                      objectFit="cover"
-                    />
-                  </div>
-                  <div className="p-4">
-                    <h4 className="font-semibold mb-2">{service.title}</h4>
-                    <p className="text-gray-600 text-sm mb-4">{service.description}</p>
-                    <button className="text-red-600 text-sm font-semibold hover:text-red-700 transition-colors inline-flex items-center">
-                      Sužinoti daugiau
-                      <span className="ml-2">→</span>
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </motion.div>
-  );
-};
-
 const ServicesSection: React.FC = () => {
-  const [expandedId, setExpandedId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<string>('moving');
+  const activeService = serviceCategories.find(cat => cat.id === activeTab);
 
   return (
-    <section className="relative py-24 bg-gray-50 overflow-hidden">
-      <BackgroundGrid isExpanded={!!expandedId} />
-      
-      <div className="max-w-7xl mx-auto px-8">
-        <h2 className="text-4xl font-bold mb-16 text-center">
+    <section className="relative py-24 overflow-hidden">
+      <BackgroundPattern />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <motion.h2
+          className="text-4xl font-bold mb-16 text-center bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
           Mūsų <span className="text-red-600">Paslaugos</span>
-        </h2>
-        <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        </motion.h2>
+
+        <div className="flex justify-center mb-12 border-b overflow-x-auto no-scrollbar">
           {serviceCategories.map((category) => (
-            <ServiceCard
+            <TabButton
               key={category.id}
-              category={category}
-              isExpanded={expandedId === category.id}
-              onToggle={() => setExpandedId(expandedId === category.id ? null : category.id)}
-            />
+              isActive={activeTab === category.id}
+              onClick={() => setActiveTab(category.id)}
+            >
+              {category.title}
+            </TabButton>
           ))}
-        </motion.div>
+        </div>
+
+        <AnimatePresence mode="wait">
+          {activeService && (
+            <motion.div
+              key={activeService.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
+              
+            >
+              {activeService.subServices.map((service) => (
+                <SubServiceCard key={service.id} service={service} />
+              ))}
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );
