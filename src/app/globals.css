@@ -20,10 +20,7 @@ body {
   font-family: var(--font-raleway), Arial, Helvetica, sans-serif;
 }
 
-
-
-
-
+/* Flip card styles */
 .flip-card {
   perspective: 1000px;
   transform-style: preserve-3d;
@@ -45,4 +42,48 @@ body {
 
 .flip-card.flipped .flip-card-inner {
   transform: rotateY(180deg);
+}
+
+/* Navbar and Dropdown styles */
+.nav-item {
+  position: relative;
+}
+
+.dropdown-content {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+  transform-origin: top center;
+}
+
+.animate-dropdown {
+  animation: dropdownAnimation 0.3s ease-out forwards;
+}
+
+@keyframes dropdownAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(-10px);
+    visibility: visible;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+  }
+}
+
+/* Navbar specific styles */
+.nav-link {
+  @apply text-gray-700 font-semibold text-lg uppercase tracking-wider;
+  font-family: var(--font-raleway);
+}
+
+.dropdown-item {
+  @apply text-gray-700 font-light text-base tracking-wide transition-all duration-300;
+  font-family: var(--font-raleway);
+}
+
+.dropdown-item:hover {
+  @apply font-medium;
 }

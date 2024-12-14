@@ -53,26 +53,55 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<number | null>(null);
   const [scrolled, setScrolled] = useState(false);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [isDropdownVisible, setIsDropdownVisible] = useState(false);
+  const navRef = useRef<HTMLDivElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
 
+    const handleClickOutside = (event: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setActiveDropdown(null);
+        setIsDropdownVisible(false);
+      }
+    };
+
     window.addEventListener('scroll', handleScroll);
+    document.addEventListener('mousedown', handleClickOutside);
 
     return () => {
       window.removeEventListener('scroll', handleScroll);
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
+  const handleNavItemHover = (index: number) => {
+    setActiveDropdown(index);
+    setIsDropdownVisible(true);
+  };
+
+  const handleNavLeave = (e: React.MouseEvent) => {
+    const navElement = navRef.current;
+    const dropdownElement = dropdownRef.current;
+    const relatedTarget = e.relatedTarget as HTMLElement;
+
+    if (!navElement?.contains(relatedTarget) && !dropdownElement?.contains(relatedTarget)) {
+      setIsDropdownVisible(false);
+      setActiveDropdown(null);
+    }
+  };
+
   return (
     <>
-      <nav className="fixed w-full z-[100] bg-white/95 backdrop-blur-sm">
+      <nav 
+        ref={navRef} 
+        className="fixed w-full z-[100] bg-white/95 backdrop-blur-sm"
+        onMouseLeave={handleNavLeave}
+      >
+        {/* Keep existing top header code */}
         <div className="bg-gray-50">
           <div className="max-w-7xl mx-auto px-12">
             <div className="lg:hidden h-20 flex items-center justify-between">
@@ -125,6 +154,7 @@ export default function Navbar() {
 
         <div className="hidden lg:block h-px bg-gray-200"></div>
 
+        {/* Mobile menu */}
         {isOpen && (
           <div className="lg:hidden bg-white shadow-lg">
             <div className="py-2 space-y-1">
@@ -160,9 +190,11 @@ export default function Navbar() {
           </div>
         )}
 
+        {/* Desktop menu */}
         <div
-          className={`bg-white transition-all duration-300 hidden lg:block ${scrolled ? 'shadow-md py-2' : 'py-4'
-            }`}
+          className={`bg-white transition-all duration-300 hidden lg:block ${
+            scrolled ? 'shadow-md py-2' : 'py-4'
+          }`}
         >
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex justify-center items-center">
@@ -170,14 +202,8 @@ export default function Navbar() {
                 {menuItems.map((item, index) => (
                   <div
                     key={index}
-                    className="relative static group"
-                    onMouseEnter={() => {
-                      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-                      setActiveDropdown(index);
-                    }}
-                    onMouseLeave={() => {
-                      timeoutRef.current = setTimeout(() => setActiveDropdown(null), 150);
-                    }}
+                    className="relative nav-item"
+                    onMouseEnter={() => handleNavItemHover(index)}
                   >
                     <a
                       href={item.href}
@@ -185,16 +211,11 @@ export default function Navbar() {
                     >
                       {item.title}
                     </a>
-                    {item.subItems && activeDropdown === index && (
+                    {item.subItems && activeDropdown === index && isDropdownVisible && (
                       <div
-                        className="fixed left-0 right-0 w-full bg-white shadow-lg"
+                        ref={dropdownRef}
+                        className="fixed left-0 right-0 w-full bg-white shadow-lg animate-dropdown"
                         style={{ top: '100%' }}
-                        onMouseEnter={() => {
-                          if (timeoutRef.current) clearTimeout(timeoutRef.current);
-                        }}
-                        onMouseLeave={() => {
-                          timeoutRef.current = setTimeout(() => setActiveDropdown(null), 150);
-                        }}
                       >
                         <div className="max-w-7xl mx-auto px-4 py-8">
                           <div className="flex flex-col items-center gap-6">
@@ -222,11 +243,13 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Enhanced backdrop blur */}
-      {activeDropdown !== null && (
-        <div
+      {isDropdownVisible && activeDropdown !== null && (
+        <div 
           className="fixed inset-0 bg-black/10 backdrop-blur-md z-[90]"
-          onClick={() => setActiveDropdown(null)}
+          onClick={() => {
+            setIsDropdownVisible(false);
+            setActiveDropdown(null);
+          }}
         />
       )}
     </>
