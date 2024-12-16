@@ -12,42 +12,14 @@ interface ReviewType {
 }
 
 interface ReviewSectionProps {
-  placeId: string;
-  apiKey: string;
+  reviews: ReviewType[];
   className?: string;
 }
 
-const ReviewSection: React.FC<ReviewSectionProps> = ({ placeId, apiKey, className }) => {
-  const [reviews, setReviews] = useState<ReviewType[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const response = await fetch(
-          `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=reviews&key=${apiKey}`
-        );
-        const data = await response.json();
-        
-        if (data.result?.reviews) {
-          const fiveStarReviews = data.result.reviews.filter(
-            (review: ReviewType) => review.rating === 5
-          );
-          setReviews(fiveStarReviews);
-        }
-      } catch (err) {
-        setError('Failed to fetch reviews');
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchReviews();
-  }, [placeId, apiKey]);
-
-  if (loading) return <div className="text-center py-8">Loading reviews...</div>;
-  if (error) return <div className="text-center py-8 text-red-500">{error}</div>;
+const ReviewSection: React.FC<ReviewSectionProps> = ({ reviews, className }) => {
+  if (!reviews.length) {
+    return <div className="text-center py-8">No reviews available</div>;
+  }
 
   return (
     <section className={`py-16 px-4 max-w-7xl mx-auto ${className || ''}`}>
@@ -56,8 +28,8 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ placeId, apiKey, classNam
         {reviews.map((review, index) => (
           <div key={index} className="bg-white rounded-lg shadow-md p-6">
             <div className="flex items-center gap-4 mb-4">
-              <img 
-                src={review.profile_photo_url} 
+              <img
+                src={review.profile_photo_url}
                 alt={review.author_name}
                 className="w-12 h-12 rounded-full object-cover"
               />
@@ -66,7 +38,7 @@ const ReviewSection: React.FC<ReviewSectionProps> = ({ placeId, apiKey, classNam
                 <span className="text-sm text-gray-500">{review.relative_time_description}</span>
               </div>
             </div>
-            <div className="text-yellow-400 mb-2">{'★'.repeat(5)}</div>
+            <div className="text-yellow-400 mb-2">{'★'.repeat(review.rating)}</div>
             <p className="text-gray-700">{review.text}</p>
           </div>
         ))}
