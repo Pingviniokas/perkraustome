@@ -76,7 +76,7 @@ const Hero = () => {
       </div>
 
       {/* Content Wrapper */}
-      <div className="relative z-20 pt-[200px]">
+      <div className="relative z-20 pt-[100px]">
         <div className="py-24"> {/* Changed py-16 to pt-10 pb-16 */}
           <div className="max-w-7xl mx-auto px-8">
             <div className="grid lg:grid-cols-2 gap-16 items-start"> {/* Changed to items-start */}

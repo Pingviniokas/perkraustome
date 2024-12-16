@@ -1,24 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Raleway } from "next/font/google";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import Script from 'next/script';
 import Navbar from "@/components/sections/Navbar";
 import Footer from "@/components/sections/Footer";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const poppins = Poppins({
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const raleway = Raleway({
-  variable: "--font-raleway",
-  subsets: ["latin"],
-  weight: ['300', '400', '500', '600', '700']
+  weight: ['400', '500', '600', '700'],
+  variable: "--font-poppins",
 });
 
 export const metadata: Metadata = {
@@ -33,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} ${raleway.variable} antialiased min-h-screen flex flex-col`}>
+      <body className={`${poppins.variable} antialiased min-h-screen flex flex-col`}>
         <Navbar />
         <main className="flex-grow">
           {children}
