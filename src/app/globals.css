@@ -59,14 +59,68 @@ body {
 /* Submenu Items Animation */
 .submenu-item-enter {
   opacity: 0;
-  transform: translateY(-20px);
   animation: submenuItemEnter 0.4s ease forwards;
 }
 
 @keyframes submenuItemEnter {
   from {
     opacity: 0;
-    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Add animation delay for each item */
+.submenu-item-delay-1 { animation-delay: 0.1s; }
+.submenu-item-delay-2 { animation-delay: 0.2s; }
+.submenu-item-delay-3 { animation-delay: 0.3s; }
+.submenu-item-delay-4 { animation-delay: 0.4s; }
+
+/* Mobile Menu Animations */
+.mobile-menu-container {
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-menu-enter {
+  max-height: 2000px;
+}
+
+.mobile-menu-exit {
+  max-height: 0;
+}
+
+/* Mobile Submenu Animations */
+.mobile-submenu {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-submenu-enter {
+  max-height: 2000px;
+  opacity: 1;
+}
+
+.mobile-submenu-exit {
+  max-height: 0;
+  opacity: 0;
+}
+
+/* Mobile Category Animation */
+.mobile-category-enter {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: mobileItemSlide 0.5s ease forwards;
+}
+
+@keyframes mobileItemSlide {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
   }
   to {
     opacity: 1;
@@ -74,24 +128,39 @@ body {
   }
 }
 
-/* Add animation delay for each item */
-.submenu-item-delay-1 {
-  animation-delay: 0.1s;
+/* Mobile Item Animation */
+.mobile-item-enter {
+  opacity: 0;
+  transform: translateX(-10px);
+  animation: mobileSubItemSlide 0.4s ease forwards;
 }
 
-.submenu-item-delay-2 {
-  animation-delay: 0.2s;
+@keyframes mobileSubItemSlide {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-.submenu-item-delay-3 {
-  animation-delay: 0.3s;
+/* Mobile Links Animation */
+.mobile-links-enter {
+  animation: mobileLinksFade 0.5s ease forwards;
 }
 
-.submenu-item-delay-4 {
-  animation-delay: 0.4s;
+@keyframes mobileLinksFade {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
-
-
 
 /* Flip card styles */
 .flip-card {

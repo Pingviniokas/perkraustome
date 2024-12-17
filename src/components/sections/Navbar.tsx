@@ -16,6 +16,16 @@ const services = [
     ]
   },
   {
+    category: "Pervežimo Paslaugos",
+    href: "/pervezimo-paslaugos",
+    items: [
+      { title: "Baldų pervežimas", href: "/baldu-pervezimas" },
+      { title: "Daiktų pervežimas", href: "/daiktu-pervezimas" },
+      { title: "Pianinų pervežimas", href: "/pianinu-pervezimas" },
+      { title: "Express pervežimas", href: "/express-pervezimas" }
+    ]
+  },
+  {
     category: "Fiskaro paslaugos",
     href: "/fiskaro-paslaugos",
     items: [
@@ -25,15 +35,15 @@ const services = [
     ]
   },
   {
-    category: "Kitos paslaugos",
+    category: "Kitos Paslaugos",
     href: "/kitos-paslaugos",
     items: [
-      { title: "Baldų pervežimas", href: "/baldu-pervezimas" },
-      { title: "Daiktų pervežimas", href: "/daiktu-pervezimas" },
-      { title: "Pianinų pervežimas", href: "/pianinu-pervezimas" },
-      { title: "Express pervežimas", href: "/express-pervezimas" }
+      { title: "Informacija Ruošiama", href: "/#" },
+      { title: "Informacija Ruošiama", href: "/#" },
+      { title: "Informacija Ruošiama", href: "/#" },
+      { title: "Informacija Ruošiama", href: "/#" },
     ]
-  }
+  },
 ];
 
 export default function Navbar() {
@@ -45,6 +55,7 @@ export default function Navbar() {
   const navRef = useRef<HTMLElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
   const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setTimeout(() => {
@@ -74,18 +85,28 @@ export default function Navbar() {
     }, 200);
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+    if (!isMobileMenuOpen) {
+      setIsNavHovered(true);
+    } else {
+      setTimeout(() => {
+        setIsNavHovered(false);
+      }, 300);
+    }
+  };
+
   return (
     <>
       <nav
         ref={navRef}
-        className={`fixed w-full z-[100] transition-all duration-700 ${isLoaded ? 'navbar-enter' : 'opacity-0'
-          } ${scrolled || isNavHovered ? 'bg-white shadow-sm' : 'bg-transparent'
-          }`}
+        className={`fixed w-full z-[100] transition-all duration-700 ${
+          isLoaded ? 'navbar-enter' : 'opacity-0'
+        } ${scrolled || isNavHovered || isMobileMenuOpen ? 'bg-white shadow-sm' : 'bg-transparent'}`}
         onMouseLeave={handleMouseLeave}
       >
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-20">
-            {/* Logo */}
             <div className="flex-shrink-0 relative w-[200px] h-[50px]">
               <Image
                 src="/logoMJC.webp"
@@ -96,7 +117,6 @@ export default function Navbar() {
               />
             </div>
 
-            {/* Desktop Navigation */}
             <div
               className="hidden lg:flex items-center space-x-12"
               onMouseEnter={() => setIsNavHovered(true)}
@@ -107,8 +127,9 @@ export default function Navbar() {
               >
                 <a
                   href="/paslaugos"
-                  className={`font-semibold text-base transition-colors duration-300 ${scrolled || isNavHovered ? 'text-gray-800 hover:text-red-600' : 'text-white hover:text-red-400'
-                    }`}
+                  className={`font-semibold text-base transition-colors duration-300 ${
+                    scrolled || isNavHovered ? 'text-gray-800 hover:text-red-600' : 'text-white hover:text-red-400'
+                  }`}
                 >
                   Paslaugos
                 </a>
@@ -116,15 +137,17 @@ export default function Navbar() {
 
               <a
                 href="/apie-mus"
-                className={`font-semibold text-base transition-colors duration-300 ${scrolled || isNavHovered ? 'text-gray-800 hover:text-red-600' : 'text-white hover:text-red-400'
-                  }`}
+                className={`font-semibold text-base transition-colors duration-300 ${
+                  scrolled || isNavHovered ? 'text-gray-800 hover:text-red-600' : 'text-white hover:text-red-400'
+                }`}
               >
                 Apie Mus
               </a>
               <a
                 href="/kontaktai"
-                className={`font-semibold text-base transition-colors duration-300 ${scrolled || isNavHovered ? 'text-gray-800 hover:text-red-600' : 'text-white hover:text-red-400'
-                  }`}
+                className={`font-semibold text-base transition-colors duration-300 ${
+                  scrolled || isNavHovered ? 'text-gray-800 hover:text-red-600' : 'text-white hover:text-red-400'
+                }`}
               >
                 Kontaktai
               </a>
@@ -133,12 +156,12 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Mobile menu button */}
             <div className="lg:hidden">
               <button
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className={`p-2 rounded-md transition-colors duration-300 ${scrolled || isNavHovered ? 'text-gray-600 hover:text-gray-900' : 'text-white hover:text-gray-200'
-                  }`}
+                onClick={toggleMobileMenu}
+                className={`p-2 rounded-md transition-colors duration-300 ${
+                  scrolled || isNavHovered || isMobileMenuOpen ? 'text-gray-600 hover:text-gray-900' : 'text-white hover:text-gray-200'
+                }`}
               >
                 <svg
                   className="h-6 w-6"
@@ -157,8 +180,7 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Services Mega Menu */}
-        {isServicesOpen && (
+        {isServicesOpen && !isMobileMenuOpen && (
           <div
             ref={menuRef}
             className="absolute left-0 w-full bg-white shadow-xl z-[100] submenu-enter"
@@ -166,9 +188,9 @@ export default function Navbar() {
             onMouseLeave={handleMouseLeave}
           >
             <div className="max-w-7xl mx-auto px-4 py-8">
-              <div className="grid grid-cols-3 gap-x-8">
+              <div className="grid grid-cols-4 gap-x-8">
                 {services.map((service, index) => (
-                  <div key={index} className={`flex flex-col column-enter column-enter-${index + 1}`}>
+                  <div key={index} className="flex flex-col">
                     <a
                       href={service.href}
                       className="text-base font-semibold text-gray-900 mb-6 hover:text-red-600 transition-colors duration-300"
@@ -195,41 +217,47 @@ export default function Navbar() {
         )}
 
         {/* Mobile menu */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden bg-white border-t">
-            <div className="px-4 pt-2 pb-6 space-y-2">
-              <button
-                onClick={() => setIsServicesOpen(!isServicesOpen)}
-                className="w-full text-left px-3 py-2 text-base font-semibold text-gray-900 hover:text-red-600 transition-colors duration-300"
-              >
-                Paslaugos
-              </button>
-              {isServicesOpen && (
-                <div className="pl-6 space-y-4 mt-2">
-                  {services.map((service, index) => (
-                    <div key={index} className="space-y-2">
+        <div 
+          ref={mobileMenuRef}
+          className={`lg:hidden bg-white border-t mobile-menu-container ${
+            isMobileMenuOpen ? 'mobile-menu-enter' : 'mobile-menu-exit'
+          }`}
+        >
+          <div className="px-4 pt-2 pb-6 space-y-2">
+            <button
+              onClick={() => setIsServicesOpen(!isServicesOpen)}
+              className="w-full text-left px-3 py-2 text-base font-semibold text-gray-900 hover:text-red-600 transition-colors duration-300"
+            >
+              Paslaugos
+            </button>
+            
+            <div className={`pl-6 space-y-4 mt-2 mobile-submenu ${isServicesOpen ? 'mobile-submenu-enter' : 'mobile-submenu-exit'}`}>
+              {services.map((service, index) => (
+                <div key={index} className="space-y-2 mobile-category-enter" style={{animationDelay: `${index * 0.1}s`}}>
+                  <a
+                    href={service.href}
+                    className="block font-semibold text-gray-900 text-base hover:text-red-600 transition-colors duration-300"
+                  >
+                    {service.category}
+                  </a>
+                  <div className="space-y-2">
+                    {service.items.map((item, idx) => (
                       <a
-                        href={service.href}
-                        className="font-semibold text-gray-900 text-base hover:text-red-600 transition-colors duration-300"
+                        key={idx}
+                        href={item.href}
+                        className="flex items-center py-1 text-gray-600 hover:text-red-600 text-sm transition-colors duration-300 mobile-item-enter"
+                        style={{animationDelay: `${(index * 4 + idx) * 0.1}s`}}
                       >
-                        {service.category}
+                        <ChevronRightIcon className="w-4 h-4 mr-2" />
+                        <span>{item.title}</span>
                       </a>
-                      <div className="space-y-2">
-                        {service.items.map((item, idx) => (
-                          <a
-                            key={idx}
-                            href={item.href}
-                            className="flex items-center py-1 text-gray-600 hover:text-red-600 text-sm transition-colors duration-300"
-                          >
-                            <ChevronRightIcon className="w-4 h-4 mr-2" />
-                            <span>{item.title}</span>
-                          </a>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
-              )}
+              ))}
+            </div>
+
+            <div className={`space-y-2 ${isMobileMenuOpen ? 'mobile-links-enter' : ''}`}>
               <a href="/apie-mus" className="block px-3 py-2 text-base font-semibold text-gray-900 hover:text-red-600 transition-colors duration-300">
                 Apie Mus
               </a>
@@ -243,15 +271,18 @@ export default function Navbar() {
               </div>
             </div>
           </div>
-        )}
+        </div>
       </nav>
 
       {/* Blur Overlay */}
-      {isServicesOpen && (
+      {(isServicesOpen || isMobileMenuOpen) && (
         <div
           className="fixed inset-0 bg-black/10 backdrop-blur-md z-[90]"
           style={{ top: '80px' }}
-          onClick={() => setIsServicesOpen(false)}
+          onClick={() => {
+            setIsServicesOpen(false);
+            setIsMobileMenuOpen(false);
+          }}
         />
       )}
     </>
