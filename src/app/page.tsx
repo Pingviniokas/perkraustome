@@ -5,6 +5,7 @@ import WhyChooseUs from '@/components/sections/WhyChooseUs';
 import GoogleReviews from '@/components/sections/GoogleReviews';
 import MovingChatbot from '../components/MovingChatbot';
 import { getGoogleReviews } from '../lib/googleReviews';
+import Slider from '@/components/sections/Slider';
 
 export default async function Home() {
   const reviews = await getGoogleReviews();
@@ -13,6 +14,7 @@ export default async function Home() {
     <main className="min-h-screen bg-[#FAFAFA]">
       <Hero />
       <ReviewStats />
+      <Slider />
       <ServicesSection />
       <WhyChooseUs />
       <GoogleReviews reviews={reviews} />
