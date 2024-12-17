@@ -123,8 +123,8 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-20">
-            {/* Logo */}
-            <div className="flex-shrink-0 relative w-[200px] h-[50px]">
+            {/* Logo with Home Link */}
+            <a href="/" className="flex-shrink-0 relative w-[200px] h-[50px]">
               <Image
                 src="/logoMJC.webp"
                 alt="MJC Logo"
@@ -132,7 +132,7 @@ export default function Navbar() {
                 style={{ objectFit: 'contain' }}
                 priority
               />
-            </div>
+            </a>
 
             {/* Desktop Navigation */}
             <div
