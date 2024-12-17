@@ -105,10 +105,10 @@ const Footer = () => {
               © {new Date().getFullYear()} Mes Jau Čia. Visos teisės saugomos.
             </p>
             <div className="flex gap-8">
-              <a href="#" className="text-gray-600 hover:text-red-600 text-sm transition-colors">
+              <a href="/privatumo-politika" className="text-gray-600 hover:text-red-600 text-sm transition-colors">
                 Privatumo politika
               </a>
-              <a href="#" className="text-gray-600 hover:text-red-600 text-sm transition-colors">
+              <a href="/salygos" className="text-gray-600 hover:text-red-600 text-sm transition-colors">
                 Sąlygos
               </a>
             </div>

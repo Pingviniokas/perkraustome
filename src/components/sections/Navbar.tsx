@@ -9,39 +9,49 @@ const services = [
     category: "Perkraustymo Paslaugos",
     href: "/perkraustymo-paslaugos",
     items: [
-      { title: "Vietiniai perkraustymai", href: "/vietiniai-perkraustymai" },
-      { title: "Tarpmiestinis perkraustymas", href: "/tarpmiestinis-perkraustymas" },
-      { title: "Tarptautiniai perkraustymai", href: "/tarptautiniai-perkraustymai" },
-      { title: "Įmonių perkraustymas", href: "/imoniu-perkraustymas" }
+      { title: "Vietiniai perkraustymai", href: "/perkraustymo-paslaugos/vietiniai-perkraustymai" },
+      { title: "Tarpmiestinis perkraustymas", href: "/perkraustymo-paslaugos/tarpmiestinis-perkraustymas" },
+      { title: "Tarptautiniai perkraustymai", href: "/perkraustymo-paslaugos/tarptautiniai-perkraustymai" },
+      { title: "Įmonių perkraustymas", href: "/perkraustymo-paslaugos/imoniu-perkraustymas" }
     ]
   },
   {
     category: "Pervežimo Paslaugos",
     href: "/pervezimo-paslaugos",
     items: [
-      { title: "Baldų pervežimas", href: "/baldu-pervezimas" },
-      { title: "Daiktų pervežimas", href: "/daiktu-pervezimas" },
-      { title: "Pianinų pervežimas", href: "/pianinu-pervezimas" },
-      { title: "Express pervežimas", href: "/express-pervezimas" }
+      { title: "Baldų pervežimas", href: "/pervezimo-paslaugos/baldu-pervezimas" },
+      { title: "Daiktų pervežimas", href: "/pervezimo-paslaugos/daiktu-pervezimas" },
+      { title: "Pianinų pervežimas", href: "/pervezimo-paslaugos/pianinu-pervezimas" },
+      { title: "Express pervežimas", href: "/pervezimo-paslaugos/express-pervezimas" }
     ]
   },
   {
     category: "Fiskaro paslaugos",
-    href: "/fiskaro-paslaugos",
+    href: "/fiskaro-manipuliatoriaus-paslaugos",
     items: [
-      { title: "Fiskaro nuoma", href: "/fiskaro-nuoma" },
-      { title: "Garažų pervežimas", href: "/garazu-pervezimas" },
-      { title: "Negabaritinių krovinių pervežimas", href: "/negabaritiniu-kroviniu-pervezimas" }
+      { title: "Fiskaro nuoma", href: "/fiskaro-manipuliatoriaus-paslaugos/fiskaro-nuoma" },
+      { title: "Garažų pervežimas", href: "/fiskaro-manipuliatoriaus-paslaugos/garazu-pervezimas" },
+      { title: "Negabaritinių krovinių pervežimas", href: "/fiskaro-manipuliatoriaus-paslaugos/negabaritiniu-kroviniu-pervezimas" }
+    ]
+  },
+  {
+    category: "Utilizavimo Paslaugos",
+    href: "/utilizavimo-paslaugos",
+    items: [
+      { title: "Buitinės technikos išvežimas", href: "/utilizavimo-paslaugos/buitines-technikos-isvezimas" },
+      { title: "Senų baldų išvezimas", href: "/utilizavimo-paslaugos/senu-baldu-isvezimas" },
+      { title: "Stabiagabaričių šiukšlių išvežimas", href: "/utilizavimo-paslaugos/stambiagabariciu-siuksliu-isvezimas" },
+      { title: "Statybinių atliekų išvežimas", href: "/utilizavimo-paslaugos/statybiniu-atlieku-isvezimas" }
     ]
   },
   {
     category: "Kitos Paslaugos",
     href: "/kitos-paslaugos",
     items: [
-      { title: "Informacija Ruošiama", href: "/#" },
-      { title: "Informacija Ruošiama", href: "/#" },
-      { title: "Informacija Ruošiama", href: "/#" },
-      { title: "Informacija Ruošiama", href: "/#" },
+      { title: "Informacija Ruošiama", href: "/kitos-paslaugos/kitos1" },
+      { title: "Informacija Ruošiama", href: "/kitos-paslaugos/kitos2" },
+      { title: "Informacija Ruošiama", href: "/kitos-paslaugos/kitos3" },
+      { title: "Informacija Ruošiama", href: "/kitos-paslaugos/kitos4" },
     ]
   },
 ];
@@ -107,9 +117,8 @@ export default function Navbar() {
     <>
       <nav
         ref={navRef}
-        className={`fixed w-full z-[100] transition-all duration-700 ${
-          isLoaded ? 'navbar-enter' : 'opacity-0'
-        } ${scrolled || isNavHovered || isMobileMenuOpen ? 'bg-white shadow-sm' : 'bg-transparent'}`}
+        className={`fixed w-full z-[100] transition-all duration-700 ${isLoaded ? 'navbar-enter' : 'opacity-0'
+          } ${scrolled || isNavHovered || isMobileMenuOpen ? 'bg-white shadow-sm' : 'bg-transparent'}`}
         onMouseLeave={handleMouseLeave}
       >
         <div className="max-w-7xl mx-auto px-4">
@@ -136,9 +145,8 @@ export default function Navbar() {
               >
                 <a
                   href="/paslaugos"
-                  className={`font-semibold text-base transition-colors duration-300 ${
-                    scrolled || isNavHovered ? 'text-gray-800 hover:text-red-600' : 'text-white hover:text-red-400'
-                  }`}
+                  className={`font-semibold text-base transition-colors duration-300 ${scrolled || isNavHovered ? 'text-gray-800 hover:text-red-600' : 'text-white hover:text-red-400'
+                    }`}
                 >
                   Paslaugos
                 </a>
@@ -146,17 +154,15 @@ export default function Navbar() {
 
               <a
                 href="/apie-mus"
-                className={`font-semibold text-base transition-colors duration-300 ${
-                  scrolled || isNavHovered ? 'text-gray-800 hover:text-red-600' : 'text-white hover:text-red-400'
-                }`}
+                className={`font-semibold text-base transition-colors duration-300 ${scrolled || isNavHovered ? 'text-gray-800 hover:text-red-600' : 'text-white hover:text-red-400'
+                  }`}
               >
                 Apie Mus
               </a>
               <a
                 href="/kontaktai"
-                className={`font-semibold text-base transition-colors duration-300 ${
-                  scrolled || isNavHovered ? 'text-gray-800 hover:text-red-600' : 'text-white hover:text-red-400'
-                }`}
+                className={`font-semibold text-base transition-colors duration-300 ${scrolled || isNavHovered ? 'text-gray-800 hover:text-red-600' : 'text-white hover:text-red-400'
+                  }`}
               >
                 Kontaktai
               </a>
@@ -169,9 +175,8 @@ export default function Navbar() {
             <div className="lg:hidden">
               <button
                 onClick={toggleMobileMenu}
-                className={`p-2 rounded-md transition-colors duration-300 ${
-                  scrolled || isNavHovered || isMobileMenuOpen ? 'text-gray-600 hover:text-gray-900' : 'text-white hover:text-gray-200'
-                }`}
+                className={`p-2 rounded-md transition-colors duration-300 ${scrolled || isNavHovered || isMobileMenuOpen ? 'text-gray-600 hover:text-gray-900' : 'text-white hover:text-gray-200'
+                  }`}
               >
                 <svg
                   className="h-6 w-6"
@@ -199,7 +204,7 @@ export default function Navbar() {
             onMouseLeave={handleMouseLeave}
           >
             <div className="max-w-7xl mx-auto px-4 py-8">
-              <div className="grid grid-cols-4 gap-x-8">
+              <div className="grid grid-cols-5 gap-x-6">
                 {services.map((service, index) => (
                   <div key={index} className="flex flex-col">
                     <a
@@ -228,11 +233,10 @@ export default function Navbar() {
         )}
 
         {/* Mobile menu */}
-        <div 
+        <div
           ref={mobileMenuRef}
-          className={`lg:hidden bg-white mobile-menu-container ${
-            isMobileMenuOpen ? 'mobile-menu-enter' : 'mobile-menu-exit'
-          }`}
+          className={`lg:hidden bg-white mobile-menu-container ${isMobileMenuOpen ? 'mobile-menu-enter' : 'mobile-menu-exit'
+            }`}
         >
           <div className="mobile-menu-content">
             <div className="px-4 pt-2 pb-6 space-y-2">
@@ -242,10 +246,10 @@ export default function Navbar() {
               >
                 Paslaugos
               </button>
-              
+
               <div className={`pl-6 space-y-4 mt-2 mobile-submenu ${isServicesOpen ? 'mobile-submenu-enter' : 'mobile-submenu-exit'}`}>
                 {services.map((service, index) => (
-                  <div key={index} className="space-y-2 mobile-category-enter" style={{animationDelay: `${index * 0.1}s`}}>
+                  <div key={index} className="space-y-2 mobile-category-enter" style={{ animationDelay: `${index * 0.1}s` }}>
                     <a
                       href={service.href}
                       className="block font-semibold text-gray-900 text-base hover:text-red-600 transition-colors duration-300"
@@ -258,7 +262,7 @@ export default function Navbar() {
                           key={idx}
                           href={item.href}
                           className="flex items-center py-1 text-gray-600 hover:text-red-600 text-sm transition-colors duration-300 mobile-item-enter"
-                          style={{animationDelay: `${(index * 4 + idx) * 0.1}s`}}
+                          style={{ animationDelay: `${(index * 4 + idx) * 0.1}s` }}
                         >
                           <ChevronRightIcon className="w-4 h-4 mr-2" />
                           <span>{item.title}</span>
