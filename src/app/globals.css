@@ -56,40 +56,35 @@ body {
   }
 }
 
-/* Submenu Items Animation */
-.submenu-item-enter {
-  opacity: 0;
-  animation: submenuItemEnter 0.4s ease forwards;
-}
-
-@keyframes submenuItemEnter {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-/* Add animation delay for each item */
-.submenu-item-delay-1 { animation-delay: 0.1s; }
-.submenu-item-delay-2 { animation-delay: 0.2s; }
-.submenu-item-delay-3 { animation-delay: 0.3s; }
-.submenu-item-delay-4 { animation-delay: 0.4s; }
-
 /* Mobile Menu Animations */
 .mobile-menu-container {
-  overflow: hidden;
-  max-height: 0;
-  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  height: calc(100vh - 80px);
+  background-color: white;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  z-index: 50;
 }
 
 .mobile-menu-enter {
-  max-height: 2000px;
+  opacity: 1;
+  visibility: visible;
 }
 
 .mobile-menu-exit {
-  max-height: 0;
+  opacity: 0;
+  visibility: hidden;
+}
+
+.mobile-menu-content {
+  min-height: 100%;
+  padding: 1rem 0;
 }
 
 /* Mobile Submenu Animations */
@@ -97,7 +92,7 @@ body {
   overflow: hidden;
   max-height: 0;
   opacity: 0;
-  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s ease-in-out;
 }
 
 .mobile-submenu-enter {
@@ -161,6 +156,27 @@ body {
     transform: translateY(0);
   }
 }
+
+/* Submenu Items Animation */
+.submenu-item-enter {
+  opacity: 0;
+  animation: submenuItemEnter 0.4s ease forwards;
+}
+
+@keyframes submenuItemEnter {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Add animation delay for each item */
+.submenu-item-delay-1 { animation-delay: 0.1s; }
+.submenu-item-delay-2 { animation-delay: 0.2s; }
+.submenu-item-delay-3 { animation-delay: 0.3s; }
+.submenu-item-delay-4 { animation-delay: 0.4s; }
 
 /* Flip card styles */
 .flip-card {

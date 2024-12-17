@@ -86,6 +86,9 @@ export default function Navbar() {
   };
 
   const toggleMobileMenu = () => {
+    if (isMobileMenuOpen) {
+      setIsServicesOpen(false); // Reset services menu when closing mobile menu
+    }
     setIsMobileMenuOpen(!isMobileMenuOpen);
     if (!isMobileMenuOpen) {
       setIsNavHovered(true);
@@ -94,6 +97,10 @@ export default function Navbar() {
         setIsNavHovered(false);
       }, 300);
     }
+  };
+
+  const toggleMobileServices = () => {
+    setIsServicesOpen(!isServicesOpen);
   };
 
   return (
@@ -107,6 +114,7 @@ export default function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center justify-between h-20">
+            {/* Logo */}
             <div className="flex-shrink-0 relative w-[200px] h-[50px]">
               <Image
                 src="/logoMJC.webp"
@@ -117,6 +125,7 @@ export default function Navbar() {
               />
             </div>
 
+            {/* Desktop Navigation */}
             <div
               className="hidden lg:flex items-center space-x-12"
               onMouseEnter={() => setIsNavHovered(true)}
@@ -156,6 +165,7 @@ export default function Navbar() {
               </button>
             </div>
 
+            {/* Mobile menu button */}
             <div className="lg:hidden">
               <button
                 onClick={toggleMobileMenu}
@@ -180,10 +190,11 @@ export default function Navbar() {
           </div>
         </div>
 
+        {/* Desktop Services Menu */}
         {isServicesOpen && !isMobileMenuOpen && (
           <div
             ref={menuRef}
-            className="absolute left-0 w-full bg-white shadow-xl z-[100] submenu-enter"
+            className="absolute left-0 w-full bg-white shadow-xl z-[100] submenu-enter hidden lg:block"
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
@@ -219,55 +230,57 @@ export default function Navbar() {
         {/* Mobile menu */}
         <div 
           ref={mobileMenuRef}
-          className={`lg:hidden bg-white border-t mobile-menu-container ${
+          className={`lg:hidden bg-white mobile-menu-container ${
             isMobileMenuOpen ? 'mobile-menu-enter' : 'mobile-menu-exit'
           }`}
         >
-          <div className="px-4 pt-2 pb-6 space-y-2">
-            <button
-              onClick={() => setIsServicesOpen(!isServicesOpen)}
-              className="w-full text-left px-3 py-2 text-base font-semibold text-gray-900 hover:text-red-600 transition-colors duration-300"
-            >
-              Paslaugos
-            </button>
-            
-            <div className={`pl-6 space-y-4 mt-2 mobile-submenu ${isServicesOpen ? 'mobile-submenu-enter' : 'mobile-submenu-exit'}`}>
-              {services.map((service, index) => (
-                <div key={index} className="space-y-2 mobile-category-enter" style={{animationDelay: `${index * 0.1}s`}}>
-                  <a
-                    href={service.href}
-                    className="block font-semibold text-gray-900 text-base hover:text-red-600 transition-colors duration-300"
-                  >
-                    {service.category}
-                  </a>
-                  <div className="space-y-2">
-                    {service.items.map((item, idx) => (
-                      <a
-                        key={idx}
-                        href={item.href}
-                        className="flex items-center py-1 text-gray-600 hover:text-red-600 text-sm transition-colors duration-300 mobile-item-enter"
-                        style={{animationDelay: `${(index * 4 + idx) * 0.1}s`}}
-                      >
-                        <ChevronRightIcon className="w-4 h-4 mr-2" />
-                        <span>{item.title}</span>
-                      </a>
-                    ))}
+          <div className="mobile-menu-content">
+            <div className="px-4 pt-2 pb-6 space-y-2">
+              <button
+                onClick={toggleMobileServices}
+                className="w-full text-left px-3 py-2 text-base font-semibold text-gray-900 hover:text-red-600 transition-colors duration-300"
+              >
+                Paslaugos
+              </button>
+              
+              <div className={`pl-6 space-y-4 mt-2 mobile-submenu ${isServicesOpen ? 'mobile-submenu-enter' : 'mobile-submenu-exit'}`}>
+                {services.map((service, index) => (
+                  <div key={index} className="space-y-2 mobile-category-enter" style={{animationDelay: `${index * 0.1}s`}}>
+                    <a
+                      href={service.href}
+                      className="block font-semibold text-gray-900 text-base hover:text-red-600 transition-colors duration-300"
+                    >
+                      {service.category}
+                    </a>
+                    <div className="space-y-2">
+                      {service.items.map((item, idx) => (
+                        <a
+                          key={idx}
+                          href={item.href}
+                          className="flex items-center py-1 text-gray-600 hover:text-red-600 text-sm transition-colors duration-300 mobile-item-enter"
+                          style={{animationDelay: `${(index * 4 + idx) * 0.1}s`}}
+                        >
+                          <ChevronRightIcon className="w-4 h-4 mr-2" />
+                          <span>{item.title}</span>
+                        </a>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
 
-            <div className={`space-y-2 ${isMobileMenuOpen ? 'mobile-links-enter' : ''}`}>
-              <a href="/apie-mus" className="block px-3 py-2 text-base font-semibold text-gray-900 hover:text-red-600 transition-colors duration-300">
-                Apie Mus
-              </a>
-              <a href="/kontaktai" className="block px-3 py-2 text-base font-semibold text-gray-900 hover:text-red-600 transition-colors duration-300">
-                Kontaktai
-              </a>
-              <div className="pt-4">
-                <button className="w-full bg-red-600 text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-red-700 transition-colors duration-300">
-                  Kainininkas
-                </button>
+              <div className={`space-y-2 ${isMobileMenuOpen ? 'mobile-links-enter' : ''}`}>
+                <a href="/apie-mus" className="block px-3 py-2 text-base font-semibold text-gray-900 hover:text-red-600 transition-colors duration-300">
+                  Apie Mus
+                </a>
+                <a href="/kontaktai" className="block px-3 py-2 text-base font-semibold text-gray-900 hover:text-red-600 transition-colors duration-300">
+                  Kontaktai
+                </a>
+                <div className="pt-4">
+                  <button className="w-full bg-red-600 text-white px-6 py-2 rounded-md text-sm font-semibold hover:bg-red-700 transition-colors duration-300">
+                    Kainininkas
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -275,7 +288,7 @@ export default function Navbar() {
       </nav>
 
       {/* Blur Overlay */}
-      {(isServicesOpen || isMobileMenuOpen) && (
+      {((isServicesOpen && !isMobileMenuOpen) || isMobileMenuOpen) && (
         <div
           className="fixed inset-0 bg-black/10 backdrop-blur-md z-[90]"
           style={{ top: '80px' }}
