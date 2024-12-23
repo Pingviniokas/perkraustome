@@ -6,6 +6,7 @@ import GoogleReviews from '@/components/sections/GoogleReviews';
 import MovingChatbot from '../components/MovingChatbot';
 import { getGoogleReviews } from '../lib/googleReviews';
 import Slider from '@/components/sections/Slider';
+import Hover from '@/components/sections/Hover';
 
 export default async function Home() {
   const reviews = await getGoogleReviews();
@@ -16,6 +17,7 @@ export default async function Home() {
       <ReviewStats />
       <Slider />
       <ServicesSection />
+      <Hover />
       <WhyChooseUs />
       <GoogleReviews reviews={reviews} />
       <MovingChatbot />
