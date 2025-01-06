@@ -87,7 +87,7 @@ const MovingServicesPage = () => {
           <div className="absolute inset-0 flex items-center">
             <div className="ml-16">
               <div className="bg-white rounded-3xl p-12 shadow-lg w-[670px] min-h-[700px] relative">
-                <div className="px-24">
+                <div className="px-12">
                   <h1>
                     <span className="inline-block bg-gradient-to-r from-red-600 to-red-800 text-transparent bg-clip-text text-6xl font-bold leading-tight">
                       Perkraustymo
