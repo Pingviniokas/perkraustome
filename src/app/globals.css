@@ -242,3 +242,17 @@ body {
 .card-hover:hover::before {
   opacity: 1;
 }
+
+
+
+
+.bg-dots {
+  background-image: radial-gradient(circle, #ddd 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-color: white;
+}
+
+.bg-clip-text {
+  -webkit-background-clip: text;
+  background-clip: text;
+}
