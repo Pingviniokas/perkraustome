@@ -126,7 +126,7 @@ export default function Navbar() {
             {/* Logo with Home Link */}
             <a href="/" className="flex-shrink-0 relative w-[200px] h-[50px]">
               <Image
-                src="/logoMJC.webp"
+                src="/images/logoMJC.webp"
                 alt="MJC Logo"
                 fill
                 style={{ objectFit: 'contain' }}

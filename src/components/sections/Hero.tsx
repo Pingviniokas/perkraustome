@@ -13,7 +13,7 @@ const Hero = () => {
       <div className="absolute inset-0 w-full h-full z-0">
         {/* Dark Overlay with dynamic opacity */}
         <div
-          className={`absolute inset-0 bg-black z-10 transition-opacity duration-1000 ease-in-out ${activeTab === 'moving' ? 'opacity-30' : 'opacity-40'
+          className={`absolute inset-0 bg-black z-10 transition-opacity duration-1000 ease-in-out ${activeTab === 'moving' ? 'opacity-5' : 'opacity-40'
             }`}
         />
 
