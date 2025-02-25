@@ -1,11 +1,11 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import DatePicker from '../shared/DatePicker';
 import { useLoadScript } from '@react-google-maps/api';
 import usePlacesAutocomplete from 'use-places-autocomplete';
-import { motion } from 'framer-motion';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 
 type PricingType = 'hourly' | 'fixed';
@@ -84,6 +84,26 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
     crane: 'Fiskaras - Manipuliatorius',
     truck: 'Sunkvežimis'
   } as const;
+
+  // Add ref for the calculator section
+  const calculatorRef = useRef<HTMLDivElement>(null);
+
+  // Get scroll progress for this section
+  const { scrollYProgress } = useScroll({
+    target: calculatorRef,
+    offset: ["start end", "center center"]
+  });
+
+  // Transform scroll progress into calculator animations
+  const calculatorScale = useTransform(scrollYProgress, 
+    [0, 0.6, 1], 
+    [0.5, 0.8, 1]
+  );
+  
+  const calculatorY = useTransform(scrollYProgress,
+    [0, 0.6, 1],
+    [200, 100, 0]
+  );
 
   const handleDateChange = (date: Date, holiday: boolean, weekend: boolean) => {
     setSelectedDate(date);
@@ -233,7 +253,10 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
   );
 
   return (
-    <section className="relative min-h-screen flex items-center justify-center font-['TT_Firs_Neue'] overflow-hidden">
+    <section 
+      ref={calculatorRef}
+      className="relative min-h-screen flex items-center justify-center font-['TT_Firs_Neue'] overflow-hidden"
+    >
       <div className="container py-8 relative z-10">
         <div className="flex gap-8 items-start justify-center">
           {/* Text Box - Animate from left */}
@@ -276,15 +299,13 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
             </div>
           </motion.div>
 
-          {/* Calculator - Animate from right */}
+          {/* Calculator - Scale and move up with scroll */}
           <motion.div
             className="w-[768px]"
-            initial={{ opacity: 0, x: 100 }}
-            animate={{ 
-              opacity: inView ? 1 : 0,
-              x: inView ? 0 : 100
+            style={{ 
+              scale: calculatorScale,
+              y: calculatorY
             }}
-            transition={{ duration: 0.5, ease: "easeOut", delay: 0.2 }}
           >
             <div className="relative"> {/* Container for both views */}
               {/* Calculator View */}

@@ -32,7 +32,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand Section */}
           <div className="space-y-6">
-            <Image src="/logoMJC.webp" alt="MJC Logo" width={180} height={60} />
+            <Image src="/images/logoMJC.webp" alt="MJC Logo" width={180} height={60} />
             <p className="text-gray-600">
               Profesionalios pervežimo paslaugos visoje Lietuvoje ir užsienyje
             </p>
