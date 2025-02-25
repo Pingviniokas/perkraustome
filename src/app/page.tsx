@@ -11,44 +11,48 @@ import AchievementsSection from '@/components/sections/AchievementsSection';
 import ContactSection from '@/components/sections/ContactSection';
 
 export default function Home() {
+  // 1. First, declare all useState hooks
   const [activeSection, setActiveSection] = useState('hero');
-  const { scrollY } = useScroll();
-
-  // Fix window is not defined error
   const [windowHeight, setWindowHeight] = useState(0);
 
-  useEffect(() => {
-    // Set window height after component mounts
-    setWindowHeight(window.innerHeight);
+  // 2. Declare all refs
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
+  
+  // 3. Declare all useScroll hooks
+  const { scrollY } = useScroll();
+  const { scrollYProgress: transitionProgress } = useScroll({
+    target: scrollContainerRef,
+    offset: ["start start", "end start"],
+    layoutEffect: false
+  });
 
-    // Optional: Update on resize
-    const handleResize = () => setWindowHeight(window.innerHeight);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  // 4. Declare all useInView hooks
+  const { ref: heroRef, inView: heroInView } = useInView({ threshold: 0.5 });
+  const { ref: calculatorRef, inView: calculatorInView } = useInView({ 
+    threshold: 0.5
+  });
+  const { ref: servicesRef, inView: servicesInView } = useInView({
+    threshold: 0.5
+  });
+  const { ref: valuesRef, inView: valuesInView } = useInView({ threshold: 0.5 });
+  const { ref: achievementsRef, inView: achievementsInView } = useInView({ threshold: 0.5 });
+  const { ref: contactRef, inView: contactInView } = useInView({ threshold: 0.5 });
 
-  // Use windowHeight state instead of direct window access
+  // 5. Declare transforms
   const backgroundOpacity = useTransform(
     scrollY,
     [0, windowHeight * 0.5],
     [0, 1]
   );
 
-  // Refs for each section
-  const { ref: heroRef, inView: heroInView } = useInView({ threshold: 0.5 });
-  const { ref: calculatorRef, inView: calculatorInView } = useInView({ 
-    threshold: 0.5,
-    margin: "-45% 0px -45% 0px"
-  });
-  const { ref: servicesRef, inView: servicesInView } = useInView({
-    threshold: 0.7,
-    margin: "-30% 0px -30% 0px"
-  });
-  const { ref: valuesRef, inView: valuesInView } = useInView({ threshold: 0.5 });
-  const { ref: achievementsRef, inView: achievementsInView } = useInView({ threshold: 0.5 });
-  const { ref: contactRef, inView: contactInView } = useInView({ threshold: 0.5 });
+  // 6. Declare all useEffects
+  useEffect(() => {
+    setWindowHeight(window.innerHeight);
+    const handleResize = () => setWindowHeight(window.innerHeight);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  // Update active section based on scroll
   useEffect(() => {
     if (heroInView) setActiveSection('hero');
     else if (calculatorInView && !servicesInView) setActiveSection('calculator');
@@ -57,15 +61,6 @@ export default function Home() {
     else if (achievementsInView) setActiveSection('achievements');
     else if (contactInView) setActiveSection('contact');
   }, [heroInView, calculatorInView, servicesInView, valuesInView, achievementsInView, contactInView]);
-
-  // Add scroll container ref
-  const scrollContainerRef = useRef(null);
-
-  // Update scroll progress tracking with adjusted offset
-  const { scrollYProgress: transitionProgress } = useScroll({
-    target: scrollContainerRef,
-    offset: ["start start", "end start"] // Changed to make calculator fully visible at start
-  });
 
   return (
     <>
@@ -150,63 +145,33 @@ export default function Home() {
         {/* Calculator and Services Container */}
         <div 
           ref={scrollContainerRef}
-          className="relative h-[200vh]"
-          id="transition-container"
-          style={{ position: 'relative' }}
+          className="relative w-full"
         >
           {/* Calculator Section */}
           <section 
             id="calculator" 
             ref={calculatorRef}
-            className="sticky top-0 h-screen w-full z-20 overflow-hidden"
+            className="h-screen relative z-20"
           >
-            <motion.div
-              className="absolute inset-0 w-full h-full"
-              style={{
-                opacity: useTransform(transitionProgress, 
-                  [0, 0.2, 0.4],
-                  [1, 1, 0]
-                ),
-                scale: useTransform(transitionProgress,
-                  [0, 0.4],
-                  [1, 0.95]
-                )
-              }}
-            >
+            <div className="sticky top-0 w-full h-screen">
               <NewCalculator inView={calculatorInView} />
-            </motion.div>
+            </div>
           </section>
 
           {/* Services Section */}
           <section 
             id="services" 
             ref={servicesRef}
-            className="absolute top-[100vh] h-screen w-full z-20"
+            className="h-screen relative z-20"
           >
-            <motion.div
-              className="absolute inset-0"
-              style={{
-                opacity: useTransform(transitionProgress,
-                  [0.4, 0.45, 0.5],
-                  [0, 0.7, 1]
-                ),
-                scale: useTransform(transitionProgress,
-                  [0.4, 0.5],
-                  [1.02, 1]
-                ),
-                y: useTransform(transitionProgress,
-                  [0.4, 0.5],
-                  ['10%', '0%']
-                )
-              }}
-            >
+            <div className="sticky top-0 w-full h-screen">
               <ServicesSection inView={servicesInView} />
-            </motion.div>
+            </div>
           </section>
         </div>
 
         {/* Values Section */}
-        <section id="values" ref={valuesRef} className="min-h-screen relative z-20">
+        <section id="values" ref={valuesRef} className="relative min-h-screen z-20">
           <ValuesSection inView={valuesInView} />
         </section>
 

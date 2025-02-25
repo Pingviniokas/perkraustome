@@ -22,22 +22,13 @@ const SectionNav = ({ activeSection, setActiveSection }: SectionNavProps) => {
     const element = document.getElementById(sectionId);
     if (!element) return;
 
-    let top = 0;
-
-    if (sectionId === 'calculator') {
-      const container = document.getElementById('transition-container');
-      top = container?.offsetTop || 0;
-    } else if (sectionId === 'services') {
-      const container = document.getElementById('transition-container');
-      top = (container?.offsetTop || 0) + window.innerHeight;
-    } else {
-      top = element.offsetTop;
-    }
-
+    const elementTop = element.getBoundingClientRect().top + window.scrollY;
+    
     window.scrollTo({
-      top,
+      top: elementTop,
       behavior: 'smooth'
     });
+    
     setActiveSection(sectionId);
   };
 
