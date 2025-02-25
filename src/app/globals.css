@@ -19,6 +19,7 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: var(--font-primary);
+  background-color: #f5f5f5;
 }
 
 /* Navbar Animation */
@@ -839,5 +840,20 @@ body {
 
 .animation-delay-700 {
   animation-delay: 700ms;
+}
+
+/* Webkit Scrollbar */
+html::-webkit-scrollbar {
+  width: 14px;
+}
+
+html::-webkit-scrollbar-track {
+  background: #ffffff;
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: #babac0;
+  border: 3px solid #ffffff;
+  border-radius: 10px;
 }
 

@@ -6,9 +6,11 @@ import clsx from 'clsx';
 const sections = [
   { id: 'hero', label: 'Pradinis' },
   { id: 'calculator', label: 'Kainos skaičiuoklė' },
+  { id: 'why-us', label: 'Kodėl mes?' },
   { id: 'services', label: 'Paslaugos' },
   { id: 'values', label: 'Vertybės ir išskirtinumai' },
   { id: 'achievements', label: 'Tikslai ir pasiekimai' },
+  { id: 'testimonials', label: 'Atsiliepimai' },
   { id: 'contact', label: 'Susisiekite su mumis' },
 ];
 

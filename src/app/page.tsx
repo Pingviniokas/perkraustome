@@ -9,6 +9,9 @@ import ServicesSection from '@/components/sections/ServicesSection';
 import ValuesSection from '@/components/sections/ValuesSection';
 import AchievementsSection from '@/components/sections/AchievementsSection';
 import ContactSection from '@/components/sections/ContactSection';
+import WhyChooseUs from '@/components/sections/WhyChooseUs';
+import TestimonialsSection from '@/components/sections/TestimonialsSection';
+import CompanyLogoSlider from '@/components/sections/Slider';
 
 export default function Home() {
   // 1. First, declare all useState hooks
@@ -37,6 +40,8 @@ export default function Home() {
   const { ref: valuesRef, inView: valuesInView } = useInView({ threshold: 0.5 });
   const { ref: achievementsRef, inView: achievementsInView } = useInView({ threshold: 0.5 });
   const { ref: contactRef, inView: contactInView } = useInView({ threshold: 0.5 });
+  const { ref: whyUsRef, inView: whyUsInView } = useInView({ threshold: 0.5 });
+  const { ref: testimonialsRef, inView: testimonialsInView } = useInView({ threshold: 0.5 });
 
   // 5. Declare transforms
   const backgroundOpacity = useTransform(
@@ -55,12 +60,15 @@ export default function Home() {
 
   useEffect(() => {
     if (heroInView) setActiveSection('hero');
-    else if (calculatorInView && !servicesInView) setActiveSection('calculator');
+    else if (calculatorInView) setActiveSection('calculator');
+    else if (whyUsInView) setActiveSection('why-us');
     else if (servicesInView) setActiveSection('services');
     else if (valuesInView) setActiveSection('values');
     else if (achievementsInView) setActiveSection('achievements');
+    else if (testimonialsInView) setActiveSection('testimonials');
     else if (contactInView) setActiveSection('contact');
-  }, [heroInView, calculatorInView, servicesInView, valuesInView, achievementsInView, contactInView]);
+  }, [heroInView, calculatorInView, whyUsInView, servicesInView, valuesInView, 
+      achievementsInView, testimonialsInView, contactInView]);
 
   return (
     <>
@@ -90,22 +98,38 @@ export default function Home() {
           </div>
 
           {/* Hero Content */}
-          <div className="container relative z-20">
-            <div className="max-w-4xl mx-auto space-y-8">
-              <div className="text-center">
-                <h1 className="text-5xl font-light text-white mb-4">
-                  Perkraustymo paslaugos
-                </h1>
-                <p className="text-2xl text-white/90">
-                  Jūsų patikimas partneris visiems logistikos ir perkraustymo iššūkiams!
-                </p>
-              </div>
+          <div className="container relative z-20 h-full flex flex-col justify-between py-20">
+            {/* Top content */}
+            <div className="max-w-4xl mx-auto w-full">
+              <div className="space-y-8 mt-[20vh]">
+                <div className="text-center">
+                  <h1 className="text-5xl font-light text-white mb-4">
+                    Perkraustymo paslaugos
+                  </h1>
+                  <p className="text-2xl text-white/90">
+                    Jūsų patikimas partneris visiems logistikos ir perkraustymo iššūkiams!
+                  </p>
+                </div>
 
-              <div className="bg-white/10 backdrop-blur-[8px] border border-[#BB0003] rounded-lg p-8">
-                <p className="text-white/90 leading-relaxed">
-                  Sveiki atvykę į „Mes Jau Čia"...
-                </p>
+                <div className="bg-white/10 backdrop-blur-[8px] border border-[#BB0003] rounded-lg p-8">
+                  <p className="text-white/90 leading-relaxed">
+                    Sveiki atvykę į „Mes Jau Čia" – įmonę, kurią drąsiai galite vadinti vienu iš patikimiausių ir profesionaliausių transporto bei perkraustymo paslaugų teikėjų Lietuvoje.
+                  </p>
+                  <br />
+                  <p className="text-white/90 leading-relaxed">
+                    Mūsų veiklos pagrindas – padėti žmonėms ir verslams efektyviai bei patogiai persikelti iš vienos vietos į kitą, pasirūpinti sunkių ar nestandartinių daiktų pervežimu, fiskaro nuoma, atliekų išvežimu, o prireikus – visapusiškai pasirūpinti kompleksiniu logistikos procesu. Esame pasiruošę greitai ir saugiai įgyvendinti visas Jūsų idėjas ar išspręsti sudėtingus logistikos iššūkius, nesvarbu, ar tai būtų nedidelis buto perkraustymas, ar stambaus verslo objektų perkėlimas.
+                  </p>
+                </div>
               </div>
+            </div>
+
+            {/* Trust section with adjusted spacing */}
+            <div className="w-full space-y-12">
+              <div className="h-4" />
+              <h3 className="text-2xl font-light text-white text-center">
+                Mumis pasitiki:
+              </h3>
+              <CompanyLogoSlider />
             </div>
           </div>
         </section>
@@ -158,6 +182,11 @@ export default function Home() {
             </div>
           </section>
 
+          {/* Why Choose Us Section */}
+          <section id="why-us" ref={whyUsRef} className="min-h-screen relative z-20">
+            <WhyChooseUs inView={whyUsInView} />
+          </section>
+
           {/* Services Section */}
           <section 
             id="services" 
@@ -178,6 +207,11 @@ export default function Home() {
         {/* Achievements Section */}
         <section id="achievements" ref={achievementsRef} className="min-h-screen relative z-20">
           <AchievementsSection inView={achievementsInView} />
+        </section>
+
+        {/* Testimonials Section */}
+        <section id="testimonials" ref={testimonialsRef} className="min-h-screen relative z-20">
+          <TestimonialsSection inView={testimonialsInView} />
         </section>
 
         {/* Contact Section */}
