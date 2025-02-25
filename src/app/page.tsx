@@ -204,17 +204,17 @@ export default function Home() {
         </section>
 
         {/* Achievements Section */}
-        <section id="achievements" ref={achievementsRef} className="min-h-screen relative z-20">
+        <section id="achievements" ref={achievementsRef} className="relative min-h-screen z-20">
           <AchievementsSection inView={achievementsInView} />
         </section>
 
         {/* Testimonials Section */}
-        <section id="testimonials" ref={testimonialsRef} className="min-h-screen relative z-20">
+        <section id="testimonials" ref={testimonialsRef} className="relative min-h-screen z-20">
           <TestimonialsSection inView={testimonialsInView} />
         </section>
 
         {/* Contact Section */}
-        <section id="contact" ref={contactRef} className="min-h-screen relative z-20">
+        <section id="contact" ref={contactRef} className="relative min-h-screen z-20">
           <ContactSection inView={contactInView} />
         </section>
       </div>

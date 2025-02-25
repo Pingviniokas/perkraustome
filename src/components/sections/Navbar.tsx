@@ -70,11 +70,10 @@ export default function Navbar() {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    console.log('Initial load');
     setTimeout(() => {
       setIsLoaded(true);
-      console.log('isLoaded set to true');
     }, 200);
+    
     const handleScroll = () => setScrolled(window.scrollY > 20);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);

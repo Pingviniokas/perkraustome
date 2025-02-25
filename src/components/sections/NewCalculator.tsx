@@ -3,9 +3,9 @@
 import { useState, useEffect, useRef } from 'react';
 import clsx from 'clsx';
 import DatePicker from '../shared/DatePicker';
-import { useLoadScript } from '@react-google-maps/api';
 import usePlacesAutocomplete from 'use-places-autocomplete';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import Script from 'next/script';
 
 
 type PricingType = 'hourly' | 'fixed';
@@ -29,31 +29,6 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
   const [deliveryCoords, setDeliveryCoords] = useState<{ lat: number; lng: number } | null>(null);
   const [isVilnius, setIsVilnius] = useState(true);
   const [distance, setDistance] = useState(0);
-
-  // Add Places Autocomplete hooks
-  const {
-    value: pickupValue,
-    suggestions: { data: pickupSuggestions },
-    setValue: setPickupValue,
-    clearSuggestions: clearPickupSuggestions,
-  } = usePlacesAutocomplete({
-    requestOptions: {
-      componentRestrictions: { country: 'lt' }
-    },
-    debounce: 300
-  });
-
-  const {
-    value: deliveryValue,
-    suggestions: { data: deliverySuggestions },
-    setValue: setDeliveryValue,
-    clearSuggestions: clearDeliverySuggestions,
-  } = usePlacesAutocomplete({
-    requestOptions: {
-      componentRestrictions: { country: 'lt' }
-    },
-    debounce: 300
-  });
 
   // Add new state
   const [selectedVehicle, setSelectedVehicle] = useState<VehicleType | null>(null);
@@ -91,7 +66,7 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
   // Get scroll progress for this section
   const { scrollYProgress } = useScroll({
     target: calculatorRef,
-    offset: ["start end", "center center"]
+    offset: ["start end", "center center"],
   });
 
   // Transform scroll progress into calculator animations
@@ -104,6 +79,36 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
     [0, 0.6, 1],
     [200, 100, 0]
   );
+
+  // Add state to track Google Maps script loading
+  const [mapsLoaded, setMapsLoaded] = useState(false);
+
+  // Modify the usePlacesAutocomplete hooks to only run after script is loaded
+  const {
+    value: pickupValue,
+    suggestions: { data: pickupSuggestions },
+    setValue: setPickupValue,
+    clearSuggestions: clearPickupSuggestions,
+  } = usePlacesAutocomplete({
+    requestOptions: {
+      componentRestrictions: { country: 'lt' }
+    },
+    debounce: 300,
+    cache: 86400,
+  });
+
+  const {
+    value: deliveryValue,
+    suggestions: { data: deliverySuggestions },
+    setValue: setDeliveryValue,
+    clearSuggestions: clearDeliverySuggestions,
+  } = usePlacesAutocomplete({
+    requestOptions: {
+      componentRestrictions: { country: 'lt' }
+    },
+    debounce: 300,
+    cache: 86400,
+  });
 
   const handleDateChange = (date: Date, holiday: boolean, weekend: boolean) => {
     setSelectedDate(date);
@@ -270,7 +275,7 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
   return (
     <section 
       ref={calculatorRef}
-      className="h-full w-full flex items-center justify-center font-['TT_Firs_Neue'] overflow-hidden"
+      className="h-full w-full flex items-center justify-center font-['TT_Firs_Neue'] overflow-hidden relative"
     >
       <div className="container py-8 relative z-10">
         <div className="flex gap-8 items-start justify-center">
@@ -751,7 +756,7 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
                   {/* Disclaimer and Button in separate divs */}
                   <div className="space-y-4"> {/* Container for bottom elements with spacing */}
                     <p className="text-[12px]">
-                      <span className="text-[#BB0003] font-medium">Pastaba:</span> Kaina skaičiuojama pagal faktinį, išnaudotą valandų skaičių, bet nemažiau, negu 80% nuo užsakytų valandų sumos.
+                      <span className="text-[#BB0003] font-medium">Pastaba:</span> Kaina skaičiuojama pagal faktinį, išnaudotą valandų skaičių, bet nemažiau, negus 80% nuo užsakytų valandų sumos.
                     </p>
                     
                     <div className="flex justify-end"> {/* Right-aligned container for button */}
@@ -768,8 +773,18 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
           </motion.div>
         </div>
       </div>
+      <Script
+        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places&loading=async`}
+        strategy="beforeInteractive"
+        onLoad={() => {
+          setMapsLoaded(true);
+          console.log('Google Maps script loaded');
+        }}
+        onError={(e) => {
+          console.error('Error loading Google Maps script:', e);
+        }}
+      />
     </section>
-    
   );
 };
 
