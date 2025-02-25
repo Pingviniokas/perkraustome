@@ -16,7 +16,7 @@ const Hero = () => {
           loop
           muted
           playsInline
-          className="absolute w-full h-full object-cover transition-transform duration-1000 ease-out"
+          className="absolute w-full h-full object-cover"
         >
           <source src="/videos/mesjauciatitulinis.mp4" type="video/mp4" />
           Your browser does not support the video tag.
