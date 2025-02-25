@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { MapPin, ArrowRight, Truck, ArrowLeft } from 'lucide-react';
+import DatePicker from '../shared/DatePicker';
 
 const HOURLY_RATE = 50;
 const MIN_ORDER = 140;
@@ -12,10 +13,18 @@ const CraneCalculator = () => {
   const [result, setResult] = useState('');
   const [isFlipped, setIsFlipped] = useState(false);
   const addressInputRef = useRef(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [rateMultiplier, setRateMultiplier] = useState(1);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.google) {
-      const autocomplete = new window.google.maps.places.Autocomplete(addressInputRef.current);
+      const autocomplete = new window.google.maps.places.Autocomplete(
+        addressInputRef.current,
+        {
+          language: 'lt',
+          componentRestrictions: { country: 'lt' },
+        }
+      );
       
       autocomplete.addListener('place_changed', () => {
         const place = autocomplete.getPlace();
@@ -24,16 +33,22 @@ const CraneCalculator = () => {
     }
   }, []);
 
+  const handleDateChange = (date: Date, isHoliday: boolean, isWeekend: boolean) => {
+    setSelectedDate(date);
+    setRateMultiplier(isHoliday || isWeekend ? 1.5 : 1);
+  };
+
   const handleCalculate = () => {
-    if (!address || !hours) {
+    if (!address || !hours || !selectedDate) {
       setResult('Prašome užpildyti visus laukus');
       return;
     }
 
     const hoursNum = parseFloat(hours);
-    const price = Math.max(hoursNum * HOURLY_RATE, MIN_ORDER);
+    const adjustedRate = HOURLY_RATE * rateMultiplier;
+    const price = Math.max(hoursNum * adjustedRate, MIN_ORDER);
 
-    setResult(`Preliminari kaina: ${price} EUR\n\nValandinis įkainis: ${HOURLY_RATE} EUR/val.\nUžsakytos valandos: ${hoursNum} val.\nMinimalus užsakymas: ${MIN_ORDER} EUR`);
+    setResult(`Preliminari kaina: ${price} EUR\n\nValandinis įkainis: ${adjustedRate} EUR/val.\nUžsakytos valandos: ${hoursNum} val.\nMinimalus užsakymas: ${MIN_ORDER} EUR`);
     setIsFlipped(true);
   };
 
@@ -49,7 +64,7 @@ const CraneCalculator = () => {
       <div className="flip-card-inner relative w-full h-full">
         {/* Front Side */}
         <div className="flip-card-front absolute w-full h-full bg-white rounded-xl p-4">
-          <div className="space-y-4">
+          <div className="space-y-3">
             {/* Vehicle Display */}
             <div className="flex items-center gap-3 p-3 bg-red-50 rounded-lg">
               <div className="text-3xl text-red-600">
@@ -91,6 +106,12 @@ const CraneCalculator = () => {
                 Minimalus užsakymas: {MIN_ORDER} EUR
               </div>
             </div>
+
+            {/* Date Picker */}
+            <DatePicker 
+              selectedDate={selectedDate}
+              onDateChange={handleDateChange}
+            />
 
             {/* Calculate Button */}
             <button

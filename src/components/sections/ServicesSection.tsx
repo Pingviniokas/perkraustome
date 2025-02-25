@@ -187,9 +187,6 @@ const BackgroundPattern = () => (
   </div>
 );
 
-
-
-
 const TabButton: React.FC<{
   isActive: boolean;
   onClick: () => void;
@@ -242,55 +239,23 @@ const SubServiceCard: React.FC<{
   </motion.div>
 );
 
-const ServicesSection: React.FC = () => {
+const ServicesSection = ({ inView }: { inView: boolean }) => {
   const [activeTab, setActiveTab] = useState<string>('moving');
   const activeService = serviceCategories.find(cat => cat.id === activeTab);
 
   return (
-    <section className="relative py-24 overflow-hidden">
-      <BackgroundPattern />
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <motion.h2
-          className="text-4xl font-bold mb-16 text-center bg-clip-text text-transparent bg-gradient-to-r from-gray-900 to-gray-600"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-        >
-          Mūsų <span className="text-red-600">Paslaugos</span>
-        </motion.h2>
-
-        <div className="flex justify-center mb-12 border-b overflow-x-auto no-scrollbar">
-          {serviceCategories.map((category) => (
-            <TabButton
-              key={category.id}
-              isActive={activeTab === category.id}
-              onClick={() => setActiveTab(category.id)}
-            >
-              {category.title}
-            </TabButton>
-          ))}
-        </div>
-
-        <AnimatePresence mode="wait">
-          {activeService && (
-            <motion.div
-              key={activeService.id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8"
-              
-            >
-              {activeService.subServices.map((service) => (
-                <SubServiceCard key={service.id} service={service} />
-              ))}
-            </motion.div>
-          )}
-        </AnimatePresence>
+    <motion.div
+      className="container mx-auto h-screen flex items-center justify-center"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: inView ? 1 : 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <div className="bg-white/30 backdrop-blur-[4px] rounded-lg p-8 border border-[#BB0003]">
+        <h2 className="text-2xl font-light text-center text-[#2A2D35]">
+          Paslaugos (Coming Soon)
+        </h2>
       </div>
-    </section>
+    </motion.div>
   );
 };
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Poppins, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Script from 'next/script';
 import Navbar from "@/components/sections/Navbar";
@@ -9,6 +9,12 @@ const poppins = Poppins({
   subsets: ["latin"],
   weight: ['400', '500', '600', '700'],
   variable: "--font-poppins",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  weight: ['400', '500', '600', '700'],
+  variable: "--font-space-grotesk",
 });
 
 export const metadata: Metadata = {
@@ -22,10 +28,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${poppins.variable} antialiased min-h-screen flex flex-col`}>
+    <html lang="lt" dir="ltr" className={`${poppins.variable} ${spaceGrotesk.variable} font-['TT_Firs_Neue'] antialiased`}>
+      <body className="flex flex-col min-h-screen">
         <Navbar />
-        <main className="flex-grow">
+        <main className="flex-grow relative">
           {children}
         </main>
         <Footer />

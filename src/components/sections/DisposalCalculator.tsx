@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { MapPin, ArrowRight, Truck, ArrowLeft } from 'lucide-react';
+import DatePicker from '../shared/DatePicker';
 
 const disposalVehicles = [
   { name: 'Mikroautobusas iki 3.5t', icon: <Truck />, hourlyRate: 25, minOrder: 70 },
@@ -17,6 +18,8 @@ const DisposalCalculator = () => {
   const [loaders, setLoaders] = useState('Nereikia');
   const [hours, setHours] = useState('');
   const [isFlipped, setIsFlipped] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [rateMultiplier, setRateMultiplier] = useState(1);
   const addressInputRef = useRef(null);
 
   useEffect(() => {
@@ -30,8 +33,13 @@ const DisposalCalculator = () => {
     }
   }, []);
 
+  const handleDateChange = (date: Date, isHoliday: boolean, isWeekend: boolean) => {
+    setSelectedDate(date);
+    setRateMultiplier(isHoliday || isWeekend ? 1.5 : 1);
+  };
+
   const handleCalculate = () => {
-    if (!selectedVehicle || !address || !hours) {
+    if (!selectedVehicle || !address || !hours || !selectedDate) {
       setResult('Prašome užpildyti visus laukus');
       return;
     }
@@ -41,11 +49,13 @@ const DisposalCalculator = () => {
 
     const hoursNum = parseInt(hours) || 0;
     const loadersNum = parseInt(loaders.split(' ')[0]) || 0;
-    const loadersCost = loadersNum * LOADER_RATE * hoursNum;
+    const adjustedHourlyRate = vehicle.hourlyRate * rateMultiplier;
+    const adjustedLoaderRate = LOADER_RATE * rateMultiplier;
+    const loadersCost = loadersNum * adjustedLoaderRate * hoursNum;
 
-    const price = Math.max(vehicle.hourlyRate * hoursNum + loadersCost, vehicle.minOrder);
+    const price = Math.max(adjustedHourlyRate * hoursNum + loadersCost, vehicle.minOrder);
 
-    setResult(`Preliminari kaina: ${price} EUR\n(${hoursNum} val. po ${vehicle.hourlyRate} EUR/val.${loadersNum > 0 ? `,\n${loadersNum} krovikai po ${LOADER_RATE} EUR/val.` : ''})\nMinimalus užsakymas: ${vehicle.minOrder} EUR`);
+    setResult(`Preliminari kaina: ${price} EUR\n(${hoursNum} val. po ${adjustedHourlyRate} EUR/val.${loadersNum > 0 ? `,\n${loadersNum} krovikai po ${adjustedLoaderRate} EUR/val.` : ''})\nMinimalus užsakymas: ${vehicle.minOrder} EUR`);
     setIsFlipped(true);
   };
 
@@ -56,6 +66,8 @@ const DisposalCalculator = () => {
     setResult('');
     setLoaders('Nereikia');
     setHours('');
+    setSelectedDate(null);
+    setRateMultiplier(1);
   };
 
   return (
@@ -63,7 +75,7 @@ const DisposalCalculator = () => {
       <div className="flip-card-inner relative w-full h-full">
         {/* Front Side */}
         <div className="flip-card-front absolute w-full h-full bg-white rounded-xl p-4">
-          <div className="space-y-4">
+          <div className="space-y-3">
             {/* Vehicle Selection */}
             <div className="grid grid-cols-2 gap-3">
               {disposalVehicles.map((vehicle, index) => (
@@ -122,6 +134,12 @@ const DisposalCalculator = () => {
                 className="w-full px-3 py-2 text-sm rounded-lg border border-gray-200 bg-white/50 focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all"
               />
             </div>
+
+            {/* Date Picker */}
+            <DatePicker 
+              selectedDate={selectedDate}
+              onDateChange={handleDateChange}
+            />
 
             {/* Calculate Button */}
             <button

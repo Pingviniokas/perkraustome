@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { MapPin, ArrowRight, Car, Truck, ArrowLeft } from 'lucide-react';
 import axios from 'axios';
+import DatePicker from '../shared/DatePicker';
 
 const vehicleTypes = [
   { name: 'Lengvasis Automobilis', icon: <Car />, hourlyRate: 20, kmRate: 0.8, minOrder: 35, allowLoaders: false },
@@ -25,11 +26,25 @@ const DistanceCalculator = () => {
   const [isFlipped, setIsFlipped] = useState(false);
   const fromInputRef = useRef(null);
   const toInputRef = useRef(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [rateMultiplier, setRateMultiplier] = useState(1);
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.google) {
-      const autocompleteFrom = new window.google.maps.places.Autocomplete(fromInputRef.current);
-      const autocompleteTo = new window.google.maps.places.Autocomplete(toInputRef.current);
+      const autocompleteOptions = {
+        language: 'lt',
+        componentRestrictions: { country: 'lt' }
+      };
+
+      const autocompleteFrom = new window.google.maps.places.Autocomplete(
+        fromInputRef.current,
+        autocompleteOptions
+      );
+
+      const autocompleteTo = new window.google.maps.places.Autocomplete(
+        toInputRef.current,
+        autocompleteOptions
+      );
 
       autocompleteFrom.addListener('place_changed', () => {
         const place = autocompleteFrom.getPlace();
@@ -59,35 +74,41 @@ const DistanceCalculator = () => {
     }
   };
 
+  const handleDateChange = (date: Date, isHoliday: boolean, isWeekend: boolean) => {
+    setSelectedDate(date);
+    setRateMultiplier(isHoliday || isWeekend ? 1.5 : 1);
+  };
+
   const calculatePrice = (distance: number, isInVilnius: boolean, vehicleType: string) => {
     const vehicle = vehicleTypes.find(v => v.name === vehicleType);
     if (!vehicle) return 'Invalid vehicle type';
 
-    const hourlyRate = vehicle.hourlyRate;
-    const kmRate = vehicle.kmRate;
+    const adjustedHourlyRate = vehicle.hourlyRate * rateMultiplier;
+    const adjustedKmRate = vehicle.kmRate * rateMultiplier;
     const minOrder = vehicle.minOrder;
     const hoursNum = parseInt(hours) || 0;
     const loadersNum = parseInt(loaders.split(' ')[0]) || 0;
-    const loadersCost = loadersNum * LOADER_RATE * hoursNum;
+    const adjustedLoaderRate = LOADER_RATE * rateMultiplier;
+    const loadersCost = loadersNum * adjustedLoaderRate * hoursNum;
 
     let price;
     if (isInVilnius) {
-      price = Math.max(hourlyRate * hoursNum + loadersCost, minOrder);
-      return `${price} EUR (hourly rate: ${hourlyRate} EUR/h, ${hoursNum} hours, ${loadersNum} loaders)`;
+      price = Math.max(adjustedHourlyRate * hoursNum + loadersCost, minOrder);
+      return `${price} EUR (hourly rate: ${adjustedHourlyRate} EUR/h, ${hoursNum} hours, ${loadersNum} loaders)`;
     } else {
       if (vehicleType === 'Mikroautobusas iki 3.5t' || vehicleType === 'Mikroautobusas su liftu') {
-        price = Math.max(distance * kmRate + hourlyRate * hoursNum + loadersCost, minOrder);
-        return `${price.toFixed(2)} EUR (${distance} km at ${kmRate} EUR/km + ${hoursNum} hours at ${hourlyRate} EUR/h, ${loadersNum} loaders)`;
+        price = Math.max(distance * adjustedKmRate + adjustedHourlyRate * hoursNum + loadersCost, minOrder);
+        return `${price.toFixed(2)} EUR (${distance} km at ${adjustedKmRate} EUR/km + ${hoursNum} hours at ${adjustedHourlyRate} EUR/h, ${loadersNum} loaders)`;
       } else {
-        price = Math.max(distance * kmRate, minOrder);
-        return `${price.toFixed(2)} EUR (${distance} km at ${kmRate} EUR/km)`;
+        price = Math.max(distance * adjustedKmRate, minOrder);
+        return `${price.toFixed(2)} EUR (${distance} km at ${adjustedKmRate} EUR/km)`;
       }
     }
   };
 
   const handleCalculate = async () => {
-    if (!selectedVehicle) {
-      setResult('Please select a vehicle type first');
+    if (!selectedVehicle || !fromAddress || !toAddress || !selectedDate) {
+      setResult('Please select a vehicle type and fill all required fields');
       return;
     }
 
@@ -123,7 +144,7 @@ const DistanceCalculator = () => {
       <div className="flip-card-inner relative w-full h-full">
         {/* Front Side */}
         <div className="flip-card-front absolute w-full h-full bg-white rounded-xl p-4">
-          <div className="space-y-4">
+          <div className="space-y-3">
             {/* Vehicle Selection */}
             <div className="grid grid-cols-5 gap-2">
               {vehicleTypes.map((vehicle, index) => (
@@ -181,10 +202,11 @@ const DistanceCalculator = () => {
                   id="loaders"
                   value={loaders}
                   onChange={(e) => setLoaders(e.target.value)}
-                  className={`w-full px-3 py-2 text-sm rounded-lg border border-gray-200 bg-white/50 transition-all ${!selectedVehicle || !vehicleTypes.find(v => v.name === selectedVehicle)?.allowLoaders
+                  className={`w-full px-3 py-2 text-sm rounded-lg border border-gray-200 bg-white/50 transition-all ${
+                    !selectedVehicle || !vehicleTypes.find(v => v.name === selectedVehicle)?.allowLoaders
                       ? 'opacity-50 cursor-not-allowed'
                       : 'focus:ring-2 focus:ring-red-500 focus:border-transparent'
-                    }`}
+                  }`}
                   disabled={!selectedVehicle || !vehicleTypes.find(v => v.name === selectedVehicle)?.allowLoaders}
                 >
                   <option value="Nereikia">Krovikai: Nereikia</option>
@@ -203,14 +225,21 @@ const DistanceCalculator = () => {
                   placeholder="Laikas valandomis"
                   value={hours}
                   onChange={(e) => setHours(e.target.value)}
-                  className={`w-full px-3 py-2 text-sm rounded-lg border border-gray-200 bg-white/50 transition-all ${!isInVilnius && selectedVehicle !== 'Mikroautobusas iki 3.5t' && selectedVehicle !== 'Mikroautobusas su liftu'
+                  className={`w-full px-3 py-2 text-sm rounded-lg border border-gray-200 bg-white/50 transition-all ${
+                    !isInVilnius && selectedVehicle !== 'Mikroautobusas iki 3.5t' && selectedVehicle !== 'Mikroautobusas su liftu'
                       ? 'opacity-50 cursor-not-allowed'
                       : 'focus:ring-2 focus:ring-red-500 focus:border-transparent'
-                    }`}
+                  }`}
                   disabled={!isInVilnius && selectedVehicle !== 'Mikroautobusas iki 3.5t' && selectedVehicle !== 'Mikroautobusas su liftu'}
                 />
               </div>
             </div>
+
+            {/* Date Picker */}
+            <DatePicker 
+              selectedDate={selectedDate}
+              onDateChange={handleDateChange}
+            />
 
             {/* Calculate Button */}
             <button

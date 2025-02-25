@@ -243,9 +243,6 @@ body {
   opacity: 1;
 }
 
-
-
-
 .bg-dots {
   background-image: radial-gradient(circle, #ddd 1px, transparent 1px);
   background-size: 20px 20px;
@@ -256,3 +253,591 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
 }
+
+.map-pattern {
+  background-color: #DDDDDD;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    linear-gradient(rgba(255, 255, 255, 0.2) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.2) 2px, transparent 2px);
+  background-size: 
+    20px 20px,
+    20px 20px,
+    100px 100px,
+    100px 100px;
+  background-position: 
+    -1px -1px,
+    -1px -1px,
+    -2px -2px,
+    -2px -2px;
+}
+
+/* Add this to your globals.css */
+@font-face {
+  font-family: 'TT Firs Neue';
+  src: url('/fonts/TT_Firs_Neue_Trial_Var_Roman.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Add after your existing styles */
+.nav-glass {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.01),
+    rgba(255, 255, 255, 0.1)
+  );
+  backdrop-filter: blur(10px);
+}
+
+.nav-item {
+  position: relative;
+  transition: all 0.3s;
+}
+
+.nav-item::before {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  border-radius: 12px;
+  background: linear-gradient(145deg, rgba(255,255,255,0.2), rgba(255,255,255,0.1));
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.nav-item:hover::before {
+  opacity: 1;
+}
+
+.cta-button {
+  background: linear-gradient(135deg, #BB0003, #FF1A1D);
+  box-shadow: 
+    0 10px 20px -10px rgba(187, 0, 3, 0.3),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  transition: all 0.3s;
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 20px 25px -15px rgba(187, 0, 3, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.2) inset;
+}
+
+/* Modern Navigation Styles */
+.nav-link-modern {
+  position: relative;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 8px 0;
+  transition: all 0.5s;
+}
+
+.nav-link-highlight {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #BB0003, #FF1A1D);
+  transition: all 0.3s;
+  transform: translateX(-50%);
+}
+
+.nav-link-modern:hover .nav-link-highlight {
+  width: 100%;
+}
+
+.modern-cta-button {
+  position: relative;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, #BB0003, #FF1A1D);
+  border-radius: 16px;
+  color: white;
+  font-weight: 500;
+  overflow: hidden;
+  transition: all 0.5s;
+  isolation: isolate;
+}
+
+.modern-cta-button::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  background: linear-gradient(135deg, #FF1A1D, #BB0003);
+  border-radius: 15px;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.modern-cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 20px 40px -15px rgba(187, 0, 3, 0.5),
+    0 0 20px rgba(255, 26, 29, 0.3);
+}
+
+.modern-cta-button:hover::before {
+  opacity: 1;
+}
+
+.hamburger-line {
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background-color: currentColor;
+  transition: all 0.3s;
+}
+
+.mega-menu {
+  clip-path: inset(0 0 100% 0);
+  animation: megaMenuEnter 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes megaMenuEnter {
+  from { clip-path: inset(0 0 100% 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+/* Add these modern styles */
+.rounded-inherit {
+  border-radius: inherit;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, #FF0000, #FF4D4D, #FF0000);
+  background-size: 200% auto;
+  animation: gradient-shift 3s linear infinite;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.nav-blur {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.nav-link {
+  position: relative;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #BB0003, #FF1A1D);
+  transition: width 0.3s;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.modern-cta {
+  position: relative;
+  padding: 10px 24px;
+  background: linear-gradient(135deg, #BB0003, #FF1A1D);
+  border-radius: 12px;
+  color: white;
+  font-weight: 500;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.modern-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 
+    0 20px 40px -15px rgba(187, 0, 3, 0.5),
+    0 0 20px rgba(255, 26, 29, 0.3);
+}
+
+.nav-item-modern {
+  position: relative;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.7);
+  padding: 8px 16px;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.nav-item-modern:hover {
+  color: rgba(0, 0, 0, 0.9);
+}
+
+.nav-item-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 4px;
+  height: 4px;
+  background: #BB0003;
+  border-radius: 2px;
+  transform: translateX(-50%) translateY(8px);
+  opacity: 0;
+  transition: all 0.3s;
+}
+
+.nav-item-modern:hover .nav-item-indicator {
+  opacity: 1;
+  width: 20px;
+}
+
+.modern-cta-2 {
+  position: relative;
+  padding: 10px 24px;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  color: rgba(0, 0, 0, 0.8);
+  font-weight: 500;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.modern-cta-2:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 
+    0 20px 40px -15px rgba(0, 0, 0, 0.1),
+    0 0 20px rgba(0, 0, 0, 0.05);
+}
+
+/* Replace the old theme-toggle styles with these */
+.theme-toggle-button {
+  position: relative;
+  width: 48px;
+  height: 24px;
+  background: rgba(0, 0, 0, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s;
+  overflow: hidden;
+}
+
+.theme-toggle-button:hover {
+  background: rgba(0, 0, 0, 0.1);
+  border-color: rgba(0, 0, 0, 0.15);
+}
+
+.toggle-slider {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: #BB0003;
+  border-radius: 9px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.theme-toggle-button:hover .toggle-slider {
+  transform: translateX(24px);
+  background: #2B4C7E;
+}
+
+.sun-icon {
+  position: absolute;
+  left: 1px;
+  top: 1px;
+  color: #FFF;
+  opacity: 1;
+  transition: opacity 0.3s;
+}
+
+.moon-icon {
+  position: absolute;
+  right: 2px;
+  top: 2px;
+  color: #FFF;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.theme-toggle-button:hover .sun-icon {
+  opacity: 0;
+}
+
+.theme-toggle-button:hover .moon-icon {
+  opacity: 1;
+}
+
+/* Update the glass-nav styles */
+.glass-nav {
+  background: white;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 10px 15px -3px rgba(0, 0, 0, 0.05);
+  z-index: 50;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-nav-light {
+  background: white;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.1) inset;
+  z-index: 50;
+  position: relative;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Add padding to prevent layout shift */
+.nav-container {
+  position: relative;
+  width: 180px;
+  margin: 0 auto;
+  background: transparent;
+  animation: navExpand 1.2s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 1.2s;
+  /* Add this to prevent layout shift */
+  border: 1px solid transparent;
+}
+
+/* Update the mega menu styles */
+.mega-menu-glass {
+  margin-top: 1px;
+  background: white;
+  z-index: 50;
+  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  box-shadow: 
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 10px 15px -3px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 32px;
+  border-radius: 24px;
+  margin: 12px 24px;
+}
+
+/* Column animation delays */
+.menu-column-1 { animation-delay: 0s; }
+.menu-column-2 { animation-delay: 0.15s; }
+.menu-column-3 { animation-delay: 0.3s; }
+.menu-column-4 { animation-delay: 0.45s; }
+.menu-column-5 { animation-delay: 0.6s; }
+
+.menu-column {
+  opacity: 0;
+  animation: menuItemFadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Menu item hover effects */
+.menu-item {
+  position: relative;
+  transition: all 0.3s ease;
+  padding: 8px;
+  margin: -8px;
+  border-radius: 8px;
+}
+
+.menu-item:hover {
+  background: rgba(0, 0, 0, 0.02);
+}
+
+/* Navbar animations */
+@keyframes logoFadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes navExpand {
+  0% {
+    width: 180px;
+    background: rgba(255, 255, 255, 0);
+  }
+  100% {
+    width: 100%;
+    background: rgba(255, 255, 255, 1);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.logo-animation {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  animation: logoFadeIn 1s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.nav-content {
+  visibility: hidden;
+  opacity: 0;
+  animation: fadeIn 0.8s ease forwards;
+  animation-delay: 2.2s; /* Start after nav expansion */
+}
+
+.nav-content.visible {
+  visibility: visible;
+}
+
+/* Mega menu animations and styles */
+@keyframes menuItemFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Service category animations */
+.menu-column {
+  opacity: 0;
+}
+
+.menu-column-1 {
+  animation: menuItemFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 0s;
+}
+
+.menu-column-2 {
+  animation: menuItemFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 0.2s;
+}
+
+.menu-column-3 {
+  animation: menuItemFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 0.4s;
+}
+
+.menu-column-4 {
+  animation: menuItemFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 0.6s;
+}
+
+.menu-column-5 {
+  animation: menuItemFadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  animation-delay: 0.8s;
+}
+
+/* Each service item inherits its column's animation */
+.menu-column > * {
+  opacity: 0;
+  animation: inherit;
+}
+
+@keyframes slow-spin {
+  from {
+    transform: rotate(-5deg);
+  }
+  to {
+    transform: rotate(355deg);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-20px) translateX(10px);
+  }
+}
+
+.animate-slow-spin {
+  animation: slow-spin 240s linear infinite;
+}
+
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+
+/* Calculator section animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 1s ease forwards;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 1s ease forwards;
+}
+
+.animate-fade-in-left {
+  animation: fadeInLeft 1s ease forwards;
+}
+
+.animate-fade-in-right {
+  animation: fadeInRight 1s ease forwards;
+}
+
+.animation-delay-300 {
+  animation-delay: 300ms;
+}
+
+.animation-delay-500 {
+  animation-delay: 500ms;
+}
+
+.animation-delay-700 {
+  animation-delay: 700ms;
+}
+
