@@ -252,6 +252,21 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
     </span>
   );
 
+  const fetchHolidays = async (year: number) => {
+    try {
+      const response = await fetch(`/api/holidays?year=${year}`);
+      if (!response.ok) {
+        console.warn(`No holidays found for year ${year}, using empty array`);
+        return [];
+      }
+      const data = await response.json();
+      return data.holidays || [];
+    } catch (error) {
+      console.warn(`Error fetching holidays for ${year}:`, error);
+      return [];
+    }
+  };
+
   return (
     <section 
       ref={calculatorRef}
@@ -589,7 +604,9 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
                       'transition-all',
                       pricingType === 'fixed' && 'opacity-50 pointer-events-none'
                     )}>
+                      <label htmlFor="workers-select" className="sr-only">Select number of workers</label>
                       <select 
+                        id="workers-select"
                         className="w-full h-10 rounded-lg border border-gray-200 bg-white px-3 text-[12px]"
                         value={`Krovikai: ${workerCount || 'Nereikia'}`}
                         onChange={handleWorkerChange}

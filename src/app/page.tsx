@@ -123,12 +123,11 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Trust section with adjusted spacing */}
-            <div className="w-full space-y-12">
-              <div className="h-4" />
-              <h3 className="text-2xl font-light text-white text-center">
+            {/* Trust text and slider at bottom */}
+            <div className="w-full mt-auto">
+              <h2 className="text-2xl font-light text-white text-center mb-12">
                 Mumis pasitiki:
-              </h3>
+              </h2>
               <CompanyLogoSlider />
             </div>
           </div>

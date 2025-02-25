@@ -47,6 +47,7 @@ const SectionNav = ({ activeSection, setActiveSection }: SectionNavProps) => {
                 "hover:bg-white/50 rounded-lg p-2",
                 activeSection === section.id && "bg-white/50"
               )}
+              aria-label={section.label}
             >
               <div className={clsx(
                 "w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium transition-all",

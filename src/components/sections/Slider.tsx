@@ -8,19 +8,19 @@ const CompanyLogoSlider = () => {
   const [containerWidth, setContainerWidth] = useState(0);
 
   const companies = [
-    { name: 'City Service', logo: '/images/slider/cityservice.svg' },
-    { name: 'Mambu', logo: '/images/slider/mambu.svg' },
-    { name: 'Okseta', logo: '/images/slider/okseta.svg' },
-    { name: 'Cup', logo: '/images/slider/logocup.svg' },
-    { name: 'Havas', logo: '/images/slider/logohavas.svg' },
-    { name: 'Distyle', logo: '/images/slider/distyle.png' },
-    { name: 'Glastika', logo: '/images/slider/glastika.png' },
-    { name: 'Homanit', logo: '/images/slider/homanit.png' },
-    { name: 'Lidora', logo: '/images/slider/lidoralogo.png' },
-    { name: 'MT', logo: '/images/slider/mt.png' },
-    { name: 'Pool Service', logo: '/images/slider/poolservice.png' },
-    { name: 'Publicum', logo: '/images/slider/publicum.png' },
-    { name: 'ST', logo: '/images/slider/st.png' }
+    { name: 'City Service', logo: '/images/slider/cityservice.svg', width: 120, height: 60 },
+    { name: 'Mambu', logo: '/images/slider/mambu.svg', width: 120, height: 60 },
+    { name: 'Okseta', logo: '/images/slider/okseta.svg', width: 120, height: 60 },
+    { name: 'Cup', logo: '/images/slider/logocup.svg', width: 120, height: 60 },
+    { name: 'Havas', logo: '/images/slider/logohavas.svg', width: 120, height: 60 },
+    { name: 'Distyle', logo: '/images/slider/distyle.png', width: 120, height: 60 },
+    { name: 'Glastika', logo: '/images/slider/glastika.png', width: 120, height: 60 },
+    { name: 'Homanit', logo: '/images/slider/homanit.png', width: 120, height: 60 },
+    { name: 'Lidora', logo: '/images/slider/lidoralogo.png', width: 120, height: 60 },
+    { name: 'MT', logo: '/images/slider/mt.png', width: 120, height: 60 },
+    { name: 'Pool Service', logo: '/images/slider/poolservice.png', width: 120, height: 60 },
+    { name: 'Publicum', logo: '/images/slider/publicum.png', width: 120, height: 60 },
+    { name: 'ST', logo: '/images/slider/st.png', width: 120, height: 60 }
   ];
 
   useEffect(() => {
@@ -63,6 +63,8 @@ const CompanyLogoSlider = () => {
               <img
                 src={company.logo}
                 alt={`${company.name} logo`}
+                width={company.width}
+                height={company.height}
                 className="max-h-full max-w-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
               />
             </div>

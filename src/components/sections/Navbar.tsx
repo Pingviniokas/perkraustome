@@ -185,7 +185,10 @@ export default function Navbar() {
                   Kontaktai
                   <span className="nav-item-indicator" />
                 </a>
-                <button className="theme-toggle-button group">
+                <button 
+                  className="theme-toggle-button group"
+                  aria-label="Perjungti tarp šviesios ir tamsios temos"
+                >
                   <div className="toggle-slider">
                     <svg 
                       className="sun-icon" 
@@ -193,6 +196,7 @@ export default function Navbar() {
                       height="16" 
                       viewBox="0 0 16 16" 
                       fill="none"
+                      aria-hidden="true"
                     >
                       <circle cx="8" cy="8" r="4" fill="currentColor"/>
                       <path d="M8 0V2M8 14V16M16 8H14M2 8H0M13.7 2.3L12.3 3.7M3.7 12.3L2.3 13.7M13.7 13.7L12.3 12.3M3.7 3.7L2.3 2.3" 
@@ -205,13 +209,17 @@ export default function Navbar() {
                       height="14" 
                       viewBox="0 0 14 14" 
                       fill="none"
+                      aria-hidden="true"
                     >
                       <path d="M13 8.5C12.1 8.8 11.1 9 10 9C6.1 9 3 5.9 3 2C3 0.9 3.2 -0.1 3.5 -1C1.5 -0.1 0 1.7 0 4C0 7.9 3.1 11 7 11C9.3 11 11.1 9.5 12 7.5Z" 
                         fill="currentColor"/>
                     </svg>
                   </div>
                 </button>
-                <button className="px-6 py-2 text-gray-800 hover:text-gray-900 transition-colors">
+                <button 
+                  className="px-6 py-2 text-gray-800 hover:text-gray-900 transition-colors"
+                  aria-label="Pakeisti kalbą į lietuvių"
+                >
                   LT
                 </button>
               </div>
