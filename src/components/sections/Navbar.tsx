@@ -115,9 +115,8 @@ export default function Navbar() {
           src="/images/logoMJC.webp"
           alt="MJC Logo"
           fill
-          style={{ objectFit: 'contain' }}
-          priority
-          className="drop-shadow-lg"
+          sizes="(max-width: 768px) 100vw, 200px"
+          className="object-contain"
         />
       </div>
     );
@@ -169,9 +168,8 @@ export default function Navbar() {
                   src="/images/logoMJC.webp"
                   alt="MJC Logo"
                   fill
-                  style={{ objectFit: 'contain' }}
-                  priority
-                  className="drop-shadow-lg"
+                  sizes="(max-width: 768px) 100vw, 200px"
+                  className="object-contain"
                 />
               </a>
 

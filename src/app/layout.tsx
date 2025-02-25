@@ -24,12 +24,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="lt" dir="ltr" className={`${poppins.variable} ${spaceGrotesk.variable} font-['TT_Firs_Neue'] antialiased`}>
-      <body className="flex flex-col min-h-screen">
+      <body className="flex flex-col min-h-screen overflow-x-hidden">
         <Navbar />
         <main className="flex-grow relative">
           {children}

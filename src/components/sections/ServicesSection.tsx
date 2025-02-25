@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import clsx from 'clsx';
 
 interface SubService {
   id: string;
@@ -239,23 +240,231 @@ const SubServiceCard: React.FC<{
   </motion.div>
 );
 
+type ServiceType = 'moving' | 'crane' | 'disposal';
+
+interface Service {
+  id: string;
+  number: string;
+  title: string;
+  description: string;
+  href: string;
+}
+
+const services: Record<ServiceType, Service[]> = {
+  moving: [
+    {
+      id: '01',
+      number: '01',
+      title: 'ĮMONIŲ PERKRAUSTYMAS',
+      description: 'Kompleksinis biurų perkraustymas',
+      href: '/imoniu-perkraustymas'
+    },
+    {
+      id: '02',
+      number: '02',
+      title: 'NAMŲ PERKRAUSTYMAS',
+      description: 'Privačių namų perkraustymas',
+      href: '/namu-perkraustymas'
+    },
+    {
+      id: '03',
+      number: '03',
+      title: 'TARPTAUTINIS PERKRAUSTYMAS',
+      description: 'Perkraustymas į užsienį',
+      href: '/tarptautinis-perkraustymas'
+    },
+    {
+      id: '04',
+      number: '04',
+      title: 'PAKAVIMO PASLAUGOS',
+      description: 'Profesionalus daiktų pakavimas',
+      href: '/pakavimo-paslaugos'
+    },
+    {
+      id: '05',
+      number: '05',
+      title: 'SANDĖLIAVIMAS',
+      description: 'Laikinas daiktų saugojimas',
+      href: '/sandeliavimas'
+    }
+  ],
+  crane: [
+    {
+      id: '01',
+      number: '01',
+      title: 'KĖLIMO DARBAI',
+      description: 'Sunkių krovinių kėlimas',
+      href: '/kelimo-darbai'
+    },
+    {
+      id: '02',
+      number: '02',
+      title: 'NEGABARITINIŲ KROVINIŲ PERVEŽIMAS',
+      description: 'Didelių gabaritų pervežimai',
+      href: '/negabaritiniu-kroviniu-pervezimas'
+    },
+    {
+      id: '03',
+      number: '03',
+      title: 'STATYBOS DARBAI',
+      description: 'Statybvietės aptarnavimas',
+      href: '/statybos-darbai'
+    },
+    {
+      id: '04',
+      number: '04',
+      title: 'ĮRANGOS MONTAVIMAS',
+      description: 'Pramoninės įrangos montavimas',
+      href: '/irangos-montavimas'
+    },
+    {
+      id: '05',
+      number: '05',
+      title: 'MEDŽIŲ ŠALINIMAS',
+      description: 'Aukštuminiai medžių darbai',
+      href: '/medziu-salinimas'
+    }
+  ],
+  disposal: [
+    {
+      id: '01',
+      number: '01',
+      title: 'DAIKTŲ IŠVEŽIMAS',
+      description: 'Nereikalingų daiktų išvežimas',
+      href: '/daiktu-isvezimas'
+    },
+    {
+      id: '02',
+      number: '02',
+      title: 'STATYBINIŲ ATLIEKŲ IŠVEŽIMAS',
+      description: 'Statybinių atliekų surinkimas',
+      href: '/statybiniu-atlieku-isvezimas'
+    },
+    {
+      id: '03',
+      number: '03',
+      title: 'BALDŲ IŠVEŽIMAS',
+      description: 'Senų baldų išvežimas',
+      href: '/baldu-isvezimas'
+    },
+    {
+      id: '04',
+      number: '04',
+      title: 'ELEKTRONIKOS UTILIZAVIMAS',
+      description: 'Elektronikos atliekų tvarkymas',
+      href: '/elektronikos-utilizavimas'
+    },
+    {
+      id: '05',
+      number: '05',
+      title: 'SODO ATLIEKŲ IŠVEŽIMAS',
+      description: 'Žaliųjų atliekų tvarkymas',
+      href: '/sodo-atlieku-isvezimas'
+    }
+  ]
+};
+
 const ServicesSection = ({ inView }: { inView: boolean }) => {
-  const [activeTab, setActiveTab] = useState<string>('moving');
-  const activeService = serviceCategories.find(cat => cat.id === activeTab);
+  const [activeTab, setActiveTab] = useState<ServiceType>('moving');
 
   return (
-    <motion.div
-      className="container mx-auto h-screen flex items-center justify-center"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: inView ? 1 : 0 }}
-      transition={{ duration: 0.5 }}
-    >
-      <div className="bg-white/30 backdrop-blur-[4px] rounded-lg p-8 border border-[#BB0003]">
-        <h2 className="text-2xl font-light text-center text-[#2A2D35]">
-          Paslaugos (Coming Soon)
-        </h2>
+    <div className="container mx-auto px-4 py-24">
+      {/* Title */}
+      <motion.h2
+        className="text-4xl font-light text-center text-[#2A2D35] mb-12"
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+        transition={{ duration: 0.6 }}
+      >
+        Mūsų Paslaugos
+      </motion.h2>
+
+      {/* Tabs - Made wider */}
+      <motion.div 
+        className="flex justify-center gap-4 mb-12"
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+        transition={{ duration: 0.6, delay: 0.2 }}
+      >
+        {/* Each button takes equal width */}
+        <button
+          onClick={() => setActiveTab('moving')}
+          className={clsx(
+            'flex-1 max-w-[300px] py-3 rounded-lg font-medium transition-all',
+            activeTab === 'moving'
+              ? 'bg-[#BB0003] text-white'
+              : 'bg-white/40 backdrop-blur-[2px] border border-[#BB0003] text-[#2A2D35] hover:bg-white/50'
+          )}
+        >
+          PERKRAUSTYMO PASLAUGOS
+        </button>
+        <button
+          onClick={() => setActiveTab('crane')}
+          className={clsx(
+            'flex-1 max-w-[300px] py-3 rounded-lg font-medium transition-all',
+            activeTab === 'crane'
+              ? 'bg-[#BB0003] text-white'
+              : 'bg-white/40 backdrop-blur-[2px] border border-[#BB0003] text-[#2A2D35] hover:bg-white/50'
+          )}
+        >
+          FISKARO PASLAUGOS
+        </button>
+        <button
+          onClick={() => setActiveTab('disposal')}
+          className={clsx(
+            'flex-1 max-w-[300px] py-3 rounded-lg font-medium transition-all',
+            activeTab === 'disposal'
+              ? 'bg-[#BB0003] text-white'
+              : 'bg-white/40 backdrop-blur-[2px] border border-[#BB0003] text-[#2A2D35] hover:bg-white/50'
+          )}
+        >
+          UTILIZAVIMO PASLAUGOS
+        </button>
+      </motion.div>
+
+      {/* Services List - Updated AnimatePresence */}
+      <div className="max-w-4xl mx-auto space-y-3">
+        <AnimatePresence mode="sync">
+          {services[activeTab].map((service, index) => (
+            <motion.a
+              key={service.id}
+              href={service.href}
+              className="block w-full bg-white/40 backdrop-blur-[2px] rounded-lg p-4 border border-[#BB0003] hover:bg-white/50 transition-all"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.3, delay: index * 0.1 }}
+            >
+              <div className="flex items-center gap-6">
+                <span className="text-2xl font-light text-[#BB0003] w-10">{service.number}</span>
+                <div className="flex-1 text-center">
+                  <h3 className="text-lg font-medium text-[#2A2D35] mb-0.5">{service.title}</h3>
+                  <p className="text-gray-600 text-sm">{service.description}</p>
+                </div>
+                <div className="text-[#BB0003]">
+                  <svg 
+                    width="20" 
+                    height="20" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="transform group-hover:translate-x-1 transition-transform"
+                  >
+                    <path 
+                      d="M9 6L15 12L9 18" 
+                      stroke="currentColor" 
+                      strokeWidth="2" 
+                      strokeLinecap="round" 
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </div>
+              </div>
+            </motion.a>
+          ))}
+        </AnimatePresence>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

@@ -18,15 +18,27 @@ interface SectionNavProps {
 }
 
 const SectionNav = ({ activeSection, setActiveSection }: SectionNavProps) => {
-  const scrollToSection = (id: string) => {
-    const element = document.getElementById(id);
-    if (element) {
-      setActiveSection(id); // Update active section when clicking
-      window.scrollTo({
-        top: element.offsetTop,
-        behavior: 'smooth'
-      });
+  const handleClick = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (!element) return;
+
+    let top = 0;
+
+    if (sectionId === 'calculator') {
+      const container = document.getElementById('transition-container');
+      top = container?.offsetTop || 0;
+    } else if (sectionId === 'services') {
+      const container = document.getElementById('transition-container');
+      top = (container?.offsetTop || 0) + window.innerHeight;
+    } else {
+      top = element.offsetTop;
     }
+
+    window.scrollTo({
+      top,
+      behavior: 'smooth'
+    });
+    setActiveSection(sectionId);
   };
 
   return (
@@ -36,7 +48,7 @@ const SectionNav = ({ activeSection, setActiveSection }: SectionNavProps) => {
           {sections.map((section, index) => (
             <button
               key={section.id}
-              onClick={() => scrollToSection(section.id)}
+              onClick={() => handleClick(section.id)}
               className={clsx(
                 "group flex items-center gap-3 w-full text-left transition-all",
                 "hover:bg-white/50 rounded-lg p-2",

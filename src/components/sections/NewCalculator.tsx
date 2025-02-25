@@ -255,7 +255,7 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
   return (
     <section 
       ref={calculatorRef}
-      className="relative min-h-screen flex items-center justify-center font-['TT_Firs_Neue'] overflow-hidden"
+      className="h-full w-full flex items-center justify-center font-['TT_Firs_Neue'] overflow-hidden"
     >
       <div className="container py-8 relative z-10">
         <div className="flex gap-8 items-start justify-center">
@@ -269,7 +269,7 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
             }}
             transition={{ duration: 0.5, ease: "easeOut" }}
           >
-            <div className="bg-white/30 backdrop-blur-[4px] rounded-lg p-6 border border-[#BB0003]">
+            <div className="bg-white/40 backdrop-blur-[2px] rounded-lg p-6 border border-[#BB0003]">
               <div className="space-y-4">
                 <h2 className="text-xl font-medium text-[#2A2D35]">
                   Išbandykite visiškai naują perkraustymo patirtį su "Mes Jau Čia"!
@@ -311,7 +311,7 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
               {/* Calculator View */}
               <div 
                 className={clsx(
-                  "bg-white/30 backdrop-blur-[4px] rounded-[10px] p-12 border-2 border-white transition-all duration-500",
+                  "bg-white/40 backdrop-blur-[2px] rounded-[10px] p-12 border-2 border-white transition-all duration-500",
                   showResults && 'opacity-0 pointer-events-none'
                 )}
               >
@@ -654,7 +654,7 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
               {/* Results View */}
               <div 
                 className={clsx(
-                  "absolute top-0 left-0 right-0 bg-white/30 backdrop-blur-[4px] rounded-[10px] p-12 border-2 border-white transition-all duration-500",
+                  "absolute top-0 left-0 right-0 bg-white/40 backdrop-blur-[2px] rounded-[10px] p-12 border-2 border-white transition-all duration-500",
                   !showResults && 'opacity-0 pointer-events-none'
                 )}
                 style={{ height: '100%' }}

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import NewCalculator from '@/components/sections/NewCalculator';
@@ -36,8 +36,14 @@ export default function Home() {
 
   // Refs for each section
   const { ref: heroRef, inView: heroInView } = useInView({ threshold: 0.5 });
-  const { ref: calculatorRef, inView: calculatorInView } = useInView({ threshold: 0.5 });
-  const { ref: servicesRef, inView: servicesInView } = useInView({ threshold: 0.5 });
+  const { ref: calculatorRef, inView: calculatorInView } = useInView({ 
+    threshold: 0.5,
+    margin: "-45% 0px -45% 0px"
+  });
+  const { ref: servicesRef, inView: servicesInView } = useInView({
+    threshold: 0.7,
+    margin: "-30% 0px -30% 0px"
+  });
   const { ref: valuesRef, inView: valuesInView } = useInView({ threshold: 0.5 });
   const { ref: achievementsRef, inView: achievementsInView } = useInView({ threshold: 0.5 });
   const { ref: contactRef, inView: contactInView } = useInView({ threshold: 0.5 });
@@ -45,12 +51,21 @@ export default function Home() {
   // Update active section based on scroll
   useEffect(() => {
     if (heroInView) setActiveSection('hero');
-    else if (calculatorInView) setActiveSection('calculator');
+    else if (calculatorInView && !servicesInView) setActiveSection('calculator');
     else if (servicesInView) setActiveSection('services');
     else if (valuesInView) setActiveSection('values');
     else if (achievementsInView) setActiveSection('achievements');
     else if (contactInView) setActiveSection('contact');
   }, [heroInView, calculatorInView, servicesInView, valuesInView, achievementsInView, contactInView]);
+
+  // Add scroll container ref
+  const scrollContainerRef = useRef(null);
+
+  // Update scroll progress tracking with adjusted offset
+  const { scrollYProgress: transitionProgress } = useScroll({
+    target: scrollContainerRef,
+    offset: ["start start", "end start"] // Changed to make calculator fully visible at start
+  });
 
   return (
     <>
@@ -58,9 +73,13 @@ export default function Home() {
         activeSection={activeSection} 
         setActiveSection={setActiveSection} 
       />
-      <div className="relative w-full">
+      <div className="relative w-full overflow-x-hidden">
         {/* Hero Section - Static */}
-        <section id="hero" ref={heroRef} className="relative min-h-screen w-full flex items-center justify-center overflow-hidden">
+        <section 
+          id="hero" 
+          ref={heroRef} 
+          className="relative h-screen w-full flex items-center justify-center overflow-hidden"
+        >
           {/* Video Background */}
           <div className="absolute inset-0 w-full h-full">
             <div className="absolute inset-0 bg-black/40 z-10" />
@@ -128,15 +147,63 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* Calculator Section */}
-        <section id="calculator" ref={calculatorRef} className="min-h-screen relative z-20">
-          <NewCalculator inView={calculatorInView} />
-        </section>
+        {/* Calculator and Services Container */}
+        <div 
+          ref={scrollContainerRef}
+          className="relative h-[200vh]"
+          id="transition-container"
+          style={{ position: 'relative' }}
+        >
+          {/* Calculator Section */}
+          <section 
+            id="calculator" 
+            ref={calculatorRef}
+            className="sticky top-0 h-screen w-full z-20 overflow-hidden"
+          >
+            <motion.div
+              className="absolute inset-0 w-full h-full"
+              style={{
+                opacity: useTransform(transitionProgress, 
+                  [0, 0.2, 0.4],
+                  [1, 1, 0]
+                ),
+                scale: useTransform(transitionProgress,
+                  [0, 0.4],
+                  [1, 0.95]
+                )
+              }}
+            >
+              <NewCalculator inView={calculatorInView} />
+            </motion.div>
+          </section>
 
-        {/* Services Section */}
-        <section id="services" ref={servicesRef} className="min-h-screen relative z-20">
-          <ServicesSection inView={servicesInView} />
-        </section>
+          {/* Services Section */}
+          <section 
+            id="services" 
+            ref={servicesRef}
+            className="absolute top-[100vh] h-screen w-full z-20"
+          >
+            <motion.div
+              className="absolute inset-0"
+              style={{
+                opacity: useTransform(transitionProgress,
+                  [0.4, 0.45, 0.5],
+                  [0, 0.7, 1]
+                ),
+                scale: useTransform(transitionProgress,
+                  [0.4, 0.5],
+                  [1.02, 1]
+                ),
+                y: useTransform(transitionProgress,
+                  [0.4, 0.5],
+                  ['10%', '0%']
+                )
+              }}
+            >
+              <ServicesSection inView={servicesInView} />
+            </motion.div>
+          </section>
+        </div>
 
         {/* Values Section */}
         <section id="values" ref={valuesRef} className="min-h-screen relative z-20">
