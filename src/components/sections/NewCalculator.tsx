@@ -378,7 +378,7 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
 
                 {/* Service Type Selection - Toggle Style with Slide Animation */}
                 <div className={clsx(
-                  'relative h-12 bg-[#DDDDDD] rounded-lg mb-3 z-0',
+                  'relative h-12 bg-[#E5E5E5] rounded-lg mb-3 z-0',
                   pricingType === 'fixed' && 'opacity-50 pointer-events-none'
                 )}>
                   <div className="absolute inset-0 flex">
@@ -393,8 +393,9 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
                       onClick={() => setServiceType('moving')}
                       className={clsx(
                         'flex-1 m-[2px] rounded-[6px] font-medium transition-colors duration-300 relative z-10',
-                        serviceType === 'moving' ? 'text-[#2a2d35]' : 'text-[#2a2d35]/70 hover:text-[#2a2d35]'
+                        serviceType === 'moving' ? 'text-[#2a2d35]' : 'text-[#2a2d35]'
                       )}
+                      aria-label="Pasirinkti perkraustymo paslaugas"
                     >
                       Perkraustymo paslaugos
                     </button>
@@ -402,8 +403,9 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
                       onClick={() => setServiceType('crane')}
                       className={clsx(
                         'flex-1 m-[2px] rounded-[6px] font-medium transition-colors duration-300 relative z-10',
-                        serviceType === 'crane' ? 'text-[#2a2d35]' : 'text-[#2a2d35]/70 hover:text-[#2a2d35]'
+                        serviceType === 'crane' ? 'text-[#2a2d35]' : 'text-[#2a2d35]'
                       )}
+                      aria-label="Pasirinkti fiskaro nuomą"
                     >
                       Fiskaro nuoma
                     </button>
@@ -690,6 +692,7 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
                     <button 
                       onClick={() => setShowResults(false)}
                       className="w-8 h-8 bg-white rounded-[8px] flex items-center justify-center hover:bg-gray-50 transition-all"
+                      aria-label="Uždaryti rezultatus"
                     >
                       <svg 
                         width="16" 
@@ -697,6 +700,7 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
                         viewBox="0 0 16 16" 
                         fill="none" 
                         xmlns="http://www.w3.org/2000/svg"
+                        aria-hidden="true"
                       >
                         <path 
                           d="M10 12L6 8L10 4" 

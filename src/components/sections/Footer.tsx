@@ -59,7 +59,7 @@ const Footer = () => {
           {/* Services Links */}
           {menuItems.map((section, idx) => (
             <div key={idx} className="space-y-6">
-              <h4 className="text-gray-900 font-medium">{section.title}</h4>
+              <h2 className="text-gray-900 font-medium">{section.title}</h2>
               <ul className="space-y-3">
                 {section.items.map((item, index) => (
                   <li key={index}>
@@ -77,7 +77,7 @@ const Footer = () => {
 
           {/* Contact Info */}
           <div className="space-y-6">
-            <h4 className="text-gray-900 font-medium">Kontaktai</h4>
+            <h2 className="text-gray-900 font-medium">Kontaktai</h2>
             <div className="space-y-4">
               <a href="tel:+37063510000" className="flex items-center gap-3 text-gray-600 hover:text-red-600 transition-colors">
                 <PhoneIcon className="h-5 w-5" />
