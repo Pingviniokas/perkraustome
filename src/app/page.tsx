@@ -12,6 +12,7 @@ import ContactSection from '@/components/sections/ContactSection';
 import WhyChooseUs from '@/components/sections/WhyChooseUs';
 import TestimonialsSection from '@/components/sections/TestimonialsSection';
 import CompanyLogoSlider from '@/components/sections/Slider';
+import Hero from '@/components/sections/Hero';
 
 export default function Home() {
   // 1. First, declare all useState hooks
@@ -77,7 +78,7 @@ export default function Home() {
         setActiveSection={setActiveSection} 
       />
       <div className="relative w-full overflow-x-hidden">
-        {/* Hero Section - Static */}
+        {/* Hero Section */}
         <section 
           id="hero" 
           ref={heroRef} 
@@ -97,20 +98,23 @@ export default function Home() {
             </video>
           </div>
 
-          {/* Hero Content */}
-          <div className="container relative z-20 h-full flex flex-col justify-between py-20">
-            {/* Top content */}
-            <div className="max-w-4xl mx-auto w-full">
-              <div className="space-y-8 mt-[20vh]">
-                <div className="text-center">
-                  <h1 className="text-5xl font-light text-white mb-4">
-                    Perkraustymo paslaugos
-                  </h1>
-                  <p className="text-2xl text-white/90">
-                    Jūsų patikimas partneris visiems logistikos ir perkraustymo iššūkiams!
-                  </p>
-                </div>
+          {/* Content */}
+          <div className="container relative z-20 h-full flex flex-col py-12">
+            {/* Top content with new layout */}
+            <div className="flex gap-12 max-w-6xl mx-auto mt-[15vh]">
+              {/* Left side - Main Title */}
+              <div className="w-1/2">
+                <h1 className="text-5xl mb-4 uppercase">
+                  <span className="font-bold text-[#BB0003]">PERKRAUSTYMO</span>{' '}
+                  <span className="font-light text-[#232323]">PASLAUGOS</span>
+                </h1>
+                <p className="text-2xl uppercase text-[#828282]">
+                  Jūsų patikimas partneris visiems logistikos ir perkraustymo iššūkiams!
+                </p>
+              </div>
 
+              {/* Right side - Glassmorphism Box */}
+              <div className="w-1/2">
                 <div className="bg-white/10 backdrop-blur-[8px] border border-[#BB0003] rounded-lg p-8">
                   <p className="text-white/90 leading-relaxed">
                     Sveiki atvykę į „Mes Jau Čia" – įmonę, kurią drąsiai galite vadinti vienu iš patikimiausių ir profesionaliausių transporto bei perkraustymo paslaugų teikėjų Lietuvoje.
@@ -124,7 +128,7 @@ export default function Home() {
             </div>
 
             {/* Trust text and slider at bottom */}
-            <div className="w-full mt-auto">
+            <div className="w-full mt-16">
               <h2 className="text-2xl font-light text-white text-center mb-12">
                 Mumis pasitiki:
               </h2>
