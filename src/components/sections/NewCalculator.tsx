@@ -275,7 +275,7 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
   return (
     <section 
       ref={calculatorRef}
-      className="h-full w-full flex items-center justify-center font-['TT_Firs_Neue'] overflow-hidden relative"
+      className="h-full w-full flex items-center justify-center font-['TT_Firs_Neue'] overflow-hidden relative pt-20"
     >
       <div className="container py-8 relative z-10">
         <div className="flex gap-8 items-start justify-center">

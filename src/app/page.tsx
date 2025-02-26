@@ -182,7 +182,7 @@ export default function Home() {
           </section>
 
           {/* Why Choose Us Section */}
-          <section id="why-us" ref={whyUsRef} className="min-h-screen relative z-20">
+          <section id="why-us" ref={whyUsRef} className="min-h-screen relative z-20 pt-20">
             <WhyChooseUs inView={whyUsInView} />
           </section>
 
@@ -190,7 +190,7 @@ export default function Home() {
           <section 
             id="services" 
             ref={servicesRef}
-            className="h-screen relative z-20"
+            className="h-screen relative z-20 pt-20"
           >
             <div className="sticky top-0 w-full h-screen">
               <ServicesSection inView={servicesInView} />
@@ -199,22 +199,22 @@ export default function Home() {
         </div>
 
         {/* Values Section */}
-        <section id="values" ref={valuesRef} className="relative min-h-screen z-20">
+        <section id="values" ref={valuesRef} className="relative min-h-screen z-20 pt-20">
           <ValuesSection inView={valuesInView} />
         </section>
 
         {/* Achievements Section */}
-        <section id="achievements" ref={achievementsRef} className="relative min-h-screen z-20">
+        <section id="achievements" ref={achievementsRef} className="relative min-h-screen z-20 pt-20">
           <AchievementsSection inView={achievementsInView} />
         </section>
 
         {/* Testimonials Section */}
-        <section id="testimonials" ref={testimonialsRef} className="relative min-h-screen z-20">
+        <section id="testimonials" ref={testimonialsRef} className="relative min-h-screen z-20 pt-20">
           <TestimonialsSection inView={testimonialsInView} />
         </section>
 
         {/* Contact Section */}
-        <section id="contact" ref={contactRef} className="relative min-h-screen z-20">
+        <section id="contact" ref={contactRef} className="relative min-h-screen z-20 pt-20">
           <ContactSection inView={contactInView} />
         </section>
       </div>

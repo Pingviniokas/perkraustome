@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import clsx from 'clsx';
+import Link from 'next/link';
 
 const sections = [
   { id: 'hero', label: 'Pradinis' },
@@ -35,39 +36,36 @@ const SectionNav = ({ activeSection, setActiveSection }: SectionNavProps) => {
   };
 
   return (
-    <div className="fixed left-8 top-1/2 -translate-y-1/2 z-40 hidden lg:block animate-fade-in animation-delay-700">
-      <div className="bg-white/30 backdrop-blur-[4px] rounded-[10px] p-3 border-2 border-white">
-        <div className="space-y-2">
+    <div className="fixed left-8 top-1/2 -translate-y-1/2 z-50">
+      {/* Navigation container */}
+      <div className="bg-white rounded-lg border border-[#BB0003] p-4">
+        {/* Title inside container */}
+        <p className="text-sm text-[#232323] mb-3">Greita navigacija</p>
+
+        <nav className="flex flex-col gap-2">
           {sections.map((section, index) => (
             <button
               key={section.id}
               onClick={() => handleClick(section.id)}
-              className={clsx(
-                "group flex items-center gap-3 w-full text-left transition-all",
-                "hover:bg-white/50 rounded-lg p-2",
-                activeSection === section.id && "bg-white/50"
-              )}
-              aria-label={section.label}
+              className={`flex items-center gap-2 p-2 rounded-[4px] transition-colors
+                ${activeSection === section.id 
+                  ? 'text-[#BB0003]' 
+                  : 'text-[#232323] hover:bg-gray-50'} 
+                ${activeSection !== section.id ? 'bg-[#EEF0F2]' : ''}`}
             >
-              <div className={clsx(
-                "w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium transition-all",
-                activeSection === section.id 
-                  ? "bg-[#BB0003] text-white"
-                  : "bg-gray-100 text-gray-500 group-hover:bg-gray-200"
-              )}>
+              {/* Number badge */}
+              <span className={`inline-flex items-center justify-center w-5 h-5 rounded-[3px] px-[2px] text-xs
+                ${activeSection === section.id 
+                  ? 'bg-[#BB0003] text-white' 
+                  : 'bg-[#DDDDDD] text-[#232323]'}`}
+              >
                 {index + 1}
-              </div>
-              <span className={clsx(
-                "text-sm transition-all",
-                activeSection === section.id 
-                  ? "text-[#2a2d35] font-medium"
-                  : "text-gray-500"
-              )}>
-                {section.label}
               </span>
+
+              <span className="text-sm">{section.label}</span>
             </button>
           ))}
-        </div>
+        </nav>
       </div>
     </div>
   );
