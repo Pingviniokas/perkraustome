@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import DatePicker from '../shared/DatePicker';
 import usePlacesAutocomplete from 'use-places-autocomplete';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import Script from 'next/script';
+import { useMapsContext } from '@/context/MapsContext';
 
 
 type PricingType = 'hourly' | 'fixed';
@@ -80,10 +80,10 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
     [200, 100, 0]
   );
 
-  // Add state to track Google Maps script loading
-  const [mapsLoaded, setMapsLoaded] = useState(false);
+  // Replace mapsLoaded state with useMapsContext
+  const { isLoaded } = useMapsContext();
 
-  // Modify the usePlacesAutocomplete hooks to only run after script is loaded
+  // Update the usePlacesAutocomplete hooks
   const {
     value: pickupValue,
     suggestions: { data: pickupSuggestions },
@@ -95,6 +95,7 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
     },
     debounce: 300,
     cache: 86400,
+    initOnMount: isLoaded,
   });
 
   const {
@@ -108,6 +109,7 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
     },
     debounce: 300,
     cache: 86400,
+    initOnMount: isLoaded,
   });
 
   const handleDateChange = (date: Date, holiday: boolean, weekend: boolean) => {
@@ -777,17 +779,6 @@ const NewCalculator = ({ inView }: { inView: boolean }) => {
           </motion.div>
         </div>
       </div>
-      <Script
-        src={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}&libraries=places&loading=async`}
-        strategy="beforeInteractive"
-        onLoad={() => {
-          setMapsLoaded(true);
-          console.log('Google Maps script loaded');
-        }}
-        onError={(e) => {
-          console.error('Error loading Google Maps script:', e);
-        }}
-      />
     </section>
   );
 };

@@ -12,7 +12,6 @@ import ContactSection from '@/components/sections/ContactSection';
 import WhyChooseUs from '@/components/sections/WhyChooseUs';
 import TestimonialsSection from '@/components/sections/TestimonialsSection';
 import CompanyLogoSlider from '@/components/sections/Slider';
-import Hero from '@/components/sections/Hero';
 
 export default function Home() {
   // 1. First, declare all useState hooks
