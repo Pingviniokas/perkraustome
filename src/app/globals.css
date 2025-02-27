@@ -857,3 +857,69 @@ html::-webkit-scrollbar-thumb {
   border-radius: 10px;
 }
 
+/* Add responsive container padding */
+@media (min-width: 1024px) {
+  .container {
+    padding-left: calc(200px + 2rem); /* SectionNav width + spacing */
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .container {
+    padding-left: calc(250px + 4rem); /* Larger SectionNav width + spacing */
+    padding-right: 4rem;
+  }
+}
+
+/* For mobile, add bottom padding to account for the navigation */
+@media (max-width: 1023px) {
+  .container {
+    padding-bottom: 80px; /* Height of mobile nav */
+  }
+}
+
+/* Add this to your globals.css */
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+/* Add any global styles here */
+
+/* Section transitions */
+@keyframes sectionFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.section-enter {
+  animation: sectionFadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Prevent content jump during transitions */
+.overflow-fix {
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+

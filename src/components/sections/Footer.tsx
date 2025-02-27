@@ -28,8 +28,8 @@ const Footer = () => {
 
   return (
     <footer className="relative z-50 bg-white">
-      <div className="max-w-7xl mx-auto px-12 py-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-8 sm:py-12 lg:py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
           {/* Brand Section */}
           <div className="space-y-6">
             <Image src="/images/logoMJC.webp" alt="MJC Logo" width={180} height={60} />
@@ -56,11 +56,11 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Services Links */}
+          {/* Services Links - Stack on mobile */}
           {menuItems.map((section, idx) => (
-            <div key={idx} className="space-y-6">
+            <div key={idx} className="space-y-4 sm:space-y-6">
               <h2 className="text-gray-900 font-medium">{section.title}</h2>
-              <ul className="space-y-3">
+              <ul className="space-y-2 sm:space-y-3">
                 {section.items.map((item, index) => (
                   <li key={index}>
                     <a
@@ -98,13 +98,13 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="mt-16 pt-8 border-t border-gray-200">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-600 text-sm">
+        {/* Bottom Bar - Stack on mobile */}
+        <div className="mt-8 sm:mt-12 lg:mt-16 pt-8 border-t border-gray-200">
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
+            <p className="text-gray-600 text-sm text-center sm:text-left">
               © {new Date().getFullYear()} Mes Jau Čia. Visos teisės saugomos.
             </p>
-            <div className="flex gap-8">
+            <div className="flex gap-4 sm:gap-8">
               <a href="/privatumo-politika" className="text-gray-600 hover:text-red-600 text-sm transition-colors">
                 Privatumo politika
               </a>

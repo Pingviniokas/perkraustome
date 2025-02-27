@@ -12,30 +12,46 @@ import ContactSection from '@/components/sections/ContactSection';
 import WhyChooseUs from '@/components/sections/WhyChooseUs';
 import TestimonialsSection from '@/components/sections/TestimonialsSection';
 import CompanyLogoSlider from '@/components/sections/Slider';
+import HeroSection from '@/components/sections/HeroSection';
 
 export default function Home() {
   // 1. First, declare all useState hooks
   const [activeSection, setActiveSection] = useState('hero');
   const [windowHeight, setWindowHeight] = useState(0);
+  const [calculatorOpacity, setCalculatorOpacity] = useState(0);
+  const [whyUsOpacity, setWhyUsOpacity] = useState(0);
+  const [servicesOpacity, setServicesOpacity] = useState(0);
+  const [valuesOpacity, setValuesOpacity] = useState(0);
+  const [achievementsOpacity, setAchievementsOpacity] = useState(0);
+  const [testimonialsOpacity, setTestimonialsOpacity] = useState(0);
+  const [contactOpacity, setContactOpacity] = useState(0);
 
   // 2. Declare all refs
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const heroCalculatorRef = useRef<HTMLDivElement>(null);
+  const calculatorWhyUsRef = useRef<HTMLDivElement>(null);
+  const whyUsServicesRef = useRef<HTMLDivElement>(null);
+  const servicesValuesRef = useRef<HTMLDivElement>(null);
+  const valuesAchievementsRef = useRef<HTMLDivElement>(null);
+  const achievementsTestimonialsRef = useRef<HTMLDivElement>(null);
+  const testimonialsContactRef = useRef<HTMLDivElement>(null);
   
   // 3. Declare all useScroll hooks
   const { scrollY } = useScroll();
-  const { scrollYProgress: transitionProgress } = useScroll({
+  const { scrollYProgress } = useScroll({
     target: scrollContainerRef,
-    offset: ["start start", "end start"],
-    layoutEffect: false
+    offset: ["start start", "end start"]
   });
 
   // 4. Declare all useInView hooks
   const { ref: heroRef, inView: heroInView } = useInView({ threshold: 0.5 });
   const { ref: calculatorRef, inView: calculatorInView } = useInView({ 
-    threshold: 0.5
+    threshold: 0.5,
+    initialInView: false
   });
   const { ref: servicesRef, inView: servicesInView } = useInView({
-    threshold: 0.5
+    threshold: 0.5,
+    initialInView: false
   });
   const { ref: valuesRef, inView: valuesInView } = useInView({ threshold: 0.5 });
   const { ref: achievementsRef, inView: achievementsInView } = useInView({ threshold: 0.5 });
@@ -49,6 +65,87 @@ export default function Home() {
     [0, windowHeight * 0.5],
     [0, 1]
   );
+
+  // Hero content exits first (text and elements)
+  const heroContentOpacity = useTransform(
+    scrollYProgress,
+    [0, 0.02], // Content fades out very quickly
+    [1, 0]
+  );
+
+  // Hero elements slide out quickly
+  const heroLeftContentX = useTransform(
+    scrollYProgress,
+    [0, 0.02],
+    [0, -100]
+  );
+
+  const heroRightContentX = useTransform(
+    scrollYProgress,
+    [0, 0.02],
+    [0, 100]
+  );
+
+  const heroSliderY = useTransform(
+    scrollYProgress,
+    [0, 0.02],
+    [0, 100]
+  );
+
+  // Video fades out much later
+  const heroOpacity = useTransform(
+    scrollYProgress,
+    [0.02, 0.05], // Hero fades out completely before calculator appears
+    [1, 0]
+  );
+
+  const videoOverlayOpacity = useTransform(
+    scrollYProgress,
+    [0.04, 0.12], // Changed from [0.02, 0.06] to [0.04, 0.12]
+    [0.4, 0]
+  );
+
+  // Add scroll progress for Hero/Calculator
+  const { scrollYProgress: heroToCalculatorProgress } = useScroll({
+    target: heroCalculatorRef,
+    offset: ["start start", "end start"]
+  });
+
+  // Add scroll progress for Calculator/Why Choose Us
+  const { scrollYProgress: calculatorWhyUsProgress } = useScroll({
+    target: calculatorWhyUsRef,
+    offset: ["start start", "end start"]
+  });
+
+  // Add scroll progress for Services/Values
+  const { scrollYProgress: servicesValuesProgress } = useScroll({
+    target: servicesValuesRef,
+    offset: ["start start", "end start"]
+  });
+
+  // Add scroll progress for Values/Achievements
+  const { scrollYProgress: valuesAchievementsProgress } = useScroll({
+    target: valuesAchievementsRef,
+    offset: ["start start", "75vh start"]
+  });
+
+  // Add scroll progress for Achievements/Testimonials
+  const { scrollYProgress: achievementsTestimonialsProgress } = useScroll({
+    target: achievementsTestimonialsRef,
+    offset: ["start start", "75vh start"]
+  });
+
+  // Add scroll progress for Testimonials/Contact
+  const { scrollYProgress: testimonialsContactProgress } = useScroll({
+    target: testimonialsContactRef,
+    offset: ["start start", "75vh start"]
+  });
+
+  // Add scroll progress for WhyUs/Services
+  const { scrollYProgress: whyUsServicesProgress } = useScroll({
+    target: whyUsServicesRef,
+    offset: ["start start", "end start"]
+  });
 
   // 6. Declare all useEffects
   useEffect(() => {
@@ -70,158 +167,194 @@ export default function Home() {
   }, [heroInView, calculatorInView, whyUsInView, servicesInView, valuesInView, 
       achievementsInView, testimonialsInView, contactInView]);
 
+  useEffect(() => {
+    console.log('Section visibility:', {
+      hero: heroInView,
+      calculator: calculatorInView,
+      whyUs: whyUsInView,
+      services: servicesInView,
+      values: valuesInView,
+      achievements: achievementsInView,
+      testimonials: testimonialsInView,
+      contact: contactInView
+    });
+  }, [heroInView, calculatorInView, whyUsInView, servicesInView, valuesInView, 
+      achievementsInView, testimonialsInView, contactInView]);
+
   return (
     <>
       <SectionNav 
         activeSection={activeSection} 
         setActiveSection={setActiveSection} 
       />
-      <div className="relative w-full overflow-x-hidden">
-        {/* Hero Section */}
-        <section 
-          id="hero" 
-          ref={heroRef} 
-          className="relative h-screen w-full flex items-center justify-center overflow-hidden"
-        >
-          {/* Video Background */}
-          <div className="absolute inset-0 w-full h-full">
-            <div className="absolute inset-0 bg-black/40 z-10" />
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute w-full h-full object-cover"
-            >
-              <source src="/videos/mesjauciatitulinis.mp4" type="video/mp4" />
-            </video>
-          </div>
-
-          {/* Content */}
-          <div className="container relative z-20 h-full flex flex-col py-12">
-            {/* Top content with new layout */}
-            <div className="flex gap-12 max-w-6xl mx-auto mt-[15vh]">
-              {/* Left side - Main Title */}
-              <div className="w-1/2">
-                <h1 className="text-5xl mb-4 uppercase">
-                  <span className="font-bold text-[#BB0003]">PERKRAUSTYMO</span>{' '}
-                  <span className="font-light text-[#232323]">PASLAUGOS</span>
-                </h1>
-                <p className="text-2xl uppercase text-[#828282]">
-                  Jūsų patikimas partneris visiems logistikos ir perkraustymo iššūkiams!
-                </p>
-              </div>
-
-              {/* Right side - Glassmorphism Box */}
-              <div className="w-1/2">
-                <div className="bg-white/10 backdrop-blur-[8px] border border-[#BB0003] rounded-lg p-8">
-                  <p className="text-white/90 leading-relaxed">
-                    Sveiki atvykę į „Mes Jau Čia" – įmonę, kurią drąsiai galite vadinti vienu iš patikimiausių ir profesionaliausių transporto bei perkraustymo paslaugų teikėjų Lietuvoje.
-                  </p>
-                  <br />
-                  <p className="text-white/90 leading-relaxed">
-                    Mūsų veiklos pagrindas – padėti žmonėms ir verslams efektyviai bei patogiai persikelti iš vienos vietos į kitą, pasirūpinti sunkių ar nestandartinių daiktų pervežimu, fiskaro nuoma, atliekų išvežimu, o prireikus – visapusiškai pasirūpinti kompleksiniu logistikos procesu. Esame pasiruošę greitai ir saugiai įgyvendinti visas Jūsų idėjas ar išspręsti sudėtingus logistikos iššūkius, nesvarbu, ar tai būtų nedidelis buto perkraustymas, ar stambaus verslo objektų perkėlimas.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            {/* Trust text and slider at bottom */}
-            <div className="w-full mt-16">
-              <h2 className="text-2xl font-light text-white text-center mb-12">
-                Mumis pasitiki:
-              </h2>
-              <CompanyLogoSlider />
-            </div>
-          </div>
-        </section>
-
-        {/* Fixed Background */}
-        <motion.div 
-          className="fixed inset-0 bg-[#fafafa] z-10"
-          style={{ opacity: backgroundOpacity }}
-        >
-          {/* Grid Background */}
-          <div className="absolute inset-0 opacity-[0.06]"
+      
+      {/* Main scroll container */}
+      <div ref={scrollContainerRef} className="relative w-full isolate">
+        <div ref={heroCalculatorRef} className="relative h-[120vh]">
+          <section 
+            id="hero" 
+            ref={heroRef} 
+            className="fixed top-0 left-0 w-full h-screen z-[1000]"
             style={{
-              backgroundImage: `
-                linear-gradient(to right, #9B0003 1px, transparent 1px),
-                linear-gradient(to bottom, #9B0003 1px, transparent 1px)
-              `,
-              backgroundSize: '100px 100px',
-              transform: 'rotate(-5deg) scale(1.5)',
+              pointerEvents: heroInView ? 'auto' : 'none',
+              visibility: heroOpacity.get() <= 0.1 ? 'hidden' : 'visible',
+              opacity: heroOpacity.get()
             }}
-          />
+          >
+            <div className="relative w-full h-full">
+              <HeroSection inView={heroInView} scrollProgress={heroToCalculatorProgress} />
+            </div>
+          </section>
           
-          {/* Europe Map */}
-          <div className="absolute -right-[5%] top-1/2 -translate-y-1/2 w-[1600px] h-[1000px]">
-            <div 
-              className="w-full h-full opacity-[0.75]"
-              style={{
-                backgroundImage: 'url("/images/europe.svg")',
-                backgroundSize: 'contain',
-                backgroundPosition: 'right',
-                backgroundRepeat: 'no-repeat',
-                filter: 'contrast(150%) brightness(95%)',
-              }}
-            />
-          </div>
-        </motion.div>
-
-        {/* Calculator and Services Container */}
-        <div 
-          ref={scrollContainerRef}
-          className="relative w-full"
-        >
-          {/* Calculator Section */}
           <section 
             id="calculator" 
-            ref={calculatorRef}
-            className="h-screen relative z-20"
+            ref={calculatorRef} 
+            className="fixed top-0 left-0 w-full h-screen z-[900]"
+            style={{
+              pointerEvents: calculatorInView && heroOpacity.get() <= 0.1 ? 'auto' : 'none',
+              visibility: calculatorOpacity === 0 ? 'hidden' : 'visible',
+              opacity: calculatorOpacity
+            }}
           >
-            <div className="sticky top-0 w-full h-screen">
-              <NewCalculator inView={calculatorInView} />
-            </div>
-          </section>
-
-          {/* Why Choose Us Section */}
-          <section id="why-us" ref={whyUsRef} className="min-h-screen relative z-20 pt-20">
-            <WhyChooseUs inView={whyUsInView} />
-          </section>
-
-          {/* Services Section */}
-          <section 
-            id="services" 
-            ref={servicesRef}
-            className="h-screen relative z-20 pt-20"
-          >
-            <div className="sticky top-0 w-full h-screen">
-              <ServicesSection inView={servicesInView} />
+            <div className="relative w-full h-full">
+              <NewCalculator 
+                inView={calculatorInView} 
+                scrollProgress={heroToCalculatorProgress}
+                onOpacityChange={setCalculatorOpacity}
+              />
             </div>
           </section>
         </div>
 
-        {/* Values Section */}
-        <section id="values" ref={valuesRef} className="relative min-h-screen z-20 pt-20">
-          <ValuesSection inView={valuesInView} />
-        </section>
+        <div ref={calculatorWhyUsRef} className="relative h-[120vh]">
+          <section 
+            id="why-us" 
+            ref={whyUsRef} 
+            className="fixed top-0 left-0 w-full h-screen z-[800]"
+            style={{
+              pointerEvents: whyUsInView && calculatorOpacity <= 0.1 ? 'auto' : 'none',
+              visibility: whyUsOpacity === 0 ? 'hidden' : 'visible',
+              opacity: whyUsOpacity
+            }}
+          >
+            <div className="relative w-full h-full">
+              <WhyChooseUs 
+                inView={whyUsInView} 
+                scrollProgress={calculatorWhyUsProgress}
+                onOpacityChange={setWhyUsOpacity}
+              />
+            </div>
+          </section>
+        </div>
 
-        {/* Achievements Section */}
-        <section id="achievements" ref={achievementsRef} className="relative min-h-screen z-20 pt-20">
-          <AchievementsSection inView={achievementsInView} />
-        </section>
+        <div ref={whyUsServicesRef} className="relative h-[120vh]">
+          <section 
+            id="services" 
+            ref={servicesRef} 
+            className="fixed top-0 left-0 w-full h-screen z-[700]"
+            style={{
+              pointerEvents: servicesInView && whyUsOpacity <= 0.1 ? 'auto' : 'none',
+              visibility: servicesOpacity === 0 ? 'hidden' : 'visible',
+              opacity: servicesOpacity
+            }}
+          >
+            <div className="relative w-full h-full">
+              <ServicesSection 
+                inView={servicesInView} 
+                scrollProgress={whyUsServicesProgress}
+                onOpacityChange={setServicesOpacity}
+              />
+            </div>
+          </section>
+        </div>
 
-        {/* Testimonials Section */}
-        <section id="testimonials" ref={testimonialsRef} className="relative min-h-screen z-20 pt-20">
-          <TestimonialsSection inView={testimonialsInView} />
-        </section>
+        <div ref={servicesValuesRef} className="relative h-[120vh]">
+          <section 
+            id="values" 
+            ref={valuesRef} 
+            className="fixed top-0 left-0 w-full h-screen z-[600]"
+            style={{
+              pointerEvents: valuesInView && servicesOpacity <= 0.1 ? 'auto' : 'none',
+              visibility: valuesOpacity === 0 ? 'hidden' : 'visible',
+              opacity: valuesOpacity
+            }}
+          >
+            <div className="relative w-full h-full">
+              <ValuesSection 
+                inView={valuesInView} 
+                scrollProgress={servicesValuesProgress}
+                onOpacityChange={setValuesOpacity}
+              />
+            </div>
+          </section>
+        </div>
 
-        {/* Contact Section */}
-        <section id="contact" ref={contactRef} className="relative min-h-screen z-20 pt-20">
-          <ContactSection inView={contactInView} />
-        </section>
+        <div ref={valuesAchievementsRef} className="relative h-[120vh]">
+          <section 
+            id="achievements" 
+            ref={achievementsRef} 
+            className="fixed top-0 left-0 w-full h-screen z-[500]"
+            style={{
+              pointerEvents: achievementsInView && valuesOpacity <= 0.1 ? 'auto' : 'none',
+              visibility: achievementsOpacity === 0 ? 'hidden' : 'visible',
+              opacity: achievementsOpacity
+            }}
+          >
+            <div className="relative w-full h-full">
+              <AchievementsSection 
+                inView={achievementsInView} 
+                scrollProgress={valuesAchievementsProgress}
+                onOpacityChange={setAchievementsOpacity}
+              />
+            </div>
+          </section>
+        </div>
+
+        <div ref={achievementsTestimonialsRef} className="relative h-[120vh]">
+          <section 
+            id="testimonials" 
+            ref={testimonialsRef} 
+            className="fixed top-0 left-0 w-full h-screen z-[400]"
+            style={{
+              pointerEvents: testimonialsInView && achievementsOpacity <= 0.1 ? 'auto' : 'none',
+              visibility: testimonialsOpacity === 0 ? 'hidden' : 'visible',
+              opacity: testimonialsOpacity
+            }}
+          >
+            <div className="relative w-full h-full">
+              <TestimonialsSection 
+                inView={testimonialsInView} 
+                scrollProgress={achievementsTestimonialsProgress}
+                onOpacityChange={setTestimonialsOpacity}
+              />
+            </div>
+          </section>
+        </div>
+
+        <div ref={testimonialsContactRef} className="relative h-[120vh]">
+          <section 
+            id="contact" 
+            ref={contactRef} 
+            className="fixed top-0 left-0 w-full h-screen z-[300]"
+            style={{
+              pointerEvents: contactInView && testimonialsOpacity <= 0.1 ? 'auto' : 'none',
+              visibility: contactOpacity === 0 ? 'hidden' : 'visible',
+              opacity: contactOpacity
+            }}
+          >
+            <div className="relative w-full h-full">
+              <ContactSection 
+                inView={contactInView} 
+                scrollProgress={testimonialsContactProgress}
+                onOpacityChange={setContactOpacity}
+              />
+            </div>
+          </section>
+        </div>
+
+        {/* Final spacer to ensure last section is visible */}
+        <div className="h-screen" />
       </div>
-      
     </>
   );
 }

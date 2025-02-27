@@ -2,7 +2,8 @@
 
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useScroll, useTransform, MotionValue } from 'framer-motion';
 
 interface ServiceContent {
   id: string;
@@ -43,137 +44,192 @@ const serviceContents: ServiceContent[] = [
   }
 ];
 
-const WhyChooseUs = ({ inView }: { inView: boolean }) => {
+interface WhyChooseUsProps {
+  inView: boolean;
+  scrollProgress: MotionValue<number>;
+  onOpacityChange?: (opacity: number) => void;
+}
+
+const WhyChooseUs = ({ inView, scrollProgress, onOpacityChange }: WhyChooseUsProps) => {
+  const sectionOpacity = useTransform(
+    scrollProgress,
+    [0, 0.2, 0.8, 1],  // Start invisible, fade in by 20%, stay visible until 80%, fade out by 100%
+    [0, 1, 1, 0]
+  );
+
+  const contentOpacity = useTransform(
+    scrollProgress,
+    [0, 0.15],  // Content starts fading immediately and is gone by 15%
+    [1, 0]
+  );
+
+  const buttonsX = useTransform(
+    scrollProgress,
+    [0.2, 0.4],  // Only animate during entrance
+    [-100, 0]
+  );
+
+  const imageScale = useTransform(
+    scrollProgress,
+    [0.2, 0.4],  // Only animate during entrance
+    [0.9, 1]
+  );
+
+  const { scrollYProgress } = useScroll({
+    offset: ["start start", "end start"]
+  });
+
+  // Content animations should match section visibility
+  const contentY = useTransform(
+    scrollProgress,
+    [0.2, 0.4, 0.8, 1],  // Align with section visibility
+    [50, 0, 0, 50]
+  );
+
+  const titleY = useTransform(
+    scrollProgress,
+    [0.02, 0.07, 0.18, 0.23],
+    [50, 0, 0, -50]
+  );
+
   const [activeService, setActiveService] = useState<string>('moving');
 
   const activeContent = serviceContents.find(content => content.id === activeService);
 
+  useEffect(() => {
+    return sectionOpacity.onChange(onOpacityChange);
+  }, [sectionOpacity, onOpacityChange]);
+
   return (
-    <div className="container mx-auto px-4 py-16 pt-20">
-      {/* Title buttons with stagger animation */}
-      <motion.div 
-        className="text-center mb-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        transition={{ duration: 0.6 }}
-      >
+    <motion.div
+      className="w-full h-full flex items-center justify-center"
+      style={{ opacity: sectionOpacity }}
+    >
+      <div className="container mx-auto px-4">
         <div className="max-w-4xl mx-auto">
-          {/* Connected buttons container with background */}
-          <div className="relative bg-white/40 backdrop-blur-[2px] rounded-lg border border-[#BB0003] p-1">
-            {/* Sliding background */}
+          <div className="w-full">
+            {/* Title buttons with stagger animation */}
+            <motion.div 
+              className="text-center mb-6"
+              style={{ x: buttonsX }}
+            >
+              <div className="max-w-4xl mx-auto">
+                {/* Connected buttons container with background */}
+                <div className="relative bg-white/40 backdrop-blur-[2px] rounded-lg border border-[#BB0003] p-1">
+                  {/* Sliding background */}
+                  <motion.div
+                    className="absolute inset-1 bg-[#BB0003] rounded-md"
+                    initial={{ width: '25%' }}
+                    animate={{ 
+                      left: `calc(${serviceContents.findIndex(s => s.id === activeService) * 25}% + 4px)`,
+                      width: 'calc(25% - 8px)'
+                    }}
+                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  />
+                  
+                  {/* Buttons */}
+                  <div className="grid grid-cols-4 relative">
+                    {serviceContents.map((service, index) => (
+                      <motion.button
+                        key={service.id}
+                        className={`px-4 py-1.5 transition-colors w-full text-sm relative`}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                        transition={{ duration: 0.6, delay: 0.2 * index }}
+                        onClick={() => setActiveService(service.id)}
+                      >
+                        {service.buttonText}
+                      </motion.button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Main image container */}
             <motion.div
-              className="absolute inset-1 bg-[#BB0003] rounded-md"
-              initial={{ width: '25%' }}
-              animate={{ 
-                left: `calc(${serviceContents.findIndex(s => s.id === activeService) * 25}% + 4px)`,
-                width: 'calc(25% - 8px)'
-              }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            />
-            
-            {/* Buttons */}
-            <div className="grid grid-cols-4 relative">
-              {serviceContents.map((service, index) => (
-                <motion.button
-                  key={service.id}
-                  className={`px-4 py-1.5 transition-colors w-full text-sm z-10
-                    ${activeService === service.id 
-                      ? 'text-white'
-                      : 'text-[#2A2D35] hover:text-[#BB0003]'
-                    }`}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-                  transition={{ duration: 0.6, delay: 0.2 * index }}
-                  onClick={() => setActiveService(service.id)}
+              className="max-w-4xl mx-auto mb-6"
+              style={{ scale: imageScale }}
+            >
+              <div className="rounded-[10px] border border-[#BB0003] overflow-hidden h-[500px] relative">
+                <motion.div
+                  key={activeContent?.image}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute inset-0"
                 >
-                  {service.buttonText}
-                </motion.button>
-              ))}
-            </div>
+                  <Image
+                    src={activeContent?.image || '/images/man.webp'}
+                    alt={activeContent?.title || ''}
+                    width={1200}
+                    height={500}
+                    className="w-full h-full object-cover"
+                  />
+                </motion.div>
+                <motion.div
+                  key={activeContent?.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.5 }}
+                  className="absolute bottom-[10px] left-[10px] right-[10px] bg-[#FCFCFC]/80 backdrop-blur-[2px] rounded-[8px] p-4"
+                >
+                  <h3 className="text-xl font-medium text-[#2A2D35] mb-2">
+                    {activeContent?.title}
+                  </h3>
+                  <p className="text-gray-600">
+                    {activeContent?.description}
+                  </p>
+                </motion.div>
+              </div>
+            </motion.div>
+
+            {/* Bottom containers */}
+            <motion.div 
+              className="flex gap-3 max-w-4xl mx-auto"
+              style={{ x: contentY }}
+            >
+              {/* Left container */}
+              <motion.div
+                className="flex-[3] bg-[#BB0003] rounded-[8px] p-4 min-h-[120px] text-white"
+                initial={{ opacity: 0, x: -20 }}
+                animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+              >
+                <h3 className="text-base font-light mb-2">
+                  Kodėl verta rinktis "Mes Jau Čia" ?
+                </h3>
+                <p className="leading-relaxed text-xs">
+                  Mūsų komandoje dirba tik patyrę ir profesionalūs darbuotojai, kurie supranta, 
+                  kad sklandus ir greitas darbų atlikimas yra būtinas kiekvienam klientui.
+                </p>
+              </motion.div>
+
+              {/* Right container */}
+              <motion.div
+                className="flex-[2] bg-white border border-[#BB0003] rounded-[8px] p-4 min-h-[120px] flex flex-col"
+                initial={{ opacity: 0, x: 20 }}
+                animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
+                transition={{ duration: 0.6, delay: 0.6 }}
+              >
+                <p className="text-gray-600 leading-relaxed text-xs flex-grow">
+                  Ši kompleksinė paslaugų sistema leidžia mums būti tikru Jūsų pagalbininku 
+                  ir sutaupyti brangų laiką, eliminuojant poreikį ieškoti skirtingų tiekėjų 
+                  skirtingoms užduotims.
+                </p>
+                <div className="flex justify-end">
+                  <button className="mt-2 px-4 py-1.5 bg-[#2A2D35] text-white rounded-md hover:bg-black transition-colors text-xs">
+                    Susisiekite
+                  </button>
+                </div>
+              </motion.div>
+            </motion.div>
           </div>
         </div>
-      </motion.div>
-
-      {/* Main image container */}
-      <motion.div
-        className="max-w-4xl mx-auto mb-6"
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.95 }}
-        transition={{ duration: 0.6, delay: 0.4 }}
-      >
-        <div className="rounded-[10px] border border-[#BB0003] overflow-hidden h-[500px] relative">
-          <motion.div
-            key={activeContent?.image}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5 }}
-            className="absolute inset-0"
-          >
-            <Image
-              src={activeContent?.image || '/images/man.webp'}
-              alt={activeContent?.title || ''}
-              width={1200}
-              height={500}
-              className="w-full h-full object-cover"
-            />
-          </motion.div>
-          <motion.div
-            key={activeContent?.title}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
-            className="absolute bottom-[10px] left-[10px] right-[10px] bg-[#FCFCFC]/80 backdrop-blur-[2px] rounded-[8px] p-4"
-          >
-            <h3 className="text-xl font-medium text-[#2A2D35] mb-2">
-              {activeContent?.title}
-            </h3>
-            <p className="text-gray-600">
-              {activeContent?.description}
-            </p>
-          </motion.div>
-        </div>
-      </motion.div>
-
-      {/* Bottom containers */}
-      <div className="flex gap-3 max-w-4xl mx-auto">
-        {/* Left container */}
-        <motion.div
-          className="flex-[3] bg-[#BB0003] rounded-[8px] p-4 min-h-[120px] text-white"
-          initial={{ opacity: 0, x: -20 }}
-          animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-        >
-          <h3 className="text-base font-light mb-2">
-            Kodėl verta rinktis "Mes Jau Čia" ?
-          </h3>
-          <p className="leading-relaxed text-xs">
-            Mūsų komandoje dirba tik patyrę ir profesionalūs darbuotojai, kurie supranta, 
-            kad sklandus ir greitas darbų atlikimas yra būtinas kiekvienam klientui.
-          </p>
-        </motion.div>
-
-        {/* Right container */}
-        <motion.div
-          className="flex-[2] bg-white border border-[#BB0003] rounded-[8px] p-4 min-h-[120px] flex flex-col"
-          initial={{ opacity: 0, x: 20 }}
-          animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 20 }}
-          transition={{ duration: 0.6, delay: 0.6 }}
-        >
-          <p className="text-gray-600 leading-relaxed text-xs flex-grow">
-            Ši kompleksinė paslaugų sistema leidžia mums būti tikru Jūsų pagalbininku 
-            ir sutaupyti brangų laiką, eliminuojant poreikį ieškoti skirtingų tiekėjų 
-            skirtingoms užduotims.
-          </p>
-          <div className="flex justify-end">
-            <button className="mt-2 px-4 py-1.5 bg-[#2A2D35] text-white rounded-md hover:bg-black transition-colors text-xs">
-              Susisiekite
-            </button>
-          </div>
-        </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

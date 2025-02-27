@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
-import { ChevronRightIcon } from 'lucide-react';
+import { ChevronRightIcon, Menu, X } from 'lucide-react';
 
 const services = [
   {
@@ -125,7 +125,7 @@ export default function Navbar() {
     <>
       <nav
         ref={navRef}
-        className="fixed w-full z-[50] top-0"
+        className="fixed top-0 left-0 w-full z-[3000]"
       >
         <div className="px-4 py-6">
           <div 
@@ -136,8 +136,20 @@ export default function Navbar() {
             `}
           >
             <div className="h-20 relative flex items-center justify-between">
-              {/* Left Navigation */}
-              <div className={`flex items-center gap-8 pl-8 nav-content ${
+              {/* Mobile Menu Button - Only show on mobile */}
+              <button
+                className="lg:hidden pl-8"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              >
+                {isMobileMenuOpen ? (
+                  <X className="h-6 w-6 text-gray-800" />
+                ) : (
+                  <Menu className="h-6 w-6 text-gray-800" />
+                )}
+              </button>
+
+              {/* Left Navigation - Hide on mobile */}
+              <div className={`hidden lg:flex items-center gap-8 pl-8 nav-content ${
                 isLoaded ? 'visible' : ''
               }`}>
                 <div
@@ -172,8 +184,8 @@ export default function Navbar() {
                 />
               </a>
 
-              {/* Right Navigation */}
-              <div className={`flex items-center gap-6 pr-8 nav-content ${
+              {/* Right Navigation - Hide on mobile */}
+              <div className={`hidden lg:flex items-center gap-6 pr-8 nav-content ${
                 isLoaded ? 'visible' : ''
               }`}>
                 <a href="/apie-mus" className="nav-item-modern text-gray-800">
@@ -269,15 +281,55 @@ export default function Navbar() {
         )}
       </nav>
 
-      {(isServicesOpen || isMobileMenuOpen) && (
-        <div
-          className="fixed inset-0 bg-black/10 backdrop-blur-sm z-[40] transition-all duration-500"
-          style={{ top: '0px' }}
-          onClick={() => {
-            setIsServicesOpen(false);
-            setIsMobileMenuOpen(false);
-          }}
-        />
+      {/* Mobile Menu */}
+      {isMobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 top-20 bg-white z-50 overflow-y-auto">
+          <div className="p-4 space-y-4">
+            <a href="/paslaugos" className="block py-2 text-gray-800 hover:text-red-600">
+              Paslaugos
+            </a>
+            <a href="/kainininkas" className="block py-2 text-gray-800 hover:text-red-600">
+              Kainininkas
+            </a>
+            <a href="/apie-mus" className="block py-2 text-gray-800 hover:text-red-600">
+              Apie Mus
+            </a>
+            <a href="/kontaktai" className="block py-2 text-gray-800 hover:text-red-600">
+              Kontaktai
+            </a>
+            <div className="flex items-center justify-between pt-4 border-t">
+              <button className="text-gray-800">LT</button>
+              <button className="theme-toggle-button">
+                <div className="toggle-slider">
+                  <svg 
+                    className="sun-icon" 
+                    width="16" 
+                    height="16" 
+                    viewBox="0 0 16 16" 
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <circle cx="8" cy="8" r="4" fill="currentColor"/>
+                    <path d="M8 0V2M8 14V16M16 8H14M2 8H0M13.7 2.3L12.3 3.7M3.7 12.3L2.3 13.7M13.7 13.7L12.3 12.3M3.7 3.7L2.3 2.3" 
+                      stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+                  </svg>
+                  
+                  <svg 
+                    className="moon-icon" 
+                    width="14" 
+                    height="14" 
+                    viewBox="0 0 14 14" 
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path d="M13 8.5C12.1 8.8 11.1 9 10 9C6.1 9 3 5.9 3 2C3 0.9 3.2 -0.1 3.5 -1C1.5 -0.1 0 1.7 0 4C0 7.9 3.1 11 7 11C9.3 11 11.1 9.5 12 7.5Z" 
+                      fill="currentColor"/>
+                  </svg>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

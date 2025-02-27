@@ -1,8 +1,8 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useTransform, MotionValue } from 'framer-motion';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface Value {
   id: string;
@@ -246,99 +246,148 @@ const values: Value[] = [
   }
 ];
 
-const ValuesSection = ({ inView }: { inView: boolean }) => {
+interface ValuesSectionProps {
+  inView: boolean;
+  scrollProgress: MotionValue<number>;
+  onOpacityChange?: (opacity: number) => void;
+}
+
+const ValuesSection = ({ inView, scrollProgress, onOpacityChange }: ValuesSectionProps) => {
   const [activeValue, setActiveValue] = useState(values[0].id);
 
   const selectedValue = values.find(v => v.id === activeValue);
 
+  const contentOpacity = useTransform(
+    scrollProgress,
+    [0, 0.15],
+    [1, 0]
+  );
+
+  const sectionOpacity = useTransform(
+    scrollProgress,
+    [0, 0.2, 0.8, 1],
+    [0, 1, 1, 0]
+  );
+
+  const sectionScale = useTransform(
+    scrollProgress,
+    [0, 0.2, 0.8, 1],
+    [0.8, 1, 1, 0.8]
+  );
+
+  const titleY = useTransform(
+    scrollProgress,
+    [0.1, 0.3, 0.7, 0.9],
+    [50, 0, 0, -50]
+  );
+
+  const leftContentX = useTransform(
+    scrollProgress,
+    [0.1, 0.3, 0.7, 0.9],
+    [-100, 0, 0, -100]
+  );
+
+  const rightContentX = useTransform(
+    scrollProgress,
+    [0.1, 0.3, 0.7, 0.9],
+    [100, 0, 0, 100]
+  );
+
+  useEffect(() => {
+    if (onOpacityChange) {
+      return sectionOpacity.onChange(onOpacityChange);
+    }
+  }, [sectionOpacity, onOpacityChange]);
+
   return (
-    <div className="container mx-auto px-4 py-16 pt-20">
-      <motion.h2
-        className="text-4xl font-light text-center mb-12"
-        initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-        transition={{ duration: 0.6 }}
-      >
-        <span className="text-[#2A2D35]">MŪSŲ </span>
-        <span className="text-[#BB0003]">VERTYBĖS</span>
-        <span className="text-[#2A2D35]"> IR IŠSKIRTINUMAI</span>
-      </motion.h2>
-
-      <div className="max-w-4xl mx-auto flex gap-6">
-        {/* Values list */}
-        <div className="w-[60%]">
-          {values.map((value, index) => (
-            <motion.div
-              key={value.id}
-              className={`rounded-lg p-4 mb-3.5 flex items-center gap-4 cursor-pointer transition-colors
-                ${activeValue === value.id 
-                  ? 'bg-[#BB0003]' 
-                  : 'bg-white hover:bg-white/80'}`}
-              initial={{ opacity: 0, x: -20 }}
-              animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
-              transition={{ duration: 0.3, delay: index * 0.1 }}
-              onClick={() => setActiveValue(value.id)}
-            >
-              <div className="w-5 h-5 relative flex-shrink-0">
-                <Image
-                  src={value.icon}
-                  alt={value.title}
-                  fill
-                  className={`object-contain transition-all
-                    ${activeValue === value.id ? 'brightness-0 invert' : ''}`}
-                />
-              </div>
-              <h3 className={`text-xs leading-tight transition-colors
-                ${activeValue === value.id ? 'text-white' : 'text-[#232323]'}`}>
-                <span className="font-bold">{value.title.split('–')[0]}</span>
-                {value.title.includes('–') && '–'}
-                <span className="font-normal">{value.title.split('–')[1]}</span>
-              </h3>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Description box */}
-        <motion.div 
-          className="w-[40%] bg-gray-200/90 backdrop-blur-[2px] rounded-lg p-5 max-h-[600px] overflow-y-auto"
-          initial={{ opacity: 0, x: 20 }}
-          animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: -20 }}
-          transition={{ 
-            type: "spring",
-            stiffness: 200,
-            damping: 20
-          }}
-          key={activeValue}
+    <motion.div
+      className="w-full h-full flex items-center justify-center"
+      style={{ 
+        opacity: sectionOpacity,
+        scale: sectionScale
+      }}
+    >
+      <div className="container mx-auto px-4">
+        <motion.h2
+          className="text-4xl font-light text-center mb-12"
+          style={{ y: titleY }}
         >
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
+          <span className="text-[#2A2D35]">MŪSŲ </span>
+          <span className="text-[#BB0003]">VERTYBĖS</span>
+          <span className="text-[#2A2D35]"> IR IŠSKIRTINUMAI</span>
+        </motion.h2>
+
+        <div className="max-w-4xl mx-auto flex gap-6">
+          {/* Values list */}
+          <motion.div 
+            className="w-[60%]"
+            style={{ x: leftContentX }}
           >
-            <h3 className="text-sm font-bold text-[#2A2D35] mb-3">{selectedValue?.title}</h3>
-            <p className="text-gray-700 text-xs mb-3">{selectedValue?.description.intro}</p>
-            <div className="space-y-2">
-              {selectedValue?.description.points.map((point, index) => (
-                <motion.div 
-                  key={index} 
-                  className="flex gap-2"
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.3 + index * 0.1 }}
-                >
-                  <div className="text-[#BB0003] mt-0.5 text-xs">•</div>
-                  <div className="text-xs">
-                    <span className="font-bold text-[#2A2D35]">{point.title}: </span>
-                    <span className="text-gray-700">{point.text}</span>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
+            {values.map((value, index) => (
+              <motion.div
+                key={value.id}
+                className={`rounded-lg p-4 mb-3.5 flex items-center gap-4 cursor-pointer transition-colors
+                  ${activeValue === value.id 
+                    ? 'bg-[#BB0003]' 
+                    : 'bg-white hover:bg-white/80'}`}
+                initial={{ opacity: 0, x: -20 }}
+                animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                onClick={() => setActiveValue(value.id)}
+              >
+                <div className="w-5 h-5 relative flex-shrink-0">
+                  <Image
+                    src={value.icon}
+                    alt={value.title}
+                    fill
+                    className={`object-contain transition-all
+                      ${activeValue === value.id ? 'brightness-0 invert' : ''}`}
+                  />
+                </div>
+                <h3 className={`text-xs leading-tight transition-colors
+                  ${activeValue === value.id ? 'text-white' : 'text-[#232323]'}`}>
+                  <span className="font-bold">{value.title.split('–')[0]}</span>
+                  {value.title.includes('–') && '–'}
+                  <span className="font-normal">{value.title.split('–')[1]}</span>
+                </h3>
+              </motion.div>
+            ))}
           </motion.div>
-        </motion.div>
+
+          {/* Description box */}
+          <motion.div 
+            className="w-[40%]"
+            style={{ x: rightContentX }}
+          >
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+            >
+              <h3 className="text-sm font-bold text-[#2A2D35] mb-3">{selectedValue?.title}</h3>
+              <p className="text-gray-700 text-xs mb-3">{selectedValue?.description.intro}</p>
+              <div className="space-y-2">
+                {selectedValue?.description.points.map((point, index) => (
+                  <motion.div 
+                    key={index} 
+                    className="flex gap-2"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.3 + index * 0.1 }}
+                  >
+                    <div className="text-[#BB0003] mt-0.5 text-xs">•</div>
+                    <div className="text-xs">
+                      <span className="font-bold text-[#2A2D35]">{point.title}: </span>
+                      <span className="text-gray-700">{point.text}</span>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
+          </motion.div>
+        </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
