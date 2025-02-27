@@ -97,7 +97,12 @@ const WhyChooseUs = ({ inView, scrollProgress, onOpacityChange }: WhyChooseUsPro
   const activeContent = serviceContents.find(content => content.id === activeService);
 
   useEffect(() => {
-    return sectionOpacity.onChange(onOpacityChange);
+    if (onOpacityChange) {
+      const unsubscribe = sectionOpacity.onChange((value: number) => {
+        onOpacityChange(value);
+      });
+      return unsubscribe;
+    }
   }, [sectionOpacity, onOpacityChange]);
 
   return (
